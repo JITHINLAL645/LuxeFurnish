@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Furniture Ecommerce - Checkout">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Amado - Furniture Ecommerce Template | Checkout</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="img/core-img/favicon.ico">
+
+    <!-- Core Style CSS -->
+    <link rel="stylesheet" href="css/core-style.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FontAwesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+
+        /* .search-wrapper {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .search-wrapper input[type="search"] {
+            width: 80%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .search-wrapper button {
+            background-color: #ff6f61;
+            border: none;
+            padding: 10px;
+            margin-left: 10px;
+            border-radius: 5px;
+        }
+
+        .search-wrapper button img {
+            width: 20px;
+        }
+
+        .header-area {
+            background-color: #343a40;
+            color: white;
+            padding: 20px 0;
+        }
+
+        .amado-nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+        }
+
+        .amado-nav a:hover,
+        .amado-nav .active {
+            background-color: #ff6f61;
+            border-radius: 4px;
+        } */
+
+        .address-item {
+            background-color: #fff;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .address-item p {
+            margin: 5px 0;
+        }
+
+        .address-item .edit-icon {
+            background-color: #ff6f61;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .address-item .edit-icon:hover {
+            background-color: #ff4d3d;
+        }
+
+        .modal-content {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .modal-header {
+            background-color: #343a40;
+            color: white;
+            border-bottom: none;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-body .form-label {
+            font-weight: bold;
+        }
+
+        .modal-body .form-control {
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .social-info a {
+            color: #007bff;
+            font-size: 18px;
+            padding: 10px;
+            text-decoration: none;
+        }
+
+        .social-info a:hover {
+            color: #ff6f61;
+        }
+
+        footer {
+            background-color: #343a40;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer a {
+            color: #ff6f61;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+        .payment-method-box {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            width: 300px; /* Smaller box size */
+        }
+
+        .payment-method-box h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .payment-method-box label {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .payment-method-box .form-check-label {
+            font-size: 14px;
+        }
+        .coupon-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            width: 350px; /* Adjust the box size */
+        }
+
+        .coupon-box h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .coupon-box input {
+            width: calc(100% - 100px); /* Adjust input width to leave space for button */
+            padding: 8px;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .coupon-box button {
+            width: 150px;
+            padding: 8px;
+            font-size: 14px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .coupon-box button:hover {
+            background-color: #0056b3;
+        }
+         
+.cart-card {
+    width: 100%;                    
+    max-width: 400px;                 
+    margin: 20px auto;                
+    padding: 20px;                   
+    background-color: #ffffff;       
+    border: 1px solid #ddd;          
+    border-radius: 10px;              
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    text-align: left;                
+}
+
+.cart-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.summary-table {
+    list-style: none;                 /* Remove bullets */
+    padding: 0;
+    margin: 0 0 20px 0;               /* Space between table and button */
+}
+
+.summary-table li {
+    display: flex;
+    justify-content: space-between;   /* Align items on both ends (label and value) */
+    padding: 5px 0;                   /* Space between items */
+    font-size: 16px;                  /* Text size */
+    color: #333;                      /* Darker text color */
+}
+
+/* Box container for the button */
+.summary-box {
+    text-align: center;               /* Center the button inside the box */
+    margin-top: 20px;
+}
+
+/* Button styling */
+.summary-btn {
+    width: 100%;                      /* Full width of the box */
+    padding: 12px;                    /* Button padding */
+    background-color: #007bff;        /* Primary button color */
+    color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;               /* Rounded button */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.summary-btn:hover {
+    background-color: #0056b3;        /* Darker blue on hover */
+}
+
+    </style>
+</head>
+
+<body>
+    <!-- Search Wrapper Area Start -->
+    <div class="search-wrapper section-padding-100">
+        <div class="search-close">
+            <i class="fa fa-close" aria-hidden="true"></i>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="search-content">
+                        <form action="#" method="get">
+                            <input type="search" name="search" id="search" placeholder="Type your keyword...">
+                            <button type="submit"><img src="img/core-img/search.png" alt=""></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Search Wrapper Area End -->
+
+    <!-- Main Content Wrapper Start -->
+    <div class="main-content-wrapper d-flex clearfix">
+        <header class="header-area clearfix">
+            <!-- Close Icon -->
+            <div class="nav-close">
+                <i class="fa fa-close" aria-hidden="true"></i>
+            </div>
+            <!-- Logo -->
+            <nav class="amado-nav">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="shop">Shop</a></li>
+                    <li class="active"><a href="Cart">Cart</a></li>
+                    <li><a href="checkout">Checkout</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <div class="container">
+            <h3 class="h4 text-center my-5">SAVED ADDRESS</h3>
+            <div class="section">
+                <% if (addresses && addresses.length > 0) { %>
+                    <% addresses.forEach(function(address) { %>
+                        <div class="address-item">
+                            <div>
+                                <input type="radio" name="selectedAddress" value="<%= address._id %>" <%= address.isDefault ? 'checked' : '' %> class="address-radio">
+                                
+                                <!-- Full name -->
+                                <p><%= address.firstName || '' %> <%= address.lastName || '' %></p>
+        
+                                <!-- Phone number -->
+                                <p><%= address.phoneNumber || 'No phone number provided' %></p>
+        
+                                <!-- Email -->
+                                <p><%= address.email || 'No email provided' %></p>
+        
+                                <!-- Address fields with conditional checks -->
+                                <p>
+                                    <%= address.addressLine || '' %>, 
+                                    <%= address.street || '' %>, 
+                                    <%= address.place || '' %>, 
+                                    <%= address.city || '' %>, 
+                                    <%= address.district || '' %>, 
+                                    <%= address.state || '' %>, 
+                                    <%= address.country || '' %> - 
+                                    <%= address.pincode || '' %>
+                                </p>
+                            </div>
+                            <button class="edit-icon" onclick="openEditModal('<%= address._id %>', '<%= address.firstName %>', '<%= address.lastName %>', '<%= address.phoneNumber %>', '<%= address.email %>', '<%= address.addressLine %>', '<%= address.place %>', '<%= address.street %>', '<%= address.city %>', '<%= address.district %>', '<%= address.state %>', '<%= address.country %>', '<%= address.pincode %>')">Edit</button>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p>No addresses found.</p>
+                <% } %>
+            </div>
+        </div>
+        
+
+
+        <div class="container">
+            <div class="payment-method-box">
+                <h3>Select Payment Method</h3>
+        
+                <!-- Payment Method Radio Buttons -->
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="paymentMethod" id="razorpay" value="razorpay" required>
+                    <label class="form-check-label" for="razorpay">
+                        Razorpay
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="paymentMethod" id="wallet" value="wallet" required>
+                    <label class="form-check-label" for="wallet">
+                        Wallet
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="paymentMethod" id="cashOnDelivery" value="cashOnDelivery" required>
+                    <label class="form-check-label" for="cashOnDelivery">
+                        Cash on Delivery
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- Coupon Box -->
+        <div class="container mt-5">
+            <div class="coupon-box p-4 rounded shadow-lg bg-light">
+                <h3 class="text-center mb-4">Coupon</h3>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="couponCode" placeholder="Enter coupon code" required>
+                    <button type="button" class="btn btn-primary mt-3 w-100">Apply Coupon</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="cart-card">
+            <h5 class="cart-title">Price Details</h5> 
+            <ul class="summary-table">
+                <li><span>Price (1 item):</span> <span>$140.00</span></li> 
+                <li><span>Delivery:</span> <span>Free</span></li>
+                <li><span>Total Amount:</span> <span>$140.00</span></li> 
+            </ul>
+        
+            <!-- Box model for the button inside the card -->
+            <div class="summary-box">
+                <button class="btn btn-primary summary-btn">Proceed to Checkout</button>
+            </div>
+        </div>
+        
+        
+    </div>
+
+    <!-- Edit Address Modal -->
+    <div class="modal fade" id="editAddressModal" tabindex="-1" aria-labelledby="editAddressModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAddressModalLabel">Edit Address</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editAddressForm" action="/checkoutupdateAddress" method="POST">
+                        <input type="hidden" id="addressId" name="id">
+                        
+                        <div class="mb-3">
+                          <label for="editFirstName" class="form-label">First Name</label>
+                          <input type="text" class="form-control" id="editFirstName" name="first_name" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                          <label for="editLastName" class="form-label">Last Name</label>
+                          <input type="text" class="form-control" id="editLastName" name="last_name" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                          <label for="editMobile" class="form-label">Mobile</label>
+                          <input type="tel" class="form-control" id="editMobile" name="phone_number" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                          <label for="editEmail" class="form-label">Email</label>
+                          <input type="email" class="form-control" id="editEmail" name="email" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                          <label for="editAddress" class="form-label">Address</label>
+                          <input type="text" class="form-control" id="editAddress" name="street_address" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                          <label for="editCity" class="form-label">City</label>
+                          <input type="text" class="form-control" id="editCity" name="city" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                          <label for="editState" class="form-label">State</label>
+                          <input type="text" class="form-control" id="editState" name="state" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                          <label for="editCountry" class="form-label">Country</label>
+                          <input type="text" class="form-control" id="editCountry" name="country" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                          <label for="editPinCode" class="form-label">Pin Code</label>
+                          <input type="text" class="form-control" id="editPinCode" name="zipCode" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Update Address</button>
+                      </form>
+                      
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS & Bootstrap Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Open edit modal with pre-filled data
+        function openEditModal(id, firstName, lastName, mobile, email, address, city, state, country, pinCode) {
+            document.getElementById('addressId').value = id;
+            document.getElementById('editFirstName').value = firstName;
+            document.getElementById('editLastName').value = lastName;
+            document.getElementById('editMobile').value = mobile;
+            document.getElementById('editEmail').value = email;
+            document.getElementById('editAddress').value = address;
+            document.getElementById('editCity').value = city;
+            document.getElementById('editState').value = state;
+            document.getElementById('editCountry').value = country;
+            document.getElementById('editPinCode').value = pinCode;
+
+            $('#editAddressModal').modal('show');
+        }
+    </script>
+</body>
+
+
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/admin-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #f0f2f5;
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            background-color: #343a40;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            padding: 20px;
+        }
+        .sidebar .nav-link {
+            color: #fff;
+            margin: 10px 0;
+            display: block;
+        }
+        .sidebar .nav-link i {
+            margin-right: 10px;
+        }
+        .sidebar .nav-link.active {
+            /* background-color: #495057; */
+            border-radius: 5px;
+        }
+        .sidebar .logout-btn {
+            margin-top: 20px;
+            
+        }
+        .sidebar .nav-link {
+    color: #fff;
+    margin: 10px 0;
+    display: block;
+    transition: background-color 0.3s ease; /* Adding smooth transition */
+}
+
+.sidebar .nav-link:hover {
+    background-color: #071553; /* Hover effect color */
+    border-radius: 5px;
+}
+
+       
+        .navbar-brand {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .content-wrapper {
+            margin-left: 250px;
+            padding: 20px;
+            width: 100%;
+        }
+        .card {
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <a class="navbar-brand" href="#">Admin Panel</a>
+        <a class="nav-link active" href="/admin/dashboard"><i class="fas fa-home"></i> Dashboard</a>
+        <a class="nav-link" href="/admin/orders"><i class="fas fa-box"></i> Orders</a>
+
+        <a class="nav-link" href="/admin/products"><i class="fas fa-tag"></i> Products</a>
+
+        <a class="nav-link" href="/admin/categories"><i class="fas fa-list"></i> Categories</a>
+        <a class="nav-link" href="/admin/users"><i class="fas fa-user"></i> Users</a>
+        <a class="nav-link" href="/admin/coupons"><i class="fas fa-percent"></i> Coupons</a>
+        <a class="nav-link" href="/admin/offers"><i class="fas fa-gift"></i> Offers</a>
+        <a class="nav-link" href="/admin/reports"><i class="fas fa-chart-line"></i> Reports</a>
+        <a href="/admin/logout" class="btn btn-danger logout-btn">Logout <i class="fas fa-sign-out-alt"></i></a>
+    </nav>
+
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="content-header">
+                <h1 class="content-title">Welcome to the Admin Dashboard</h1>
+            </div>

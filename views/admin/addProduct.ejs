@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Products</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.css"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+    <style>
+      /* Form container styling */
+      .form-container {
+        background: #f9f9f9;
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ddd;
+      }
+
+      .form-container h2 {
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        color: #333;
+      }
+
+      .form-container label {
+        font-weight: 500;
+        color: #555;
+      }
+
+      .form-container .form-control {
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        padding: -0.25rem 1.25rem;
+      }
+
+      .form-container .btn-submit {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 0.75rem 1.25rem;
+        width: 100%;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .form-container .btn-submit:hover {
+        background-color: #0056b3;
+        color: #fff;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 767px) {
+        .form-container {
+          padding: 1rem;
+        }
+      }
+
+      /* Add these new styles */
+      .img-container {
+        max-width: 100%;
+        max-height: 400px;
+      }
+      #cropModal .modal-body {
+        max-height: 500px;
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <section>
+      <div class="container mt-4">
+        <div class="row justify-content-center">
+          <div class="col-md-8 col-lg-6">
+            <div class="form-container">
+              <h2 class="text-center">Add Products</h2>
+              <!-- <p class="text-danger"><%= locals.exist ? exist : null %></p> -->
+              <form action="#"method="post"enctype="multipart/form-data">
+                <div class="form-group">
+                  <label for="name">Product_Name</label>
+                  <input type="text"id="pname"name="productName"class="form-control"/>
+                </div>
+                <div class="form-group">
+                  <label for="name">Description</label>
+                  <input type="text"id="dname"name="description" class="form-control"/>
+                </div>
+                <div class="form-group">
+                  <label for="category">Category</label>
+
+
+                  <select id="category" name="category_id" class="form-control" required>
+                    <% Category.forEach(function(category) { %>
+                      <option value="<%= category._id %>">
+                        <%= category.category_name %>
+                      </option>
+                    <% }); %>
+                  </select>
+                  
+
+
+                </div>
+                <div class="form-group">
+                  <label for="price">Price</label>
+                  <input type="Number"id="price"name="price"class="form-control"required/>
+                </div>
+                <div class="form-group">
+                  <label for="price">Stock</label>
+                  <input type="Number"id="stock"name="stock"class="form-control"required/>
+                </div>
+
+                <div class="form-group" id="imgView1">
+                  <label for="image">Image1</label>
+                  <input type="file" id="input1" name="productImage1" class="form-control-file"
+                    accept="image/png, image/jpeg, image/jpg" onchange="viewImage(event, 1)" required />
+                  <!-- Add a preview image element -->
+                  <img id="preview1" src="" alt="" style="max-width: 25%; height: auto; display:none;" />
+                </div>
+                
+                <div class="form-group" id="imgView2">
+                  <label for="image">Image2</label>
+                  <input type="file" id="input2" name="productImage2" class="form-control-file"
+                    accept="image/png, image/jpeg, image/jpg" onchange="viewImage(event, 2)" required />
+                  <!-- Add a preview image element -->
+                  <img id="preview2" src="" alt="" style="max-width: 25%; height: auto; display:none;" />
+                </div>
+                
+                <div class="form-group" id="imgView3">
+                  <label for="image">Image3</label>
+                  <input type="file" id="input3" name="productImage3" class="form-control-file"
+                    accept="image/png, image/jpeg, image/jpg" onchange="viewImage(event, 3)" required />
+                  <!-- Add a preview image element -->
+                  <img id="preview3" src="" alt="" style="max-width: 25%; height: auto; display:none;" />
+                </div>
+                
+                <div class="form-group" id="imgView4">
+                  <label for="image">Image4</label>
+                  <input type="file" id="input4" name="productImage4" class="form-control-file"
+                    accept="image/png, image/jpeg, image/jpg" onchange="viewImage(event, 4)" required />
+                  <!-- Add a preview image element -->
+                  <img id="preview4" src="" alt="" style="max-width: 25%; height: auto; display:none;" />
+                </div>
+                <!-- Add Specification Button -->
+                <button type="button" class="btn btn-secondary" onclick="openSpecModal()">Add Spec</button>
+
+                <!-- Hidden input to store specifications in JSON format -->
+                <input type="hidden" id="specificationsInput" name="specifications" />
+                
+                <!-- Modal for adding specifications -->
+                <div class="modal fade" id="specModal" tabindex="-1" aria-labelledby="specModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="specModalLabel">Add Specification</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="form-group">
+                          <label for="specKey">Specification Name</label>
+                          <input type="text" id="specKey" class="form-control" placeholder="e.g., Color" />
+                        </div>
+                        <div class="form-group">
+                          <label for="specValue">Specification Value</label>
+                          <input type="text" id="specValue" class="form-control" placeholder="e.g., Red" />
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="addSpec()">Add Specification</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="specificationsDisplay" class="mt-3">
+                  <h5>Specifications</h5>
+                  <ul id="specList" class="list-group">
+                    <!-- Added specifications will be displayed here -->
+                  </ul>
+                </div>
+                
+                <!-- Hidden input to store specifications as JSON for form submission -->
+                <input type="hidden" id="specificationsInput" name="specifications">
+
+                
+                <button onclick="addProduct(event)" type="submit" class="btn btn-submit mt-4">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Add this new modal for image cropping -->
+    <div class="modal fade" id="cropModal" tabindex="-1" role="dialog" aria-labelledby="cropModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="cropModalLabel">Crop Image</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="img-container">
+              <img id="cropImage" src="" alt="Image to crop">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="cropButton">Crop</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+ 
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    
+    <script>
+document.querySelector("form").addEventListener("submit", function() {
+  document.getElementById("specifications").value = JSON.stringify(specificationsArray);
+});
+
+
+      let cropper;
+      let currentImageInput;
+
+      function viewImage(event, previewId) {
+        const input = event.target;
+        const preview = document.getElementById(`preview${previewId}`);
+        currentImageInput = input;
+        
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+          
+          reader.onload = function(e) {
+            $('#cropImage').attr('src', e.target.result);
+            $('#cropModal').modal('show');
+            
+            $('#cropModal').on('shown.bs.modal', function() {
+              if (cropper) {
+                cropper.destroy();
+              }
+              cropper = new Cropper(document.getElementById('cropImage'), {
+                aspectRatio: 1,
+                viewMode: 1,
+              });
+            });
+          }
+          
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+
+      $('#cropButton').on('click', function() {
+        const croppedCanvas = cropper.getCroppedCanvas();
+        
+        // Create a new canvas with white background
+        const whiteCanvas = document.createElement('canvas');
+        whiteCanvas.width = croppedCanvas.width;
+        whiteCanvas.height = croppedCanvas.height;
+        const ctx = whiteCanvas.getContext('2d');
+        
+        // Fill the canvas with white
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, whiteCanvas.width, whiteCanvas.height);
+        
+        // Draw the cropped image onto the white canvas
+        ctx.drawImage(croppedCanvas, 0, 0);
+        
+        whiteCanvas.toBlob((blob) => {
+          const croppedImage = new File([blob], currentImageInput.files[0].name, {
+            type: 'image/jpeg',
+            lastModified: new Date().getTime()
+          });
+          
+          const dataTransfer = new DataTransfer();
+          dataTransfer.items.add(croppedImage);
+          currentImageInput.files = dataTransfer.files;
+          
+          const preview = document.getElementById(`preview${currentImageInput.id.slice(-1)}`);
+          preview.src = URL.createObjectURL(croppedImage);
+          preview.style.display = 'block';
+          
+          $('#cropModal').modal('hide');
+        }, 'image/jpeg', 0.95); // You can adjust the quality (0.95) as needed
+      });
+
+
+      function openSpecModal() {
+  $('#specModal').modal('show');
+}
+
+      
+      let specifications = []; // Array to store specification objects
+
+// Add Specification Function
+function addSpec() {
+  const key = document.getElementById('specKey').value.trim();
+  const value = document.getElementById('specValue').value.trim();
+
+  if (key && value) {
+    const newSpec = { key,value };
+    specifications.push(newSpec);
+
+    // Update the hidden input field with the JSON string
+    //document.getElementById('specificationsInput').value = JSON.stringify(specifications);
+
+    // Display the new spec in the list
+    const specItem = document.createElement('li');
+    specItem.classList.add('list-group-item');
+    specItem.textContent = `${key}: ${value}`;
+    document.getElementById('specList').appendChild(specItem);
+
+    // Clear input fields and hide modal
+    document.getElementById('specKey').value = '';
+    document.getElementById('specValue').value = '';
+    $('#specModal').modal('hide');
+  } else {
+    alert('Please enter both the specification name and value.');
+  }
+}
+
+
+const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB in bytes
+    const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/jpg"];
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // Attach change event listeners to each image input for validation
+        document.getElementById('input1').addEventListener('change', function() {
+            validateImage(this, 1);
+        });
+
+        document.getElementById('input2').addEventListener('change', function() {
+            validateImage(this, 2);
+        });
+
+        document.getElementById('input3').addEventListener('change', function() {
+            validateImage(this, 3);
+        });
+
+        document.getElementById('input4').addEventListener('change', function() {
+            validateImage(this, 4);
+        });
+    });
+
+    // File size and type validation
+    function validateImage(inputElement, imageIndex) {
+    const file = inputElement.files[0];
+
+    if (file) {
+        if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+            Swal.fire({
+                title: 'Error',
+                text: `Image ${imageIndex} is not a valid image file. Please choose another file.`,
+                icon: "error",
+                confirmButtonText: "Okay"
+            }).then(() => {
+                inputElement.value = ""; // Clear the input after alert
+            });
+            return;
+        }
+
+        if (file.size > MAX_FILE_SIZE) {
+            Swal.fire({
+                title: 'Error',
+                text: `Image ${imageIndex} exceeds the 2MB size limit. Please choose another file.`,
+                icon: "error",
+                confirmButtonText: "Okay"
+            }).then(() => {
+                inputElement.value = ""; // Clear the input after alert
+            });
+        }
+    }
+}
+
+
+// Form Submission Handling
+async function addProduct(event) {
+    event.preventDefault();
+
+    // Get all the input elements and check if they exist
+    const productNameElement = document.getElementById('pname');
+    const descriptionElement = document.getElementById('dname');
+    const categoryElement = document.getElementById('category');
+    const priceElement = document.getElementById('price');
+    const stockElement = document.getElementById('stock');
+    
+    // Get the values from the form elements
+    const productName = productNameElement ? productNameElement.value.trim() : '';
+    const description = descriptionElement ? descriptionElement.value.trim() : '';
+    const Category_id = categoryElement ? categoryElement.value.trim() : '';
+    const price = priceElement ? priceElement.value.trim() : '';
+    const stock = stockElement ? stockElement.value.trim() : '';
+
+    // Get the file inputs
+    const productImage1 = document.getElementById('input1').files[0];
+    const productImage2 = document.getElementById('input2').files[0];
+    const productImage3 = document.getElementById('input3').files[0];
+    const productImage4 = document.getElementById('input4').files[0];
+
+    // Example of how the specifications object should be structured (replace this with actual logic)
+//     const specifications = {
+//     color: 'Red',
+//     size: 'M',
+//     weight: '500g'
+// };
+
+
+    // Check if all required fields are filled
+    if (productName && description && price && stock && productImage1 && productImage2 && productImage3 && productImage4 ) {
+
+        // Validation for description (should not exceed 30 words)
+        if (description.split(/\s+/).length > 30) {
+            Swal.fire({
+                title: 'Error',
+                text: "Only 30 words allowed in description",
+                icon: "error",
+                confirmButtonText: "Okay"
+            });
+            return;
+        }
+
+        // Validation for price (should be a positive number)
+        if (!/^\d+(\.\d{1,2})?$/.test(price) || parseFloat(price) <= 0) {
+            Swal.fire({
+                title: 'Error',
+                text: "Please enter a valid price (positive number with up to two decimal places)",
+                icon: "error",
+                confirmButtonText: "Okay"
+            });
+            return;
+        }
+
+        // Validation for stock (should be a non-negative integer)
+        if (!/^\d+$/.test(stock) || parseInt(stock) < 0) {
+            Swal.fire({
+                title: 'Error',
+                text: "Please enter a valid stock amount (non-negative integer)",
+                icon: "error",
+                confirmButtonText: "Okay"
+            });
+            return;
+        }
+
+        // Construct FormData object
+        const formData = new FormData();
+        formData.append('productName', productName);
+        formData.append('Category_id', Category_id);
+        formData.append('description', description);
+        formData.append('price', price);
+        formData.append('stock', stock);
+        formData.append('productImage1', productImage1);
+        formData.append('productImage2', productImage2);
+        formData.append('productImage3', productImage3);
+        formData.append('productImage4', productImage4);
+        
+        // Ensure specifications is a valid object before converting to JSON
+        try {
+            console.log("Specifications m,n:", JSON.stringify(specifications));
+            formData.append('specifications', JSON.stringify(specifications));
+          } catch (e) {
+            Swal.fire({
+                title: 'Error',
+                text: "Invalid JSON format for specifications",
+                icon: "error",
+                confirmButtonText: "Okay"
+            });
+            return;
+        }
+
+    
+
+        try {
+            const response = await fetch("/admin/addProduct", {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                if (data.success) {
+                    Swal.fire({
+                        title: 'Success',
+                        text: "Product added successfully",
+                        icon: "success",
+                        timer: 1000
+                    }).then(() => {
+                        window.location.href = '/admin/Products';
+                    });
+                } else if (data.error) {
+                    Swal.fire({
+                        title: "Error",
+                        text: data.error,
+                        icon: "error"
+                    });
+                }
+            } else {
+                Swal.fire({
+                    title: "Oops!",
+                    text: "Server error: " + data.error,
+                    icon: "error"
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                title: "Oops!",
+                text: "Something went wrong! Please try again",
+                icon: "error"
+            });
+        }
+    } else {
+        // If the form is not completely filled, show a general error message
+        Swal.fire({
+            title: "Error",
+            text: "Please fill all required fields",
+            icon: "error",
+            confirmButtonText: "Okay"
+        });
+    }
+}
+
+    
+
+
+
+
+ </script>
+
+
+
+
+  </body>
+</html>

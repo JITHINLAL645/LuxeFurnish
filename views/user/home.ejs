@@ -1,0 +1,123 @@
+<%- include("..//partials/user/header") %>
+
+<!-- Navbar Start -->
+<nav class="navbar" style="background-color: #3c3c3c; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;">
+    <div class="navbar-brand">
+        <a href="/" style="color: #ffffff; font-size: 24px; font-weight: bold; text-decoration: none;">LuxeFurnish</a>
+    </div>
+    <div class="navbar-profile">
+        <a href="/profile" class="btn profile-btn">
+            <img src="data:image/png;base64,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" alt="User Profile" style="border-radius: 50%; width: 40px; height: 40px;">
+        </a>
+    </div>
+</nav>
+<!-- Navbar End -->
+
+<!-- Search Wrapper Area Start -->
+<div class="search-wrapper section-padding-100">
+    <div class="search-close">
+        <i class="fa fa-close" aria-hidden="true"></i>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="search-content">
+                    <form action="#" method="get">
+                        <input type="search" name="search" id="search" placeholder="Type your keyword...">
+                        <button type="submit"><img src="img/core-img/search.png" alt></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Search Wrapper Area End -->
+
+<!-- Main Content Wrapper Start -->
+<div class="main-content-wrapper d-flex clearfix">
+    <!-- Mobile Nav (max width 767px) -->
+    <div class="mobile-nav">
+        <div class="amado-navbar-brand">
+            <a href="index.html"><img src="img/core-img/logo.png" alt></a>
+        </div>
+        <div class="amado-navbar-toggler">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+
+    <%- include("../partials/user/sidenav") %>
+
+    <!-- Product Catagories Area Start -->
+    <div class="products-catagories-area clearfix">
+        <div class="amado-pro-catagory clearfix">
+            <div class="single-products-catagory clearfix">
+                <a href="shop">
+                    <img src="img/bg-img/1.jpg" alt>
+                    <div class="hover-content">
+                        <div class="line"></div>
+                        <p>From $180</p>
+                        <h4>Modern Chair</h4>
+                    </div>
+                </a>
+            </div>
+
+            <!-- <div class="single-products-catagory clearfix">
+                <a href="shop">
+                    <img src="img/bg-img/2.jpg" alt>
+                    <div class="hover-content">
+                        <div class="line"></div>
+                        <p>From $180</p>
+                        <h4>Minimalistic Plant Pot</h4>
+                    </div>
+                </a>
+            </div> -->
+
+            <!-- <div class="single-products-catagory clearfix">
+                <a href="shop">
+                    <img src="img/bg-img/3.jpg" alt>
+                    <div class="hover-content">
+                        <div class="line"></div>
+                        <p>From $180</p>
+                        <h4>Modern Chair</h4>
+                    </div>
+                </a>
+            </div> -->
+
+            <div class="single-products-catagory clearfix">
+                <a href="shop">
+                    <img src="img/bg-img/4.jpg" alt>
+                    <div class="hover-content">
+                        <div class="line"></div>
+                        <p>From $180</p>
+                        <h4>Night Stand</h4>
+                    </div>
+                </a>
+            </div>
+
+            <div class="single-products-catagory clearfix">
+                <a href="shop">
+                    <img src="img/bg-img/5.jpg" alt>
+                    <div class="hover-content">
+                        <div class="line"></div>
+                        <p>From $18</p>
+                        <h4>Plant Pot</h4>
+                    </div>
+                </a>
+            </div>
+
+            <div class="single-products-catagory clearfix">
+                <a href="shop">
+                    <img src="img/bg-img/6.jpg" alt>
+                    <div class="hover-content">
+                        <div class="line"></div>
+                        <p>From $320</p>
+                        <h4>Small Table</h4>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- Product Catagories Area End -->
+</div>
+
+<%- include("../../views/partials/user/footer") %>

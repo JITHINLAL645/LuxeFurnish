@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        /* Body background */
+        body {
+            background: #d3d9e4;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            /* background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnaIM1utjv1b7LupMjiqleLf2AS9oxvFPRMg&s); */
+        }
+
+        /* Form styling */
+        .form {
+            background: #94a8cd4f;
+            padding: 40px;
+            max-width: 500px;
+            margin: 50px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            /* background-image: url(data:image/jpeg;base64,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); */
+            /* background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnaIM1utjv1b7LupMjiqleLf2AS9oxvFPRMg&s); */
+
+          }
+
+        /* Form header */
+        h1 {
+    text-align: center;
+    color: #83afc57a; /* Modern blue color */
+    font-weight: 600; /* Bold but not too heavy */
+    margin-bottom: 20px;
+    font-size: 2.2rem; /* Slightly larger for readability */
+    font-family: 'Arial', sans-serif; /* Simple, clean font */
+    letter-spacing: 1px; /* A touch of letter spacing */
+    padding-bottom: 10px; /* Padding to separate the text from the border */
+}
+
+        /* Input fields */
+        label {
+            position: absolute;
+            transform: translateY(-20px);
+            left: 15px;
+            color: #666;
+            transition: all 0.25s ease;
+            font-size: 0.9rem;
+        }
+
+        label .req {
+            color: #e74c3c;
+        }
+
+        input {
+            font-size: 1rem;
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            background: #f4f7f6;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        input:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 8px rgba(74, 144, 226, 0.2);
+        }
+
+        /* Field container */
+        .field-wrap {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        /* Button styling */
+        .button {
+            border: 0;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: #4a90e2;
+            color: #ffffff;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .button:hover {
+            background: #357abd;
+        }
+
+        /* Additional styles */
+        .button-block {
+            display: block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .form {
+                padding: 30px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+        .error-message{
+            color: red;
+            font-size: 0.75rem;
+            display: none;
+        }
+        /* Button styling */
+.google-signin-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: white; /* You can change the background color if needed */
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+    transition: background-color 0.3s ease;
+    width: 30%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Google Logo inside the button */
+/* Modern Google Sign-In Button */
+.google-signin-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    background-color: #4285f4; /* Google Blue Color */
+    background-image: linear-gradient(to right, #4285f4, #34a853); /* Gradient effect with Google colors */
+    border: none;
+    border-radius: 25px; /* Rounded edges */
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: white; /* White text for contrast */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    width: 100%;
+    max-width: 300px; /* Limit the width to look balanced */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+/* Google Logo inside the button */
+.google-signin-button .google-logo {
+    width: 31px;
+    height: 26px;
+    margin-right: 12px; /* Space between the logo and the text */
+}
+
+/* Hover effect with subtle scaling */
+.google-signin-button:hover {
+    background-image: linear-gradient(to right, #357ae8, #0f9d58); /* Slightly darker gradient */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px); /* Adds a small lift effect on hover */
+}
+
+/* Focus state effect */
+.google-signin-button:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(66, 133, 244, 0.5); /* Blue glow when focused */
+}
+
+/* Active button effect */
+.google-signin-button:active {
+    background-image: linear-gradient(to right, #2b78e4, #0c8a4a); /* Even darker gradient when clicked */
+    transform: translateY(1px); /* Simulate a button press */
+}
+
+/* Responsive styling for smaller screens */
+@media (max-width: 600px) {
+    .google-signin-button {
+        width: 80%; /* Button takes more space on smaller screens */
+    }
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="form">
+        <h1>Sign Up</h1>
+
+        <form id="signform" action="/signup" method="post">
+            <div class="field-wrap">
+                <label>
+                    Name<span class="req">*</span>
+                </label>
+                <input id="name" type="text" required autocomplete="off" name="name" />
+                <div id="error1" class="errror-message"></div>
+
+
+            </div>
+
+            <div class="field-wrap">
+                <label>
+                    Email Address<span class="req">*</span>
+                </label>
+                <input id="email" type="email" required autocomplete="off"  name="email"/>
+            <div id="error2" class="error-message"></div>
+            </div>
+
+            <div class="field-wrap">
+                <label>
+                    Phone<span class="req">*</span>
+                </label>
+                <input id="phone" type="text" required autocomplete="off" name="Phone" />
+               <div id="error3" class="errror-message"></div>
+            </div>
+
+            <div class="field-wrap">
+                <label>
+                    Password<span class="req">*</span>
+                </label>
+                <input id="password" type="password" required autocomplete="off" name="Password"/>
+                   <div id="error4" class="errror-message" >
+
+                   </div>
+
+            </div>
+            <div class="field-wrap">
+                <label>
+                    Confirm Password<span class="req">*</span>
+                </label>
+                <input id="cPassword" type="password" required autocomplete="off" name="cPassword"/>
+                 <div id="error5" class="errror-message"></div>
+            </div>
+
+            <button type="submit" class="button button-block">SUBMIT</button>
+              <div class="social-btns">
+                <p></p>
+                <a href="/auth/google" class="google-signin-button">
+                    <img
+                        src="/img/core-img/google.png"
+                        alt="Google Logo"
+                        class="google-logo"
+                    />
+                    <span>Sign up with Google</span>
+                </a>
+                
+                
+
+        </form>
+    </div>
+    <script>
+        const nameid = document.getElementById("name");
+        const emailid = document.getElementById("email");
+        const phoneid = document.getElementById("phone");
+        const passid = document.getElementById("password");
+        const cpassid = document.getElementById("cPassword");
+    
+        const error1 = document.getElementById("error1");
+        const error2 = document.getElementById("error2");
+        const error3 = document.getElementById("error3");
+        const error4 = document.getElementById("error4");
+        const error5 = document.getElementById("error5");
+    
+        // Name validation function
+        function nameValidate() {
+            const namePattern = /^[A-Za-z\s]+$/;
+            if (nameid.value.trim() === "") {
+                error1.textContent = "Name cannot be empty";
+                return false;
+            } else if (!namePattern.test(nameid.value)) {
+                error1.textContent = "Name can only contain alphabets and spaces";
+                return false;
+            } else {
+                error1.textContent = "";
+                return true;
+            }
+        }
+    
+        // Email validation function
+        function emailValidate() {
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (emailid.value.trim() === "") {
+                error2.textContent = "Email cannot be empty";
+                return false;
+            } else if (!emailPattern.test(emailid.value)) {
+                error2.textContent = "Invalid email format";
+                return false;
+            } else {
+                error2.textContent = "";
+                return true;
+            }
+        }
+    
+        // Phone validation function
+        function phoneValidate() {
+            const phonePattern = /^[0-9]{10}$/;
+            if (phoneid.value.trim() === "") {
+                error3.textContent = "Phone number cannot be empty";
+                return false;
+            } else if (!phonePattern.test(phoneid.value)) {
+                error3.textContent = "Phone number must be 10 digits";
+                return false;
+            } else {
+                error3.textContent = "";
+                return true;
+            }
+        }
+    
+        // Password validation function
+        function passwordValidate() {
+            const passVal = passid.value;
+            const cpassVal = cpassid.value;
+            const alphaPattern = /[a-zA-Z]/;
+            const digitPattern = /\d/;
+    
+            if (passVal.length < 8) {
+                error4.textContent = "Password must be at least 8 characters long";
+                return false;
+            } else if (!alphaPattern.test(passVal) || !digitPattern.test(passVal)) {
+                error4.textContent = "Password must contain both letters and numbers";
+                return false;
+            } else {
+                error4.textContent = "";
+            }
+    
+            if (passVal !== cpassVal) {
+                error5.textContent = "Passwords do not match";
+                return false;
+            } else {
+                error5.textContent = "";
+                return true;
+            }
+        }
+    
+        // Add event listener on form submission
+        document.getElementById("signform").addEventListener("submit", function (e) {
+            const isNameValid = nameValidate();
+            const isEmailValid = emailValidate();
+            const isPhoneValid = phoneValidate();
+            const isPasswordValid = passwordValidate();
+    
+
+            // If any validation fails, prevent form submission
+            if (!isNameValid || !isEmailValid || !isPhoneValid || !isPasswordValid) {
+                e.preventDefault(); 
+                 // Prevent form from submitting
+            }
+
+        });
+    </script>
+    
+    
+ </body>
+</html> 
+
+
+
+
