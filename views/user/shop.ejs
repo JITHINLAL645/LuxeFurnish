@@ -84,14 +84,14 @@
             </nav>
             <!-- Button Group -->
             <div class="amado-btn-group mt-30 mb-100">
-                <a href="#" class="btn amado-btn mb-15">%Discount%</a>
-                <a href="#" class="btn amado-btn active">New this week</a>
+                <!-- <a href="#" class="btn amado-btn mb-15">%Discount%</a>
+                <a href="#" class="btn amado-btn active">New this week</a> -->
             </div>
             <!-- Cart Menu -->
             <div class="cart-fav-search mb-100">
                 <a href="Cart" class="cart-nav"><img src="img/core-img/cart.png" alt=""> Cart <span>(0)</span></a>
-                <a href="#" class="fav-nav"><img src="img/core-img/favorites.png" alt=""> Favourite</a>
-                <a href="#" class="search-nav"><img src="img/core-img/search.png" alt=""> Search</a>
+                <!-- <a href="#" class="fav-nav"><img src="img/core-img/favorites.png" alt=""> Favourite</a>
+                <a href="#" class="search-nav"><img src="img/core-img/search.png" alt=""> Search</a> -->
             </div>
             <!-- Social Button -->
             <div class="social-info d-flex justify-content-between">
@@ -106,6 +106,60 @@
         <div class="shop_sidebar_area">
 
             <!-- ##### Single Widget ##### -->
+         
+
+            <div class="widget sort_by mb-50">
+                <!-- Widget Title -->
+                <h6 class="widget-title mb-30">Sort By</h6>
+                <div class="widget-desc">
+                    <form id="sortForm" action="/shop" method="get">
+                        <!-- Popularity -->
+                        <div class="custom-control custom-radio mb-3">
+                            <input type="radio" id="sortPopularity" name="sort_by" class="custom-control-input" value="popularity">
+                            <label class="custom-control-label" for="sortPopularity">Popularity</label>
+                        </div>
+                        <!-- Price Low to High -->
+                        <div class="custom-control custom-radio mb-3">
+                            <input type="radio" id="sortPriceLowToHigh" name="sort_by" class="custom-control-input" value="price_low_to_high">
+                            <label class="custom-control-label" for="sortPriceLowToHigh">Price: Low to High</label>
+                        </div>
+                        <!-- Price High to Low -->
+                        <div class="custom-control custom-radio mb-3">
+                            <input type="radio" id="sortPriceHighToLow" name="sort_by" class="custom-control-input" value="price_high_to_low">
+                            <label class="custom-control-label" for="sortPriceHighToLow">Price: High to Low</label>
+                        </div>
+                        <!-- Average Ratings -->
+                        <div class="custom-control custom-radio mb-3">
+                            <input type="radio" id="sortAverageRatings" name="sort_by" class="custom-control-input" value="average_ratings">
+                            <label class="custom-control-label" for="sortAverageRatings">Average Ratings</label>
+                        </div>
+                        <!-- Featured -->
+                        <div class="custom-control custom-radio mb-3">
+                            <input type="radio" id="sortFeatured" name="sort_by" class="custom-control-input" value="featured">
+                            <label class="custom-control-label" for="sortFeatured">Featured</label>
+                        </div>
+                        <!-- New Arrivals -->
+                        <div class="custom-control custom-radio mb-3">
+                            <input type="radio" id="sortNewArrivals" name="sort_by" class="custom-control-input" value="new_arrivals">
+                            <label class="custom-control-label" for="sortNewArrivals">New Arrivals</label>
+                        </div>
+                        <!-- A-Z Sorting -->
+                        <div class="custom-control custom-radio mb-3">
+                            <input type="radio" id="sortAZ" name="sort_by" class="custom-control-input" value="a_z">
+                            <label class="custom-control-label" for="sortAZ">A - Z</label>
+                        </div>
+                        <!-- Z-A Sorting -->
+                        <div class="custom-control custom-radio mb-3">
+                            <input type="radio" id="sortZA" name="sort_by" class="custom-control-input" value="z_a">
+                            <label class="custom-control-label" for="sortZA">Z - A</label>
+                        </div>
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary mt-3">Sort</button>
+                    </form>
+                </div>
+                
+            </div>
+
             <div class="widget catagory mb-50">
                 <!-- Widget Title -->
                 <h6 class="widget-title mb-30">Catagories</h6>
@@ -123,55 +177,9 @@
                     </ul>
                 </div>
             </div>
-
-            <div class="widget sort_by mb-50">
-                <!-- Widget Title -->
-                <h6 class="widget-title mb-30">Sort By</h6>
-                <div class="widget-desc">
-                    <form action="#" method="get">
-                        <!-- Popularity -->
-                        <div class="custom-control custom-radio mb-3">
-                            <input type="radio" id="sortPopularity" name="sort_by" class="custom-control-input">
-                            <label class="custom-control-label" for="sortPopularity">Popularity</label>
-                        </div>
-                        <!-- Price Low to High -->
-                        <div class="custom-control custom-radio mb-3">
-                            <input type="radio" id="sortPriceLowToHigh" name="sort_by" class="custom-control-input">
-                            <label class="custom-control-label" for="sortPriceLowToHigh">Price: Low to High</label>
-                        </div>
-                        <!-- Price High to Low -->
-                        <div class="custom-control custom-radio mb-3">
-                            <input type="radio" id="sortPriceHighToLow" name="sort_by" class="custom-control-input">
-                            <label class="custom-control-label" for="sortPriceHighToLow">Price: High to Low</label>
-                        </div>
-                        <!-- Average Ratings -->
-                        <div class="custom-control custom-radio mb-3">
-                            <input type="radio" id="sortAverageRatings" name="sort_by" class="custom-control-input">
-                            <label class="custom-control-label" for="sortAverageRatings">Average Ratings</label>
-                        </div>
-                        <!-- Featured -->
-                        <div class="custom-control custom-radio mb-3">
-                            <input type="radio" id="sortFeatured" name="sort_by" class="custom-control-input">
-                            <label class="custom-control-label" for="sortFeatured">Featured</label>
-                        </div>
-                        <!-- New Arrivals -->
-                        <div class="custom-control custom-radio mb-3">
-                            <input type="radio" id="sortNewArrivals" name="sort_by" class="custom-control-input">
-                            <label class="custom-control-label" for="sortNewArrivals">New Arrivals</label>
-                        </div>
-                        <!-- A-Z Sorting -->
-                        <div class="custom-control custom-radio mb-3">
-                            <input type="radio" id="sortAZ" name="sort_by" class="custom-control-input">
-                            <label class="custom-control-label" for="sortAZ">A - Z</label>
-                        </div>
-                        <!-- Z-A Sorting -->
-                        <div class="custom-control custom-radio mb-3">
-                            <input type="radio" id="sortZA" name="sort_by" class="custom-control-input">
-                            <label class="custom-control-label" for="sortZA">Z - A</label>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            
+           
+                        
             
             
 

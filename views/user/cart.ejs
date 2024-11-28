@@ -109,76 +109,205 @@
                         </div>
 
                         <div class="cart-table clearfix">
-                            <table class="table table-responsive">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Name</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% if (cart && cart.items.length > 0) { %>
-                                      <% cart.items.forEach(item => { %>
-                                        <tr>
-                                          <td class="cart_product_img">
-                                            <a href="/productdetails/<%= item.product._id %>">
-                                              <img src="<%= item.product.images[0] %>" alt="Product Image">
-                                            </a>
-                                          </td>
-                                          <td class="cart_product_desc">
-                                            <h5><%= item.product.productname %></h5>
-                                          </td>
-                                          <td class="price">
-                                            <span>$<%= item.product.price %></span>
-                                          </td>
-                                          <td class="qty">
-                                            <div class="qty-btn d-flex">
-                                              <p>Qty</p>
-                                              <div class="quantity">
-                                                <span class="qty-minus" onclick="var effect = document.getElementById('qty<%= item.product._id %>'); var qty = effect.value; if( !isNaN( qty ) && qty > 1 ) effect.value--; return false;">
-                                                  <i class="fa fa-minus" aria-hidden="true"></i>
-                                                </span>
-                                                <input type="number" class="qty-text" id="qty<%= item.product._id %>" step="1" min="1" max="300" name="quantity" value="<%= item.quantity %>">
-                                                <span class="qty-plus" onclick="var effect = document.getElementById('qty<%= item.product._id %>'); var qty = effect.value; if( !isNaN( qty )) effect.value++; return false;">
-                                                  <i class="fa fa-plus" aria-hidden="true"></i>
-                                                </span>
-                                              </div>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                        <!-- New row for the delete button, placed under the qty section -->
-                                        <tr>
-                                          <td colspan="3"></td> <!-- Empty cells to align with the other columns -->
-                                          <td class="delete-btn">
-                                            <form action="/delete/<%= item.product._id %>?_method=DELETE" method="POST" style="display:inline; ">
-                                              <button type="submit" class="btn btn-danger" style="margin-left: 400px; " onclick="return confirm('Are you sure you want to remove this item?');">
-                                                Delete
-                                              </button>
-                                            </form>
-                                          </td>
-                                        </tr>
-                                      <% }) %>
-                                    <% } else { %>
-                                      <tr>
-                                        <td colspan="5">Your cart is empty.</td>
-                                      </tr>
-                                    <% } %>
-                                  </tbody>
-                                  
-                            </table>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- -------------------------------------- -->
+
+
+
+
+
+                            <!-- Product Table -->
+<table>
+    <tbody>
+      <% if (cart && cart.items.length > 0) { %>
+        <% let subtotal = 0; %> <!-- Initialize subtotal -->
+        <% cart.items.forEach(item => { %>
+          <tr>
+            <td class="cart_product_img">
+              <a href="/productdetails/<%= item.product._id %>">
+                <img src="<%= item.product.images[0] %>" alt="Product Image">
+              </a>
+            </td>
+            <td class="cart_product_desc">
+              <h5><%= item.product.productname %></h5>
+            </td>
+            <td class="price">
+              <span class="item-price" id="price<%= item.product._id %>">$<%= (item.product.price * item.quantity).toFixed(2) %></span>
+            </td>
+            <td class="qty">
+              <div class="qty-btn d-flex">
+                <p>Qty</p>
+                <div class="quantity">
+                  <span class="qty-minus" onclick="updateQuantity('<%= item.product._id %>', -1, '<%= item.product.price %>')">
+                    <i class="fa fa-minus" aria-hidden="true"></i>
+                  </span>
+                  <input type="number" class="qty-text" id="qty<%= item.product._id %>" step="1" min="1" max="300" name="quantity" value="<%= item.quantity %>" onchange="updateQuantity('<%= item.product._id %>', 0, this.value, '<%= item.product.price %>')">
+                  <span class="qty-plus" onclick="updateQuantity('<%= item.product._id %>', 1, '<%= item.product.price %>')">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </span>
+                </div>
+              </div>
+            </td>
+            <script>
+                // Function to update the quantity of a product in the cart
+                function updateQuantity(productId, change, newValue, pricePerItem) {
+                  const qtyInput = document.getElementById('qty' + productId);
+                  let currentQty = parseInt(qtyInput.value);
+                
+                  // Handle the quantity change either via buttons or direct input
+                  if (change !== 0) {
+                    currentQty += change;
+                  } else {
+                    currentQty = parseInt(newValue);
+                  }
+                
+                  // Ensure quantity is a valid number
+                  if (isNaN(currentQty) || currentQty < 1) {
+                    currentQty = 1; // Set minimum quantity to 1
+                  }
+                
+                  // Update the input value
+                  qtyInput.value = currentQty;
+                
+                  // Send the updated quantity to the server via AJAX
+                  fetch('/cart/update-quantity', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                      productId: productId,
+                      quantity: currentQty
+                    })
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                    if (data.success) {
+                      // Update the price for this product
+                      const priceElement = document.getElementById('price' + productId);
+                      priceElement.innerText = '$' + data.updatedItem.totalItemPrice.toFixed(2);
+                
+                      // Update the total price of the cart
+                      updateCartTotal(data.totalCartPrice);
+                    } else {
+                      alert('Failed to update quantity.');
+                    }
+                  })
+                  .catch(error => console.error('Error updating quantity:', error));
+                }
+                
+                // Function to update the Cart Total (subtotal and total)
+                function updateCartTotal(totalCartPrice) {
+                  document.getElementById('subtotal').innerText = '$' + totalCartPrice.toFixed(2);
+                  document.getElementById('total').innerText = '$' + totalCartPrice.toFixed(2); // Assuming no delivery charge
+                }
+                </script>
+                
+          </tr>
+          
+          <!-- Row for Delete Button -->
+          <tr>
+            <td colspan="3"></td>
+            <td class="delete-btn">
+              <form action="/delete/<%= item.product._id %>?_method=DELETE" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-danger" style="margin-left: 400px;" onclick="return confirm('Are you sure you want to remove this item?');">
+                  Delete
+                </button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      <% } else { %>
+        <tr>
+          <td colspan="5">Your cart is empty.</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+  
+
+
+
+
+
+
+
+
+
+
                         </div>
                     </div>
                     <div class="col-12 col-lg-4">
-                        <div class="cart-summary">
-                            <h5>Cart Total</h5>
-                            <ul class="summary-table">
-                                <li><span>subtotal:</span> <span>$140.00</span></li>
-                                <li><span>delivery:</span> <span>Free</span></li>
-                                <li><span>total:</span> <span>$140.00</span></li>
-                            </ul>
-                            
+
+
+
+
+
+<!-- ------------------------------------------------------ -->
+
+                       <!-- Cart Total -->
+<div class="cart-summary">
+    <h5>Order Summary</h5>
+    <hr>
+    <ul class="summary-table">
+      <li><span>subtotal:</span> <span id="subtotal">$0.00</span></li>
+      <li><span>delivery:</span> <span>$50</span></li>
+      <li><span>total:</span> <span id="total">$0.00</span></li>
+    </ul>
+  </div>
+  
+  <script>
+    // Function to update the Cart Total (subtotal and total)
+    function updateCartTotal() {
+      let subtotal = 0;
+  
+      // Sum the prices of all items in the cart
+      document.querySelectorAll('.item-price').forEach(priceElement => {
+        const price = parseFloat(priceElement.innerText.replace('$', ''));
+        if (!isNaN(price)) {
+          subtotal += price;
+        }
+      });
+  
+      // Update the subtotal and total fields
+      document.getElementById('subtotal').innerText = '$' + subtotal.toFixed(2);
+      document.getElementById('total').innerText = '$' + subtotal.toFixed(2); // Assuming no delivery charge
+    }
+  
+    // Call updateCartTotal when the page loads to initialize the values
+    updateCartTotal();
+  </script>
+  
+
+
+
+
+
+
+
+   <!-- ------------------------------------------------------------ -->
+
+                        <div class="container mt-5">
+                            <div class="coupon-box p-4 rounded shadow-lg bg-light">
+                                <h3 class="text-center mb-4">Coupon</h3>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="couponCode" placeholder="Enter coupon code" required>
+                                    <button type="button" class="btn btn-primary mt-3 w-100" style="background-color: #fbb710; border-color: rgb(213, 213, 207) ;">
+                                        Apply Coupon
+                                      </button>
+                                                                      </div>
+                            </div>
                         </div>
                         <div class="cart-btn mt-100">
                             <a href="checkout" class="btn amado-btn w-100">Checkout</a>

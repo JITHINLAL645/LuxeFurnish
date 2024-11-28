@@ -1,5 +1,5 @@
 import mongoose, { Schema, model } from "mongoose";
-import { v4 as uuidv4 } from 'uuid';
+
 
 const orderSchema= new Schema({
     orderId:{
@@ -60,5 +60,6 @@ default:0
     }
 })
 
-const order=mongoose.model("Order",CategorySchema)
+const order = mongoose.model("Order", orderSchema);
 export default order;
+

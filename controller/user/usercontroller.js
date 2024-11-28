@@ -436,18 +436,90 @@ const productDetails = async (req, res) => {
 // }
 const shop = async (req, res) => {
   try {
-    // Use 'Product' instead of 'product' to match your model name
-    const products = await Product.find({ isDelete: false }).lean();
-    
-    return res.render("user/shop", { products }); 
-    
+    const { sort_by } = req.query;  // Get the sort parameter from the query string
+    let products;
+
+    console.log(req.query)
+
+    // Default: products sorted by popularity (descending)
+    let sortOptions = { popularity: -1 };
+
+    switch (sort_by) {
+      case 'price_low_to_high':
+        sortOptions = { price: 1 };  // Ascending price
+        break;
+      case 'price_high_to_low':
+        sortOptions = { price: -1 };  // Descending price
+        break;
+      case 'average_ratings':
+        sortOptions = { ratings: -1 };  // Highest ratings first
+        break;
+      case 'featured':
+        // Filter for featured products
+        products = await Product.find({ isDelete: false, isFeatured: true }).lean();
+        break;
+      case 'new_arrivals':
+        sortOptions = { createdAt: -1 };  // Newest first
+        break;
+      case 'a_z':
+        sortOptions = { productname: 1 };  // Alphabetical (A-Z)
+        break;
+      case 'z_a':
+        sortOptions = { productname: -1 };  // Reverse alphabetical (Z-A)
+        break;
+      default:
+        sortOptions = { popularity: -1 };  // Default to sorting by popularity
+    }
+
+    // If the sorting is based on a field, perform the query with sorting
+    if (!products) {
+      products = await Product.find({ isDelete: false })
+      .sort(sortOptions)
+      .collation({ locale: 'en', strength: 2 }) // Case-insensitive sorting
+      .lean();
+    }
+
+    return res.render('user/shop', { products }); 
   } catch (error) {
     console.error('Error loading shop page:', error);
-    
     return res.status(500).send("Something went wrong. Please try again later.");
   }
-}
+};
 
+const sortProducts = async (req, res) => {
+  const sortBy = req.query.sort_by || 'popularity'; // Default to 'popularity' if no sort option is provided
+
+  let sortedProducts;
+
+  switch (sortBy) {
+      case 'price_low_to_high':
+          sortedProducts = await Product.find().sort({ price: 1 }); // Ascending order
+          break;
+      case 'price_high_to_low':
+          sortedProducts = await Product.find().sort({ price: -1 }); // Descending order
+          break;
+      case 'average_ratings':
+          sortedProducts = await Product.find().sort({ ratings: -1 }); // Highest ratings first
+          break;
+      case 'featured':
+          sortedProducts = await Product.find().where('isFeatured').equals(true); // Featured products only
+          break;
+      case 'new_arrivals':
+          sortedProducts = await Product.find().sort({ createdAt: -1 }); // Most recent first
+          break;
+      case 'a_z':
+          sortedProducts = await Product.find().sort({ name: 1 }); // Alphabetical order (A-Z)
+          break;
+      case 'z_a':
+          sortedProducts = await Product.find().sort({ name: -1 }); // Reverse alphabetical order (Z-A)
+          break;
+      default:
+          sortedProducts = await Product.find().sort({ popularity: -1 }); // Default sorting by popularity
+  }
+
+  // Render the products page with the sorted products
+  res.render('user/shop', { products: sortedProducts });
+};
 
 
 const loadprofile = async (req, res) => {
@@ -724,9 +796,32 @@ const deleteAddress = async (req, res) => {
 
 
 
+// const cart = async (req, res) => {
+//   try {
+//     const userId = req.user?._id; 
+//     if (!userId) {
+//       return res.status(401).send("User not authenticated.");
+//     }
+
+//     const userCart = await Cart.findOne({ user: userId, isDelete: false })
+//                                .populate('items.product')
+//                                .exec();
+
+//     if (!userCart) {
+//       return res.render('user/Cart', { cart: null, message: 'Your cart is empty.' });
+//     }
+
+//     return res.render('user/Cart', { cart: userCart });
+//   } catch (error) {
+//     console.error("Error fetching cart items:", error);
+//     return res.status(500).send("Something went wrong. Please try again later.");
+//   }
+// };
+
+
 const cart = async (req, res) => {
   try {
-    const userId = req.user?._id; 
+    const userId = req.user?._id;
     if (!userId) {
       return res.status(401).send("User not authenticated.");
     }
@@ -743,6 +838,92 @@ const cart = async (req, res) => {
   } catch (error) {
     console.error("Error fetching cart items:", error);
     return res.status(500).send("Something went wrong. Please try again later.");
+  }
+};
+// const updateCartQuantity = async (req, res) => {
+//   try {
+//     const userId = req.user?._id; 
+//     if (!userId) {
+//       return res.status(401).send({ success: false, message: "User not authenticated." });
+//     }
+
+//     const { productId, quantity } = req.body;
+
+//     // Find the cart for the user
+//     const userCart = await Cart.findOne({ user: userId, isDelete: false });
+
+//     if (!userCart) {
+//       return res.status(404).send({ success: false, message: 'Cart not found.' });
+//     }
+
+//     // Find the item in the cart and update its quantity
+//     const itemIndex = userCart.items.findIndex(item => item.product.toString() === productId);
+
+//     if (itemIndex !== -1) {
+//       userCart.items[itemIndex].quantity = quantity;
+//     } else {
+//       return res.status(404).send({ success: false, message: 'Product not found in cart.' });
+//     }
+
+//     // Save the updated cart
+//     await userCart.save();
+
+//     return res.send({ success: true });
+//   } catch (error) {
+//     console.error('Error updating cart quantity:', error);
+//     return res.status(500).send({ success: false, message: "Something went wrong." });
+//   }
+// };
+
+const updateCartQuantity = async (req, res) => {
+  try {
+    const userId = req.user?._id;
+    if (!userId) {
+      return res.status(401).send({ success: false, message: "User not authenticated." });
+    }
+
+    const { productId, quantity } = req.body;
+
+    // Validate the input
+    if (!productId || !quantity || quantity < 1) {
+      return res.status(400).send({ success: false, message: 'Invalid product ID or quantity.' });
+    }
+
+    // Find the cart for the user
+    const userCart = await Cart.findOne({ user: userId, isDelete: false }).populate('items.product');
+
+    if (!userCart) {
+      return res.status(404).send({ success: false, message: 'Cart not found.' });
+    }
+
+    // Find the item in the cart and update its quantity
+    const itemIndex = userCart.items.findIndex(item => item.product._id.toString() === productId);
+
+    if (itemIndex !== -1) {
+      userCart.items[itemIndex].quantity = quantity;
+    } else {
+      return res.status(404).send({ success: false, message: 'Product not found in cart.' });
+    }
+
+    // Save the updated cart
+    await userCart.save();
+
+    // Return the updated item and cart total
+    const updatedItem = userCart.items[itemIndex];
+    const totalCartPrice = userCart.items.reduce((total, item) => total + item.quantity * item.product.price, 0);
+
+    return res.send({
+      success: true,
+      updatedItem: {
+        productId: updatedItem.product._id,
+        quantity: updatedItem.quantity,
+        totalItemPrice: updatedItem.quantity * updatedItem.product.price,
+      },
+      totalCartPrice
+    });
+  } catch (error) {
+    console.error('Error updating cart quantity:', error);
+    return res.status(500).send({ success: false, message: "Something went wrong." });
   }
 };
 
@@ -844,10 +1025,6 @@ const checkout = async (req, res) => {
 
 
 
-
-
-
-
 const checkoutupdateAddress = async (req, res) => {
   try {
     // Log the incoming request body to verify what you're receiving
@@ -929,6 +1106,12 @@ const checkoutupdateAddress = async (req, res) => {
 };
 
 
+// Controller to handle sorting
+
+
+
+
+
 export {
   LoadHomepage,
   // pageNotFound, 
@@ -950,8 +1133,10 @@ export {
   updateAddress,
   deleteAddress,
   cart,
+  updateCartQuantity,
   addtocart,
   deleteCart,
   checkout,
-  checkoutupdateAddress
+  checkoutupdateAddress,
+  sortProducts
 };

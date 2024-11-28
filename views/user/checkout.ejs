@@ -85,8 +85,8 @@
         }
 
         .address-item p {
-            margin: 5px 0;
-        }
+    margin: 5px 0;
+}
 
         .address-item .edit-icon {
             background-color: #ff6f61;
@@ -275,6 +275,62 @@
     background-color: #0056b3;        /* Darker blue on hover */
 }
 
+.container {
+    margin-top: 20px;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.form-check {
+    margin-bottom: 10px;
+}
+
+.price-details {
+    border-bottom: 1px solid #ddd;
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.summary-table {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.summary-table li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.summary-box {
+    margin-top: 20px;
+}
+
+.summary-btn {
+    padding: 10px 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+.edit-icon {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+
     </style>
 </head>
 
@@ -318,97 +374,111 @@
         </header>
 
         <div class="container">
-            <h3 class="h4 text-center my-5">SAVED ADDRESS</h3>
-            <div class="section">
-                <% if (addresses && addresses.length > 0) { %>
-                    <% addresses.forEach(function(address) { %>
-                        <div class="address-item">
-                            <div>
-                                <input type="radio" name="selectedAddress" value="<%= address._id %>" <%= address.isDefault ? 'checked' : '' %> class="address-radio">
-                                
-                                <!-- Full name -->
-                                <p><%= address.firstName || '' %> <%= address.lastName || '' %></p>
+            <h3 class="h4 text-center my-5">Shipping & Place Order</h3>
         
-                                <!-- Phone number -->
-                                <p><%= address.phoneNumber || 'No phone number provided' %></p>
-        
-                                <!-- Email -->
-                                <p><%= address.email || 'No email provided' %></p>
-        
-                                <!-- Address fields with conditional checks -->
-                                <p>
-                                    <%= address.addressLine || '' %>, 
-                                    <%= address.street || '' %>, 
-                                    <%= address.place || '' %>, 
-                                    <%= address.city || '' %>, 
-                                    <%= address.district || '' %>, 
-                                    <%= address.state || '' %>, 
-                                    <%= address.country || '' %> - 
-                                    <%= address.pincode || '' %>
-                                </p>
-                            </div>
-                            <button class="edit-icon" onclick="openEditModal('<%= address._id %>', '<%= address.firstName %>', '<%= address.lastName %>', '<%= address.phoneNumber %>', '<%= address.email %>', '<%= address.addressLine %>', '<%= address.place %>', '<%= address.street %>', '<%= address.city %>', '<%= address.district %>', '<%= address.state %>', '<%= address.country %>', '<%= address.pincode %>')">Edit</button>
+            <div class="row">
+                <!-- Shipping Address Section (First Box) -->
+                <div class="col-md-6">
+                    <div class="card p-4">
+                        <h3 class="card-title">Shipping Address</h3>
+                        <div class="section">
+                            <% if (addresses && addresses.length > 0) { %>
+                                <% addresses.forEach(function(address) { %>
+                                    <div class="address-item mb-3">
+                                        <div>
+                                            <input type="radio" name="selectedAddress" value="<%= address._id %>" <%= address.isDefault ? 'checked' : '' %> class="address-radio">
+                                            
+                                            <!-- Full name -->
+                                            <p><%= address.firstName || '' %> <%= address.lastName || '' %></p>
+                    
+                                            <!-- Phone number -->
+                                            <p><%= address.phoneNumber || 'No phone number provided' %></p>
+                    
+                                            <!-- Email -->
+                                            <p><%= address.email || 'No email provided' %></p>
+                    
+                                            <!-- Address fields with conditional checks -->
+                                            <p>
+                                                <%= address.addressLine || '' %>, 
+                                                <%= address.street || '' %>, 
+                                                <%= address.place || '' %>, 
+                                                <%= address.city || '' %>, 
+                                                <%= address.district || '' %>, 
+                                                <%= address.state || '' %>, 
+                                                <%= address.country || '' %> - 
+                                                <%= address.pincode || '' %>
+                                            </p>
+                                        </div>
+                                        <button class="edit-icon" onclick="openEditModal('<%= address._id %>', '<%= address.firstName %>', '<%= address.lastName %>', '<%= address.phoneNumber %>', '<%= address.email %>', '<%= address.addressLine %>', '<%= address.place %>', '<%= address.street %>', '<%= address.city %>', '<%= address.district %>', '<%= address.state %>', '<%= address.country %>', '<%= address.pincode %>')">Edit</button>
+                                    </div>
+                                <% }) %>
+                            <% } else { %>
+                                <p>No addresses found.</p>
+                            <% } %>
                         </div>
-                    <% }) %>
-                <% } else { %>
-                    <p>No addresses found.</p>
-                <% } %>
+                    </div>
+                </div>
+        
+                <!-- Payment and Price Details Section (Second Box) -->
+                <div class="col-md-6">
+                    <div class="card p-4">
+                      <div class="price-details mt-4">
+                        <h5 class="cart-title">Price Details</h5>
+                        <ul class="summary-table">
+                          <li><span>subtotal :</span> <span id="checkout-subtotal">$0.00</span></li> 
+                          <li><span>Delivery:</span> <span>$50</span></li>
+                          <hr>
+                          <li><span>Total:</span> <span id="checkout-total">$0.00</span></li> 
+                        </ul>
+                      </div>
+                      <p></p>
+                      <h3 class="card-title">Select Payment Method</h3>
+                      
+                      <!-- Payment Method Radio Buttons -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="paymentMethod" id="razorpay" value="razorpay" required>
+                        <label class="form-check-label" for="razorpay">Razorpay</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="paymentMethod" id="wallet" value="wallet" required>
+                        <label class="form-check-label" for="wallet">Wallet</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="paymentMethod" id="cashOnDelivery" value="cashOnDelivery" required>
+                        <label class="form-check-label" for="cashOnDelivery">Cash on Delivery</label>
+                      </div>
+                      
+                      <!-- Place Order Button -->
+                      <div class="summary-box mt-4">
+                        <button class="btn btn-primary summary-btn w-100">Place Order</button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                      // Retrieve the subtotal and total from localStorage
+                      const subtotal = localStorage.getItem('subtotal');
+                      const total = localStorage.getItem('total');
+                  
+                      // Ensure the values exist before updating the DOM
+                      if (subtotal && total) {
+                        // Update the checkout page with these values
+                        document.getElementById('checkout-subtotal').innerText = subtotal;
+                        document.getElementById('checkout-total').innerText = total;
+                      }
+                    });
+                  </script>
+                  
+                  
+
+
+
+
             </div>
         </div>
         
-
-
-        <div class="container">
-            <div class="payment-method-box">
-                <h3>Select Payment Method</h3>
         
-                <!-- Payment Method Radio Buttons -->
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="paymentMethod" id="razorpay" value="razorpay" required>
-                    <label class="form-check-label" for="razorpay">
-                        Razorpay
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="paymentMethod" id="wallet" value="wallet" required>
-                    <label class="form-check-label" for="wallet">
-                        Wallet
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="paymentMethod" id="cashOnDelivery" value="cashOnDelivery" required>
-                    <label class="form-check-label" for="cashOnDelivery">
-                        Cash on Delivery
-                    </label>
-                </div>
-            </div>
-        </div>
-        
-
-        <!-- Coupon Box -->
-        <div class="container mt-5">
-            <div class="coupon-box p-4 rounded shadow-lg bg-light">
-                <h3 class="text-center mb-4">Coupon</h3>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="couponCode" placeholder="Enter coupon code" required>
-                    <button type="button" class="btn btn-primary mt-3 w-100">Apply Coupon</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="cart-card">
-            <h5 class="cart-title">Price Details</h5> 
-            <ul class="summary-table">
-                <li><span>Price (1 item):</span> <span>$140.00</span></li> 
-                <li><span>Delivery:</span> <span>Free</span></li>
-                <li><span>Total Amount:</span> <span>$140.00</span></li> 
-            </ul>
-        
-            <!-- Box model for the button inside the card -->
-            <div class="summary-box">
-                <button class="btn btn-primary summary-btn">Proceed to Checkout</button>
-            </div>
-        </div>
         
         
     </div>
@@ -505,3 +575,4 @@
 
 
 </html>
+<%- include("../../views/partials/user/footer") %>

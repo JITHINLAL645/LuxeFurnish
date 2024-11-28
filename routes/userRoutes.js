@@ -18,10 +18,12 @@ import { LoadHomepage,
      updateAddress,
      deleteAddress,
      cart ,
+     updateCartQuantity,
      addtocart,
      deleteCart,
      checkout,
-     checkoutupdateAddress}from "../controller/user/usercontroller.js";  
+     checkoutupdateAddress,
+     sortProducts}from "../controller/user/usercontroller.js";  
 import User from "../models/userschema.js";
 import Address from "../models/addressSchema.js";
 import passport from "passport";
@@ -49,6 +51,7 @@ router.get("/productDetails",productDetails)
 
 router.get("/shop",shop)
 
+
 router.get('/profile',loadprofile)
 router.get('/addAddresspage',loadAddressPage)
 router.post('/address',Add_Address)
@@ -60,6 +63,8 @@ router.post('/updateAddress/:addressId', updateAddress);
 router.delete('/deleteAddress/:addressId', deleteAddress);
 
 router.get('/Cart',cart )
+router.post('/cart/update-quantity', updateCartQuantity);
+
 router.post('/addtocart/:productId',addtocart)
 router.delete('/delete/:productId', deleteCart);
 
