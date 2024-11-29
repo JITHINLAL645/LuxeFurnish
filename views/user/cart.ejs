@@ -270,23 +270,32 @@
   <script>
     // Function to update the Cart Total (subtotal and total)
     function updateCartTotal() {
-      let subtotal = 0;
-  
-      // Sum the prices of all items in the cart
-      document.querySelectorAll('.item-price').forEach(priceElement => {
-        const price = parseFloat(priceElement.innerText.replace('$', ''));
-        if (!isNaN(price)) {
-          subtotal += price;
-        }
-      });
-  
-      // Update the subtotal and total fields
-      document.getElementById('subtotal').innerText = '$' + subtotal.toFixed(2);
-      document.getElementById('total').innerText = '$' + subtotal.toFixed(2); // Assuming no delivery charge
+  let subtotal = 0;
+
+  // Sum the prices of all items in the cart
+  document.querySelectorAll('.item-price').forEach(priceElement => {
+    const price = parseFloat(priceElement.innerText.replace('$', ''));
+    if (!isNaN(price)) {
+      subtotal += price;
     }
-  
-    // Call updateCartTotal when the page loads to initialize the values
-    updateCartTotal();
+  });
+
+  // Calculate the total price (Assuming delivery charge is $50)
+  const deliveryCharge = 50;
+  const total = subtotal + deliveryCharge;
+
+  // Update the subtotal and total fields in the Cart page
+  document.getElementById('subtotal').innerText = '$' + subtotal.toFixed(2);
+  document.getElementById('total').innerText = '$' + total.toFixed(2);
+
+  // Store these values in localStorage for use in the checkout page
+  localStorage.setItem('subtotal', '$' + subtotal.toFixed(2));
+  localStorage.setItem('total', '$' + total.toFixed(2));
+}
+
+// Call updateCartTotal when the page loads or when a quantity is changed
+updateCartTotal();
+
   </script>
   
 

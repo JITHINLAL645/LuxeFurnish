@@ -23,7 +23,8 @@ import { LoadHomepage,
      deleteCart,
      checkout,
      checkoutupdateAddress,
-     sortProducts}from "../controller/user/usercontroller.js";  
+     sortProducts,
+     successpage}from "../controller/user/usercontroller.js";  
 import User from "../models/userschema.js";
 import Address from "../models/addressSchema.js";
 import passport from "passport";
@@ -70,5 +71,7 @@ router.delete('/delete/:productId', deleteCart);
 
 router.get('/checkout', checkout);
 router.post('/checkoutupdateAddress',checkoutupdateAddress)
+
+router.post('/successpage',successpage)
 
 export default router;

@@ -840,40 +840,6 @@ const cart = async (req, res) => {
     return res.status(500).send("Something went wrong. Please try again later.");
   }
 };
-// const updateCartQuantity = async (req, res) => {
-//   try {
-//     const userId = req.user?._id; 
-//     if (!userId) {
-//       return res.status(401).send({ success: false, message: "User not authenticated." });
-//     }
-
-//     const { productId, quantity } = req.body;
-
-//     // Find the cart for the user
-//     const userCart = await Cart.findOne({ user: userId, isDelete: false });
-
-//     if (!userCart) {
-//       return res.status(404).send({ success: false, message: 'Cart not found.' });
-//     }
-
-//     // Find the item in the cart and update its quantity
-//     const itemIndex = userCart.items.findIndex(item => item.product.toString() === productId);
-
-//     if (itemIndex !== -1) {
-//       userCart.items[itemIndex].quantity = quantity;
-//     } else {
-//       return res.status(404).send({ success: false, message: 'Product not found in cart.' });
-//     }
-
-//     // Save the updated cart
-//     await userCart.save();
-
-//     return res.send({ success: true });
-//   } catch (error) {
-//     console.error('Error updating cart quantity:', error);
-//     return res.status(500).send({ success: false, message: "Something went wrong." });
-//   }
-// };
 
 const updateCartQuantity = async (req, res) => {
   try {
@@ -1105,8 +1071,35 @@ const checkoutupdateAddress = async (req, res) => {
   }
 };
 
+// Controller function for success page
+const successpage = (req, res) => {
+  try {
+    // Simulate retrieving cart items from the database or session
+    const cartItems = req.body.cartItems || []; // You should retrieve this data from the session or database
+    let totalAmount = 0;
 
-// Controller to handle sorting
+    // Calculate the total price based on cart items
+    cartItems.forEach(item => {
+      totalAmount += item.price * item.quantity;  // Example calculation
+    });
+
+    // Construct order details
+    const orderDetails = {
+      orderId: req.body.orderId, // Use actual order ID from the form or system
+      totalAmount: totalAmount,  // Calculated total amount
+      deliveryAddress: req.body.deliveryAddress,
+      estimatedDelivery: req.body.estimatedDelivery
+    };
+
+    // Render success page and pass order details
+    res.render('user/successpage', { orderDetails });
+  } catch (error) {
+    console.error('Error rendering success page:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+// Export the controller function if required
 
 
 
@@ -1138,5 +1131,6 @@ export {
   deleteCart,
   checkout,
   checkoutupdateAddress,
-  sortProducts
+  sortProducts,
+  successpage
 };

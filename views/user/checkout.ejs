@@ -448,26 +448,31 @@
                         <label class="form-check-label" for="cashOnDelivery">Cash on Delivery</label>
                       </div>
                       
+                     
                       <!-- Place Order Button -->
-                      <div class="summary-box mt-4">
-                        <button class="btn btn-primary summary-btn w-100">Place Order</button>
-                      </div>
+                      <form action="/successpage" method="post">
+                        <div class="summary-box mt-4">
+                          <button type="submit" class="btn btn-primary summary-btn w-100">Place Order</button>
+                        </div>
+                      </form>
+                      
                     </div>
                   </div>
                   
                   <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                      // Retrieve the subtotal and total from localStorage
-                      const subtotal = localStorage.getItem('subtotal');
-                      const total = localStorage.getItem('total');
-                  
-                      // Ensure the values exist before updating the DOM
-                      if (subtotal && total) {
-                        // Update the checkout page with these values
-                        document.getElementById('checkout-subtotal').innerText = subtotal;
-                        document.getElementById('checkout-total').innerText = total;
-                      }
-                    });
+                   document.addEventListener('DOMContentLoaded', function() {
+  // Retrieve the subtotal and total from localStorage
+  const subtotal = localStorage.getItem('subtotal');
+  const total = localStorage.getItem('total');
+
+  // Ensure the values exist before updating the DOM
+  if (subtotal && total) {
+    // Update the checkout page with these values
+    document.getElementById('checkout-subtotal').innerText = subtotal;
+    document.getElementById('checkout-total').innerText = total;
+  }
+});
+
                   </script>
                   
                   
