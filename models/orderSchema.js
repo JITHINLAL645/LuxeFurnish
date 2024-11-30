@@ -1,65 +1,64 @@
 import mongoose, { Schema, model } from "mongoose";
+import { v4 as uuidv4 } from 'uuid'; 
 
-
-const orderSchema= new Schema({
-    orderId:{
-        type:String,
-        default:()=>uuidv4(),
-        unique:true
+const orderSchema = new mongoose.Schema({
+    orderId: {
+        type: String,
+        default: () => uuidv4(),
+        unique: true
     },
-    orderItems:[{
-        product:{
-            type:Schema.Types.ObjectId,
-            ref:"Product",
-            required:true
+    orderItems: [{
+        product: {
+            type: Schema.Types.ObjectId,
+            ref: "Product",
+            required: true
         },
-        quentity:{
-            type:String,
-            required:true
+        quantity: {
+            type: Number,
+            required: true
         },
-        price:{
-            type:Number,
-            default:0
-            
+        price: {
+            type: Number,
+            default: 0
         }
     }],
-    totalPrice:{
-        type:Number,
-        required:true
+    totalPrice: {
+        type: Number,
+        required: true
     },
-    discount:{
-        type:Number,
-default:0
+    finalAmount: {
+        type: Number,
+        required: true
     },
-    finalAmount:{
-        type:Number,
-        required:true
+    address: {
+        firstName: { type: String, required: true },
+        lastName: { type: String, required: true },
+        addressLine: { type: String, required: true },
+        city: { type: String, required: true },
+        district: { type: String, required: true },
+        state: { type: String, required: true },
+        country: { type: String, required: true },
+        pincode: { type: String, required: true },
+        phoneNumber: { type: String, required: true },
+        altPhoneNumber: { type: String },
+        email: { type: String, required: true }
     },
-    address:{
-        type:Schema.Types.ObjectId,
-        ref:"User",
-        required:true
+    status: {
+        type: String,
+        required: true,
+        enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled', 'Return Request', 'Returned'],
+        default: 'Pending'
     },
-    invoiceData:{
-        type:Date,
-     
+    createdOn: {
+        type: Date,
+        default: Date.now,
+        required: true
     },
-    status:{
-        type:String,
-        required:true,
-        enum:['Pending','processing','shipped','Delivered','cancelled','Return Request','Returned']
-    },
-    createdOn:{
-        type:Date,
-        default:Date.now,
-        required:true
-    },
-    couponApplied:{
-        type:Boolean,
-        default:false
+    couponApplied: {
+        type: Boolean,
+        default: false
     }
-})
+});
 
-const order = mongoose.model("Order", orderSchema);
-export default order;
-
+const Order = mongoose.model("Order", orderSchema);
+export default Order;

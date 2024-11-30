@@ -1,14 +1,94 @@
-import User from "../../models/userschema.js"; 
+import User from "../../models/userschema.js";
 import Product from "../../models/productSchema.js";
 import category from "../../models/categorySchema.js";
 import Address from "../../models/addressSchema.js"
 // routes/userRoutes.js
-import Cart from "../../models/cartSchema.js"; 
+import Cart from "../../models/cartSchema.js";
+import Order from "../../models/orderSchema.js";
 
 import dotenv from 'dotenv';
 dotenv.config();
 import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
+
+// function generateOtp(){
+//   const digits="1234567890"
+//   let otp="";
+//   for(let i=0;i<6;i++){
+//     otp+=digits[Math.floor(Math.random()*10)]
+//   }
+//   return otp;
+// }
+
+// const sendVerificationEmail=async(email,otp)=>{
+//   try {
+//     const transporter = nodemailer.createTransport({
+//       service: "gmail",
+//       port: 587,
+//       secure: false,
+//       requireTLS: true,
+//       auth: {
+//         user: process.env.NODEMAILER_EMAIL,
+//         pass: process.env.NODEMAILER_PASSWORD,
+//       }
+//     });
+//     const mailOptions={
+//       from:process.env.NODEMAILER_EMAIL,
+//       to:email,
+//       subject:"your OTP for password reset",
+//       text:`your OTP is{otp}`,
+//       html:`<b><h4> your OTP ${otp}</h4><br></b>`
+//     }
+//     const info=await transporter.sendMail(mailOptions);
+//     console.log(("Email send",info.messageId));
+//     return true
+
+
+//   } catch (error) {
+//     console.error("Error sending email")
+//     return false
+
+//   }
+// }
+
+
+
+
+// const getforgotpassword =async(res,req)=>{
+//   try {
+//     res.render("forgot-password")
+
+//   } catch (error) {
+//     res.redirect("/pagenotfound")
+
+//   }
+// }
+// const forgotEmailValid =async(req,res)=>{
+//   try {
+
+//     const {email}= req.body
+//     const findUser=await User.findOne({email:email});
+//     if(findUser){
+//       const otp=generateOtp();
+//       const emailSend=await sendVerificationEmail(email,otp);
+//       if(emailSend){
+//         req.session.passport.user=otp;
+//         req.session.passport.user=email;
+//         res.render("forgotpassword-otp")
+//         console.log("OTP:",otp);
+
+
+//       }else{
+//         res.json({success:false,message:"failed to send otp"});
+//       }
+//     }res.render("forgot-password",{
+//       message:"user with this email does not exist"
+//     })
+//   } catch (error) {
+//     res.redirect("/pagenotfound")
+
+//   }
+// }
 
 
 // Define the loadSignup function
@@ -48,14 +128,14 @@ const loadSignup = (req, res) => {
 //       .lean();
 
 
-    
+
 //     res.render('user/home', {
 //       user: user, 
 //       Category: category,
 //       products: Products,
 //       currentPage: page,
 //       totalPages: totalPages,
-     
+
 //     });
 //   } catch (error) {
 //     console.error('Error loading user home page:', error);
@@ -67,16 +147,16 @@ const LoadHomepage = async (req, res) => {
   const limit = 6;
   const skip = (page - 1) * limit;
   const searchParams = {
-    search: req.query.search || '',     
-    minPrice: req.query.min_price || 0,  
-    maxPrice: req.query.max_price || Infinity, 
+    search: req.query.search || '',
+    minPrice: req.query.min_price || 0,
+    maxPrice: req.query.max_price || Infinity,
     sort: req.query.sort || 'newest'
   };
 
   try {
     // Assuming 'Category' is a mongoose model for categories
     const Category = await category.find({ isDeleted: false }).lean();
-    
+
     // Use 'Product' instead of 'product' (capital P)
     const totalProducts = await Product.countDocuments({ isDelete: false });
     const totalPages = Math.ceil(totalProducts / limit);
@@ -92,7 +172,7 @@ const LoadHomepage = async (req, res) => {
       .lean();
 
     res.render('user/home', {
-      user: user, 
+      user: user,
       Category: Category,  // Correctly use 'Category' (not 'category')
       products: Products,  // Ensure the correct products array is passed
       currentPage: page,
@@ -107,29 +187,29 @@ const LoadHomepage = async (req, res) => {
 
 
 
-const singleProduct=async(req,res)=>{
+const singleProduct = async (req, res) => {
   try {
-    const { id } = req.params; 
-    const Product = await product.findById(id).populate('category_id').populate('offer') 
-    const Category=await product.find({category_id:Product.category_id._id}).populate('offer')
+    const { id } = req.params;
+    const Product = await product.findById(id).populate('category_id').populate('offer')
+    const Category = await product.find({ category_id: Product.category_id._id }).populate('offer')
     const user = await User.findById(req.session.userId).lean();
     const cart = await Cart.findOne({ user: user._id }).populate("items.product");
-    const wishlist =await Wishlist.findOne({user:req.session.userId}).populate('items.product')
+    const wishlist = await Wishlist.findOne({ user: req.session.userId }).populate('items.product')
 
     let cartCount = 0;
-      if (cart && cart.items && cart.items.length > 0) {
-         cart.items.forEach(item => {
-         cartCount += item.quantity; 
+    if (cart && cart.items && cart.items.length > 0) {
+      cart.items.forEach(item => {
+        cartCount += item.quantity;
       });
-  }
+    }
 
-  let wishlistCount=0
-  if(wishlist){
-      wishlistCount=wishlist.items.length
-  }
-  console.log(product)
+    let wishlistCount = 0
+    if (wishlist) {
+      wishlistCount = wishlist.items.length
+    }
+    console.log(product)
 
-    res.render('user/single-product', { Product,Category,cartCount,wishlistCount,user});
+    res.render('user/single-product', { Product, Category, cartCount, wishlistCount, user });
   } catch (err) {
     console.error(err);
     res.redirect('/userHomePage');
@@ -137,32 +217,32 @@ const singleProduct=async(req,res)=>{
 }
 
 
-const resendOtp=async(req,res)=>{
-    try {
-        const{email}=req.session.userData;
-        console.log(req.session.userData);
-        if(!email){
-            return res.status(400).json({success:false,message:"Email not found in session"})
-        }
-        const otp = generateOtp();
-        req.session.userOtp=otp;
-        console.log(req.session.userOtp);
-
-        const emailSent=await sendVerificationEmail(email,otp)
-        if(emailSent){
-            console.log("resend otp",otp);
-        res.status(200).json({success:true,message:"OTP resend successfully"})
-        }else{
-            res.status(500).json({success:false,message:"Failed to send otp"})
-        }
-    } catch (error) {
-        console.error("Error resending otp",error)
-        res.status(500).json({success:false,message:"Internal server error.please try again"})
-        
+const resendOtp = async (req, res) => {
+  try {
+    const { email } = req.session.userData;
+    console.log(req.session.userData);
+    if (!email) {
+      return res.status(400).json({ success: false, message: "Email not found in session" })
     }
+    const otp = generateOtp();
+    req.session.userOtp = otp;
+    console.log(req.session.userOtp);
+
+    const emailSent = await sendVerificationEmail(email, otp)
+    if (emailSent) {
+      console.log("resend otp", otp);
+      res.status(200).json({ success: true, message: "OTP resend successfully" })
+    } else {
+      res.status(500).json({ success: false, message: "Failed to send otp" })
+    }
+  } catch (error) {
+    console.error("Error resending otp", error)
+    res.status(500).json({ success: false, message: "Internal server error.please try again" })
+
+  }
 }
-  
-  
+
+
 
 // pageNotFound function
 /* const pageNotFound = (req, res) => {
@@ -176,7 +256,7 @@ function generateOtp() {
 }
 
 
-  
+
 
 // Function to send OTP email
 async function sendVerificationEmail(email, otp) {
@@ -211,130 +291,130 @@ async function sendVerificationEmail(email, otp) {
 
 
 const signup = async (req, res) => {
-    try {
-      const { name, phone, email, Password, cPassword } = req.body;
-  
-      // Check if passwords match
-      if (Password !== cPassword) {
-        return res.render("user/signup", { message: "Passwords do not match" });
-      }
-  
-      // Check if the user already exists
-      const findUser = await User.findOne({ email });
-      if (findUser) {
-        return res.render("user/signup", { message: "User with this email already exists" });
-      }
-  
-      // Generate OTP
-      const otp = generateOtp();
-      console.log(otp);
-      
-      
-      // Send OTP via email
-      const emailSent = await sendVerificationEmail(email, otp);
-      if (!emailSent) {
-        return res.render("user/signup", { message: "Error sending email" });
-      }
-  
-      // Store OTP and user data in session (using the correct variable names)
-      req.session.userOtp = otp;
-      req.session.userData = {
-        name: name,   
-        email: email, 
-        phone: phone,
-        password: Password  
-      };
+  try {
+    const { name, phone, email, Password, cPassword } = req.body;
 
-
-  
-      // Render OTP verification page with showResend variable
-      return res.render("user/verify-otp", { errorMessage: '', showResend: true });
-    } catch (error) {
-      console.error("Signup error:", error);
-      //res.redirect("/pageNotFound");
+    // Check if passwords match
+    if (Password !== cPassword) {
+      return res.render("user/signup", { message: "Passwords do not match" });
     }
-  };
-  
-  
- 
+
+    // Check if the user already exists
+    const findUser = await User.findOne({ email });
+    if (findUser) {
+      return res.render("user/signup", { message: "User with this email already exists" });
+    }
+
+    // Generate OTP
+    const otp = generateOtp();
+    console.log(otp);
+
+
+    // Send OTP via email
+    const emailSent = await sendVerificationEmail(email, otp);
+    if (!emailSent) {
+      return res.render("user/signup", { message: "Error sending email" });
+    }
+
+    // Store OTP and user data in session (using the correct variable names)
+    req.session.userOtp = otp;
+    req.session.userData = {
+      name: name,
+      email: email,
+      phone: phone,
+      password: Password
+    };
+
+
+
+    // Render OTP verification page with showResend variable
+    return res.render("user/verify-otp", { errorMessage: '', showResend: true });
+  } catch (error) {
+    console.error("Signup error:", error);
+    //res.redirect("/pageNotFound");
+  }
+};
+
+
+
 
 const verifyOtp = async (req, res) => {
   try {
-      const { otp } = req.body;
-      const storedOtp = req.session.userOtp; 
+    const { otp } = req.body;
+    const storedOtp = req.session.userOtp;
 
-      console.log(req.body)
-      console.log(otp, storedOtp);
+    console.log(req.body)
+    console.log(otp, storedOtp);
 
-      // Check if session has expired or data is missing
-      if (!storedOtp || !req.session.userData) {
-          return res.json({ success: false, message: 'Session expired or invalid request.' });
+    // Check if session has expired or data is missing
+    if (!storedOtp || !req.session.userData) {
+      return res.json({ success: false, message: 'Session expired or invalid request.' });
+    }
+
+    // Initialize the incorrect attempt counter if it doesn't exist
+    if (!req.session.otpAttempts) {
+      req.session.otpAttempts = 0;
+    }
+
+    // Check if the entered OTP matches the stored OTP
+    if (otp === storedOtp) {
+      console.log('OTP match');
+
+      // Save the user details into the database after OTP verification
+      const { name, email, phone, password } = req.session.userData;
+
+      // Check if the user already exists based on the email (to prevent duplicate registration)
+      const existingUser = await User.findOne({ email: email });
+      if (existingUser) {
+        return res.json({ success: false, message: 'User already registered with this email.' });
       }
 
-      // Initialize the incorrect attempt counter if it doesn't exist
-      if (!req.session.otpAttempts) {
-          req.session.otpAttempts = 0;
+      // Hash the password before saving it (make sure you use bcrypt or any other hashing library)
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Create a new user object to save
+      const newUser = new User({
+        name: name,
+        email: email,
+        phone: phone,
+        password: hashedPassword,
+        IsAdmin: 0,
+        isBlocked: false,
+        ...(req.session.userData.googleId && { googleId: req.session.userData.googleId })
+
+      });
+
+      await newUser.save();
+
+      // Clear session data after user is saved
+      req.session.userOtp = null;
+      req.session.otpAttempts = 0;
+      req.session.userData = null;
+
+      return res.json({ success: true, message: 'User registered successfully!' });
+    } else {
+      // Increment incorrect attempts
+      req.session.otpAttempts += 1;
+
+      // Handle max incorrect attempts
+      if (req.session.otpAttempts >= 3) {
+        return res.json({
+          success: false,
+          message: 'You have exceeded the maximum number of attempts. Please request a new OTP.',
+          showResend: true,
+        });
       }
 
-      // Check if the entered OTP matches the stored OTP
-      if (otp === storedOtp) {
-          console.log('OTP match');
-
-          // Save the user details into the database after OTP verification
-          const { name, email, phone, password } = req.session.userData;
-
-          // Check if the user already exists based on the email (to prevent duplicate registration)
-          const existingUser = await User.findOne({ email: email });
-          if (existingUser) {
-              return res.json({ success: false, message: 'User already registered with this email.' });
-          }
-
-          // Hash the password before saving it (make sure you use bcrypt or any other hashing library)
-          const hashedPassword = await bcrypt.hash(password, 10);
-
-          // Create a new user object to save
-          const newUser = new User({
-              name: name,
-              email: email,
-              phone: phone,
-              password: hashedPassword,
-              IsAdmin: 0, 
-              isBlocked: false,
-              ...(req.session.userData.googleId && { googleId: req.session.userData.googleId })
-
-            });
-
-          await newUser.save();
-
-          // Clear session data after user is saved
-          req.session.userOtp = null;
-          req.session.otpAttempts = 0;
-          req.session.userData = null;
-
-          return res.json({ success: true, message: 'User registered successfully!' });
-      } else {
-          // Increment incorrect attempts
-          req.session.otpAttempts += 1;
-
-          // Handle max incorrect attempts
-          if (req.session.otpAttempts >= 3) {
-              return res.json({
-                  success: false,
-                  message: 'You have exceeded the maximum number of attempts. Please request a new OTP.',
-                  showResend: true,
-              });
-          }
-
-          // If OTP is incorrect but attempts are less than 3
-          return res.json({
-              success: false,
-              message: 'Invalid OTP. Please try again.',
-              showResend: false,
-          });
-      }
+      // If OTP is incorrect but attempts are less than 3
+      return res.json({
+        success: false,
+        message: 'Invalid OTP. Please try again.',
+        showResend: false,
+      });
+    }
   } catch (error) {
-      console.error('OTP verification error:', error);
-      res.status(500).json({ success: false, message: 'Server error occurred during OTP verification.' });
+    console.error('OTP verification error:', error);
+    res.status(500).json({ success: false, message: 'Server error occurred during OTP verification.' });
   }
 };
 
@@ -367,11 +447,11 @@ const login = async (req, res) => {
     const findUser = await User.findOne({ isAdmin: false, email: email });
 
     console.log('user : ', findUser);
-    
+
 
     if (!findUser) {
       console.log("User not found");
-      
+
       return res.render("user/login", { message: "User not found" });
     }
 
@@ -388,12 +468,12 @@ const login = async (req, res) => {
       return res.render("user/login", { message: "Incorrect password" });
     }
     req.session.passport = {}
-    req.session.passport.user=findUser._id
-    console.log("asdfghjkiuytrewzxcvbnm",req.session.passport.user);
-    
+    req.session.passport.user = findUser._id
+    console.log("asdfghjkiuytrewzxcvbnm", req.session.passport.user);
+
 
     // Redirect to home page after successful login
-    return res.redirect("/"); 
+    return res.redirect("/");
   } catch (error) {
     console.log("Login error:", error);
     return res.render("user/login", { message: "Login failed. Try again later" });
@@ -413,7 +493,7 @@ const productDetails = async (req, res) => {
 
     // Pass the product data to the view
     console.log(products);
-    return res.render("user/productdetails", { product:products });
+    return res.render("user/productdetails", { product: products });
   } catch (error) {
     console.error("Error fetching product:", error);
     // Send a more detailed error response
@@ -427,7 +507,7 @@ const productDetails = async (req, res) => {
 //   try {
 //     const products= await product.find({isDelete:false})
 //     return res.render("user/shop",{products}); 
-    
+
 //   } catch (error) {
 //     console.error(error);
 
@@ -474,12 +554,12 @@ const shop = async (req, res) => {
     // If the sorting is based on a field, perform the query with sorting
     if (!products) {
       products = await Product.find({ isDelete: false })
-      .sort(sortOptions)
-      .collation({ locale: 'en', strength: 2 }) // Case-insensitive sorting
-      .lean();
+        .sort(sortOptions)
+        .collation({ locale: 'en', strength: 2 }) // Case-insensitive sorting
+        .lean();
     }
 
-    return res.render('user/shop', { products }); 
+    return res.render('user/shop', { products });
   } catch (error) {
     console.error('Error loading shop page:', error);
     return res.status(500).send("Something went wrong. Please try again later.");
@@ -492,29 +572,29 @@ const sortProducts = async (req, res) => {
   let sortedProducts;
 
   switch (sortBy) {
-      case 'price_low_to_high':
-          sortedProducts = await Product.find().sort({ price: 1 }); // Ascending order
-          break;
-      case 'price_high_to_low':
-          sortedProducts = await Product.find().sort({ price: -1 }); // Descending order
-          break;
-      case 'average_ratings':
-          sortedProducts = await Product.find().sort({ ratings: -1 }); // Highest ratings first
-          break;
-      case 'featured':
-          sortedProducts = await Product.find().where('isFeatured').equals(true); // Featured products only
-          break;
-      case 'new_arrivals':
-          sortedProducts = await Product.find().sort({ createdAt: -1 }); // Most recent first
-          break;
-      case 'a_z':
-          sortedProducts = await Product.find().sort({ name: 1 }); // Alphabetical order (A-Z)
-          break;
-      case 'z_a':
-          sortedProducts = await Product.find().sort({ name: -1 }); // Reverse alphabetical order (Z-A)
-          break;
-      default:
-          sortedProducts = await Product.find().sort({ popularity: -1 }); // Default sorting by popularity
+    case 'price_low_to_high':
+      sortedProducts = await Product.find().sort({ price: 1 }); // Ascending order
+      break;
+    case 'price_high_to_low':
+      sortedProducts = await Product.find().sort({ price: -1 }); // Descending order
+      break;
+    case 'average_ratings':
+      sortedProducts = await Product.find().sort({ ratings: -1 }); // Highest ratings first
+      break;
+    case 'featured':
+      sortedProducts = await Product.find().where('isFeatured').equals(true); // Featured products only
+      break;
+    case 'new_arrivals':
+      sortedProducts = await Product.find().sort({ createdAt: -1 }); // Most recent first
+      break;
+    case 'a_z':
+      sortedProducts = await Product.find().sort({ name: 1 }); // Alphabetical order (A-Z)
+      break;
+    case 'z_a':
+      sortedProducts = await Product.find().sort({ name: -1 }); // Reverse alphabetical order (Z-A)
+      break;
+    default:
+      sortedProducts = await Product.find().sort({ popularity: -1 }); // Default sorting by popularity
   }
 
   // Render the products page with the sorted products
@@ -555,13 +635,13 @@ const loadprofile = async (req, res) => {
 
 
 
-const loadAddressPage=async (req,res)=>{
+const loadAddressPage = async (req, res) => {
   try {
     console.log();
-    
-      res.render('user/addAddress')
+
+    res.render('user/addAddress')
   } catch (error) {
-   res.redirect('/page-404')
+    res.redirect('/page-404')
   }
 }
 
@@ -639,7 +719,7 @@ const userlogout = async (req, res) => {
     if (err) {
       return res.status(500).send('Could not log out.');
     }
-    res.redirect('/'); 
+    res.redirect('/');
   });
 };
 
@@ -654,48 +734,48 @@ const loadChangePasswordPage = async (req, res) => {
 };
 
 
-const changepassword= async (req,res)=>{
-  const userId= req.session.passport.user;
-try {
-const {currentpassword,newpassword,confirmpassword} = req.body;
+const changepassword = async (req, res) => {
+  const userId = req.session.passport.user;
+  try {
+    const { currentpassword, newpassword, confirmpassword } = req.body;
 
-   const user=await User.findById(userId);
+    const user = await User.findById(userId);
 
-   if (!user) {
-      return res.render('user/changepassword',{message: 'User not found.' });
+    if (!user) {
+      return res.render('user/changepassword', { message: 'User not found.' });
+    }
+
+
+    const isMatch = await bcrypt.compare(currentpassword, user.password);
+    if (!isMatch) {
+      return res.render('user/changepassword', { message: 'current password is  incorrect' });
+    }
+
+
+    if (newpassword !== confirmpassword) {
+      return res.render('user/changepassword', { message: 'passwords do not match' });
+    }
+
+    // const passwordPattern=/^(?=.[A-Za-z])(?=.\d).{8,}$/;
+    const alphaPattern = /[a-zA-Z]/;
+
+
+
+    if (!newpassword.match(alphaPattern)) {
+      return res.render('user/changepassword', { message: 'set a 8 character strong password' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newpassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+
+    res.redirect('/profile?success=Password changed successfully.');
+
+  } catch (error) {
+    console.log('Error changing password:', error);
+    res.status(500).json({ error: 'Server error, please try again later.' });
   }
-  
-
-  const isMatch=await bcrypt.compare(currentpassword, user.password);
-  if (!isMatch) {
-      return res.render('user/changepassword',{message: 'current password is  incorrect' });
-  }
-  
- 
-  if(newpassword!==confirmpassword){
-      return res.render('user/changepassword',{message: 'passwords do not match' });
-  }
-
-  // const passwordPattern=/^(?=.[A-Za-z])(?=.\d).{8,}$/;
-  const alphaPattern = /[a-zA-Z]/;
-
-  
-
-  if(!newpassword.match(alphaPattern)){
-      return res.render('user/changepassword',{message: 'set a 8 character strong password' });
-  }
-
-  const hashedPassword = await bcrypt.hash(newpassword, 10);
-      user.password = hashedPassword;
-      await user.save();
-
-
-      res.redirect('/profile?success=Password changed successfully.');
-
-} catch (error) {
-  console.log('Error changing password:', error);
-  res.status(500).json({ error: 'Server error, please try again later.' });
-}
 
 }
 
@@ -827,8 +907,8 @@ const cart = async (req, res) => {
     }
 
     const userCart = await Cart.findOne({ user: userId, isDelete: false })
-                               .populate('items.product')
-                               .exec();
+      .populate('items.product')
+      .exec();
 
     if (!userCart) {
       return res.render('user/Cart', { cart: null, message: 'Your cart is empty.' });
@@ -897,35 +977,40 @@ const updateCartQuantity = async (req, res) => {
 
 
 const addtocart = async (req, res) => {
-  const productId = req.params.productId; 
-  const userId = req.session?.passport?.user; 
+  const productId = req.params.productId;
+  const userId = req.session?.passport?.user;
 
   try {
     const product = await Product.findById(productId);
+    const price = product.price
+    console.log("product price",price);
 
     if (!product) {
       return res.status(404).send('Product not found');
     }
 
-    const cart = await Cart.findOne({ user: userId });
+    let cart = await Cart.findOne({ user: userId });
 
     if (cart) {
       const itemIndex = cart.items.findIndex(item => item.product.toString() === productId);
 
       if (itemIndex > -1) {
+        // If the product is already in the cart, increase its quantity
         cart.items[itemIndex].quantity += 1;
       } else {
-        cart.items.push({ product: productId, quantity: 1 });
+        // If the product is not in the cart, add it
+        cart.items.push({ product: productId, quantity: 1, price });
       }
+      await cart.save();  // Save the updated cart
     } else {
-      await Cart.create({
+      // If no cart exists, create a new one
+      cart = await Cart.create({
         user: userId,
-        items: [{ product: productId, quantity: 1 }]
+        items: [{ product: productId, quantity: 1, price }]
       });
     }
 
-    await cart.save();
-    res.redirect('/cart'); 
+    res.redirect('/cart');
 
   } catch (error) {
     console.error('Error adding product to cart:', error);
@@ -935,17 +1020,18 @@ const addtocart = async (req, res) => {
 
 
 
+
 const deleteCart = async (req, res) => {
   try {
-    const productId = req.params.productId; 
-    
+    const productId = req.params.productId;
+
     if (!req.user || !req.user._id) {
       return res.status(401).json({ message: 'User not authenticated' });
     }
-    
-    const userId = req.user._id; 
-    
-    let cart = await Cart.findOne({ user: userId }); 
+
+    const userId = req.user._id;
+
+    let cart = await Cart.findOne({ user: userId });
 
     if (!cart) {
       return res.status(404).json({ message: 'Cart not found' });
@@ -972,17 +1058,32 @@ const deleteCart = async (req, res) => {
 const checkout = async (req, res) => {
   try {
     const userId = req.user._id; // Assuming user is logged in
+
     // Fetch the addresses for the logged-in user
     const addresses = await Address.find({ userId: userId });
+    const cart = await Cart.findOne({user:userId})
 
     // Extract the address details from the array
-    const addressDetails = addresses.map(address => address.address).flat(); // Flatten in case there are multiple addresses in the array
+    const addressDetails = addresses.map(address => address.address).flat(); // Flatten in case there are multiple addresses
 
-    console.log('Fetched Address Details:', addressDetails);  // Log the addresses to check the structure
-
-    res.render('user/checkout', {
-      addresses: addressDetails,
+    // Calculate total amount
+    let totalAmount = 0;
+    cart.items.forEach(item => {
+      totalAmount += item.price * item.quantity; // Calculate total price
     });
+
+    // Estimated delivery (for now just a dummy value, you can adjust accordingly)
+    const estimatedDelivery = "2024-12-05";  // Example estimated delivery date
+    console.log("totAL AMD:",totalAmount);
+
+    // Pass the necessary data to the checkout page
+    res.render('user/checkout', { 
+      addresses: addressDetails,
+      totalAmount: totalAmount,
+      estimatedDelivery: estimatedDelivery,
+      cartItems: cart.items
+    });
+
   } catch (err) {
     console.error(err);
     res.status(500).send('Internal Server Error');
@@ -994,7 +1095,7 @@ const checkout = async (req, res) => {
 const checkoutupdateAddress = async (req, res) => {
   try {
     // Log the incoming request body to verify what you're receiving
-    console.log("Request Body:", req.body);
+    cons
 
     // Extract form data from req.body
     const {
@@ -1071,37 +1172,152 @@ const checkoutupdateAddress = async (req, res) => {
   }
 };
 
-// Controller function for success page
+
 const successpage = (req, res) => {
   try {
-    // Simulate retrieving cart items from the database or session
-    const cartItems = req.body.cartItems || []; // You should retrieve this data from the session or database
-    let totalAmount = 0;
-
-    // Calculate the total price based on cart items
-    cartItems.forEach(item => {
-      totalAmount += item.price * item.quantity;  // Example calculation
-    });
-
-    // Construct order details
-    const orderDetails = {
-      orderId: req.body.orderId, // Use actual order ID from the form or system
-      totalAmount: totalAmount,  // Calculated total amount
-      deliveryAddress: req.body.deliveryAddress,
-      estimatedDelivery: req.body.estimatedDelivery
-    };
-
-    // Render success page and pass order details
-    res.render('user/successpage', { orderDetails });
+    console.log("order sucess..");
+    res.render('user/successpage');
   } catch (error) {
     console.error('Error rendering success page:', error);
     res.status(500).send('Internal Server Error');
   }
 };
 
-// Export the controller function if required
+
+const getOrder = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 6;
+  const skip = (page - 1) * limit;
+
+  try {
+    const userId = req.session.passport.user;
+
+    if (!userId) {
+      return res.redirect("/login");
+    }
+
+    // Fetch user details (assuming User model or req.session holds the user details)
+    const user = await User.findById(userId).lean();
+
+    // Fetch cart and handle undefined cases
+    const cart = await Cart.findOne({ user: userId });
+
+    const cartCount = cart && cart.items ? cart.items.length : 0;
+
+    // Fetch order details
+    const [orders, totalOrders] = await Promise.all([
+      Order.find({ user: userId })
+        .populate('items.product')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+      Order.countDocuments({ user: userId })
+    ]);
+
+    // Clean orders to remove items without products
+    orders.forEach(order => {
+      order.items = order.items.filter(item => item.product);
+    });
+
+    const totalPages = Math.ceil(totalOrders / limit);
+
+    console.log(orders)
+
+    // Render the orders view and pass the user object
+    res.render('user/orders', {
+      orders,
+      currentPage: page,
+      totalPages,
+      limit,
+      cartCount,
+      wishlistCount: cart && cart.wishlist ? cart.wishlist.length : 0,
+      user // Pass user object to the view
+    });
+  } catch (error) {
+    console.error('Error fetching order history:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 
 
+const placeorder = async (req, res) => {
+  try {
+    // Log the request body for debugging
+    console.log("this is data", req.body);
+
+    // Extracting necessary fields from req.body
+    const { totalAmount, deliveryAddress, estimatedDelivery } = req.body;
+
+    // Check if deliveryAddress is valid
+    const parsedAddressOg = await Address.findOne({
+      address: {
+        $elemMatch: { _id: deliveryAddress }
+      }
+    });
+    const parsedAddress = parsedAddressOg.address[0]
+    // Get the userId from the session (assuming passport.js is being used for authentication)
+    const userId = req.session.passport.user;
+
+    // Query the Cart collection to find the cart for the logged-in user
+    const userCart = await Cart.findOne({ user: userId, isDelete: false });
+
+    // If no cart is found or the cart is empty, return an error
+    if (!userCart || userCart.items.length === 0) {
+      return res.status(404).json({
+        message: 'Your cart is empty. Cannot place an order.'
+      });
+    }
+
+    // Creating the order object with cart items and address directly embedded
+    const newOrder = new Order({
+      orderItems: userCart.items.map(item => ({
+        product: item.product,
+        quantity: item.quantity,
+        price: item.price
+      })),
+      totalPrice: totalAmount,
+      finalAmount: totalAmount, // Assuming no discount for COD
+      address: {
+        firstName: parsedAddress.firstName,
+        lastName: parsedAddress.lastName,
+        addressLine: parsedAddress.addressLine,
+        city: parsedAddress.city,
+        district: parsedAddress.district,
+        state: parsedAddress.state,
+        country: parsedAddress.country,
+        pincode: parsedAddress.pincode,
+        phoneNumber: parsedAddress.phoneNumber,
+        altPhoneNumber: parsedAddress.altPhoneNumber,
+        email: parsedAddress.email
+      },
+      status: 'Pending', // COD orders typically start as "Pending"
+      couponApplied: false // Assuming no coupon is applied
+    });
+
+    // Save the new order to the database
+    const savedOrder = await newOrder.save();
+
+    // Log the saved order for debugging purposes
+    console.log('Order placed:', savedOrder);
+
+    // Send a success response
+    res.status(200).json({
+      message: 'Order placed successfully!',
+      order: savedOrder
+    });
+
+    // res.redirect("/successpage")
+
+  } catch (error) {
+    console.error('Error placing order:', error);
+    // Send an error response
+    res.status(500).json({
+      message: 'Failed to place order',
+      error: error.message
+    });
+  }
+};
 
 
 
@@ -1132,5 +1348,9 @@ export {
   checkout,
   checkoutupdateAddress,
   sortProducts,
-  successpage
+  successpage,
+  getOrder,
+  placeorder,
+  // getforgotpassword,
+  // forgotEmailValid
 };

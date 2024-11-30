@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="description" content="Furniture Ecommerce - Checkout">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Amado - Furniture Ecommerce Template | Checkout</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Furniture Ecommerce - Checkout">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Amado - Furniture Ecommerce Template | Checkout</title>
 
-    <!-- Favicon -->
-    <link rel="icon" href="img/core-img/favicon.ico">
+        <!-- Favicon -->
+        <link rel="icon" href="img/core-img/favicon.ico">
 
-    <!-- Core Style CSS -->
-    <link rel="stylesheet" href="css/core-style.css">
-    <link rel="stylesheet" href="style.css">
+        <!-- Core Style CSS -->
+        <link rel="stylesheet" href="css/core-style.css">
+        <link rel="stylesheet" href="style.css">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Bootstrap CSS -->
+        <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            rel="stylesheet">
 
-    <!-- FontAwesome for icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+        <!-- FontAwesome for icons -->
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+            rel="stylesheet">
 
-    <style>
+        <style>
         /* Global Styles */
         body {
             font-family: Arial, sans-serif;
@@ -332,234 +337,335 @@
 
 
     </style>
-</head>
+    </head>
 
-<body>
-    <!-- Search Wrapper Area Start -->
-    <div class="search-wrapper section-padding-100">
-        <div class="search-close">
-            <i class="fa fa-close" aria-hidden="true"></i>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="search-content">
-                        <form action="#" method="get">
-                            <input type="search" name="search" id="search" placeholder="Type your keyword...">
-                            <button type="submit"><img src="img/core-img/search.png" alt=""></button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Search Wrapper Area End -->
-
-    <!-- Main Content Wrapper Start -->
-    <div class="main-content-wrapper d-flex clearfix">
-        <header class="header-area clearfix">
-            <!-- Close Icon -->
-            <div class="nav-close">
+    <body>
+        <!-- Search Wrapper Area Start -->
+        <div class="search-wrapper section-padding-100">
+            <div class="search-close">
                 <i class="fa fa-close" aria-hidden="true"></i>
             </div>
-            <!-- Logo -->
-            <nav class="amado-nav">
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="shop">Shop</a></li>
-                    <li class="active"><a href="Cart">Cart</a></li>
-                    <li><a href="checkout">Checkout</a></li>
-                </ul>
-            </nav>
-        </header>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="search-content">
+                            <form action="#" method="get">
+                                <input type="search" name="search" id="search"
+                                    placeholder="Type your keyword...">
+                                <button type="submit"><img
+                                        src="img/core-img/search.png"
+                                        alt></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Search Wrapper Area End -->
 
-        <div class="container">
-            <h3 class="h4 text-center my-5">Shipping & Place Order</h3>
-        
-            <div class="row">
-                <!-- Shipping Address Section (First Box) -->
-                <div class="col-md-6">
-                    <div class="card p-4">
-                        <h3 class="card-title">Shipping Address</h3>
-                        <div class="section">
-                            <% if (addresses && addresses.length > 0) { %>
+        <!-- Main Content Wrapper Start -->
+        <div class="main-content-wrapper d-flex clearfix">
+            <header class="header-area clearfix">
+                <!-- Close Icon -->
+                <div class="nav-close">
+                    <i class="fa fa-close" aria-hidden="true"></i>
+                </div>
+                <!-- Logo -->
+                <nav class="amado-nav">
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="shop">Shop</a></li>
+                        <li class="active"><a href="Cart">Cart</a></li>
+                        <li><a href="checkout">Checkout</a></li>
+                    </ul>
+                </nav>
+            </header>
+
+            <div class="container">
+                <h3 class="h4 text-center my-5">Shipping & Place Order</h3>
+
+                <div class="row">
+                    <!-- Shipping Address Section (First Box) -->
+                    <div class="col-md-6">
+                        <div class="card p-4">
+                            <h3 class="card-title">Shipping Address</h3>
+                            <div class="section">
+                                <% if (addresses && addresses.length > 0) { %>
                                 <% addresses.forEach(function(address) { %>
-                                    <div class="address-item mb-3">
-                                        <div>
-                                            <input type="radio" name="selectedAddress" value="<%= address._id %>" <%= address.isDefault ? 'checked' : '' %> class="address-radio">
-                                            
-                                            <!-- Full name -->
-                                            <p><%= address.firstName || '' %> <%= address.lastName || '' %></p>
-                    
-                                            <!-- Phone number -->
-                                            <p><%= address.phoneNumber || 'No phone number provided' %></p>
-                    
-                                            <!-- Email -->
-                                            <p><%= address.email || 'No email provided' %></p>
-                    
-                                            <!-- Address fields with conditional checks -->
-                                            <p>
-                                                <%= address.addressLine || '' %>, 
-                                                <%= address.street || '' %>, 
-                                                <%= address.place || '' %>, 
-                                                <%= address.city || '' %>, 
-                                                <%= address.district || '' %>, 
-                                                <%= address.state || '' %>, 
-                                                <%= address.country || '' %> - 
-                                                <%= address.pincode || '' %>
-                                            </p>
-                                        </div>
-                                        <button class="edit-icon" onclick="openEditModal('<%= address._id %>', '<%= address.firstName %>', '<%= address.lastName %>', '<%= address.phoneNumber %>', '<%= address.email %>', '<%= address.addressLine %>', '<%= address.place %>', '<%= address.street %>', '<%= address.city %>', '<%= address.district %>', '<%= address.state %>', '<%= address.country %>', '<%= address.pincode %>')">Edit</button>
+                                <div class="address-item mb-3">
+                                    <div>
+                                        <input type="radio"
+                                            name="selectedAddress"
+                                            value="<%= address._id %>"
+                                            <%=address.isDefault ? 'checked' :
+                                            '' %> class="address-radio">
+
+                                        <!-- id -->
+                                        <p><%= address._id || '' %></p>
+
+                                        <!-- Full name -->
+                                        <p><%= address.firstName || '' %> <%=
+                                            address.lastName || '' %></p>
+
+                                        <!-- Phone number -->
+                                        <p><%= address.phoneNumber ||
+                                            'No phone number provided' %></p>
+
+                                        <!-- Email -->
+                                        <p><%= address.email ||
+                                            'No email provided' %></p>
+
+                                        <!-- Address fields with conditional checks -->
+                                        <p>
+                                            <%= address.addressLine || '' %>,
+                                            <%= address.street || '' %>,
+                                            <%= address.place || '' %>,
+                                            <%= address.city || '' %>,
+                                            <%= address.district || '' %>,
+                                            <%= address.state || '' %>,
+                                            <%= address.country || '' %> -
+                                            <%= address.pincode || '' %>
+                                        </p>
                                     </div>
+                                    <button class="edit-icon"
+                                        onclick="openEditModal('<%= address._id %>', '<%= address.firstName %>', '<%= address.lastName %>', '<%= address.phoneNumber %>', '<%= address.email %>', '<%= address.addressLine %>', '<%= address.place %>', '<%= address.street %>', '<%= address.city %>', '<%= address.district %>', '<%= address.state %>', '<%= address.country %>', '<%= address.pincode %>')">Edit</button>
+                                </div>
                                 <% }) %>
-                            <% } else { %>
+                                <% } else { %>
                                 <p>No addresses found.</p>
-                            <% } %>
+                                <% } %>
+                            </div>
                         </div>
                     </div>
-                </div>
-        
-                <!-- Payment and Price Details Section (Second Box) -->
-                <div class="col-md-6">
-                    <div class="card p-4">
-                      <div class="price-details mt-4">
-                        <h5 class="cart-title">Price Details</h5>
-                        <ul class="summary-table">
-                          <li><span>subtotal :</span> <span id="checkout-subtotal">$0.00</span></li> 
-                          <li><span>Delivery:</span> <span>$50</span></li>
-                          <hr>
-                          <li><span>Total:</span> <span id="checkout-total">$0.00</span></li> 
-                        </ul>
-                      </div>
-                      <p></p>
-                      <h3 class="card-title">Select Payment Method</h3>
-                      
-                      <!-- Payment Method Radio Buttons -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="paymentMethod" id="razorpay" value="razorpay" required>
-                        <label class="form-check-label" for="razorpay">Razorpay</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="paymentMethod" id="wallet" value="wallet" required>
-                        <label class="form-check-label" for="wallet">Wallet</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="paymentMethod" id="cashOnDelivery" value="cashOnDelivery" required>
-                        <label class="form-check-label" for="cashOnDelivery">Cash on Delivery</label>
-                      </div>
-                      
-                     
-                      <!-- Place Order Button -->
-                      <form action="/successpage" method="post">
-                        <div class="summary-box mt-4">
-                          <button type="submit" class="btn btn-primary summary-btn w-100">Place Order</button>
+
+                    <!-- Payment and Price Details Section (Second Box) -->
+                    <div class="col-md-6">
+                        <div class="card p-4">
+                            <div class="price-details mt-4">
+                                <h5 class="cart-title">Price Details</h5>
+                                <ul class="summary-table">
+                                    <li><span>Subtotal:</span> <span
+                                            id="checkout-subtotal">$<%=
+                                            totalAmount.toFixed(2)
+                                            %></span></li>
+                                    <li><span>Delivery:</span>
+                                        <span>$50.00</span></li>
+                                    <!-- Fixed delivery fee -->
+                                    <hr>
+                                    <li><span>Total:</span> <span
+                                            id="checkout-total">$<%=
+                                            (totalAmount + 50).toFixed(2)
+                                            %></span></li>
+                                    <!-- Subtotal + Delivery -->
+                                </ul>
+                            </div>
+                            <p></p>
+
+                            <h3 class="card-title">Select Payment Method</h3>
+
+                            <!-- Payment Method Radio Buttons -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio"
+                                    name="paymentMethod" id="razorpay"
+                                    value="razorpay" required>
+                                <label class="form-check-label"
+                                    for="razorpay">Razorpay</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio"
+                                    name="paymentMethod" id="wallet"
+                                    value="wallet" required>
+                                <label class="form-check-label"
+                                    for="wallet">Wallet</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio"
+                                    name="paymentMethod" id="cashOnDelivery"
+                                    value="cashOnDelivery" required>
+                                <label class="form-check-label"
+                                    for="cashOnDelivery">Cash on
+                                    Delivery</label>
+                            </div>
+
+                            <!-- Place Order Button -->
+
+                            <form id="chekoutform">
+                                <input type="hidden" name="deliveryAddress"
+                                    id="deliveryAddress" value>
+
+                                <input type="hidden" name="estimatedDelivery"
+                                    value="<%= estimatedDelivery %>">
+                                <input type="hidden" name="cartItems"
+                                    value='<%= JSON.stringify(cartItems) %>'>
+
+                                <!-- Radio buttons for selecting addresses are already part of the earlier code -->
+                                <div class="summary-box mt-4">
+                                    <button type="submit"
+                                        class="btn btn-primary summary-btn w-100"
+                                        id="placeOrderBtn">Place Order</button>
+                                </div>
+                            </form>
+
                         </div>
-                      </form>
-                      
                     </div>
-                  </div>
-                  
-                  <script>
-                   document.addEventListener('DOMContentLoaded', function() {
-  // Retrieve the subtotal and total from localStorage
-  const subtotal = localStorage.getItem('subtotal');
-  const total = localStorage.getItem('total');
 
-  // Ensure the values exist before updating the DOM
-  if (subtotal && total) {
-    // Update the checkout page with these values
-    document.getElementById('checkout-subtotal').innerText = subtotal;
-    document.getElementById('checkout-total').innerText = total;
-  }
-});
-
-                  </script>
-                  
-                  
-
-
-
-
-            </div>
-        </div>
+                    <script>
+                // Function to validate address selection and payment method
+                document.getElementById('placeOrderBtn').addEventListener('click', function(event) {
+                  // Validate Address Selection
+                  const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
+                  if (!selectedAddress) {
+                    alert("Please select a shipping address.");
+                    event.preventDefault(); // Prevent form submission
+                    return;
+                  }
         
+                  // Validate Payment Method Selection
+                  const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+                  if (!selectedPaymentMethod) {
+                    alert("Please select a payment method.");
+                    event.preventDefault(); // Prevent form submission
+                    return;
+                  }
         
+                  // Get the selected address details and pass it as JSON to the hidden field
+                  const addressId = selectedAddress.value;
+                  const selectedAddressDetails = addresses.find(address => address._id === addressId);
         
+                  // If address found, update the hidden deliveryAddress input
+                  if (selectedAddressDetails) {
+                    document.getElementById('deliveryAddress').value = JSON.stringify(selectedAddressDetails);
+                  }
         
-    </div>
+                  // Calculate total and update hidden totalAmount input
+                  const subtotal = parseFloat("<%= totalAmount %>");
+                  const deliveryFee = 50.00;
+                  const total = subtotal + deliveryFee;
+        
+                  // Update the hidden totalAmount input
+                  document.getElementById('totalAmount').value = total.toFixed(2);
+                });
+              </script>
 
-    <!-- Edit Address Modal -->
-    <div class="modal fade" id="editAddressModal" tabindex="-1" aria-labelledby="editAddressModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editAddressModalLabel">Edit Address</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editAddressForm" action="/checkoutupdateAddress" method="POST">
-                        <input type="hidden" id="addressId" name="id">
-                        
-                        <div class="mb-3">
-                          <label for="editFirstName" class="form-label">First Name</label>
-                          <input type="text" class="form-control" id="editFirstName" name="first_name" required>
-                        </div>
-                        
-                        <div class="mb-3">
-                          <label for="editLastName" class="form-label">Last Name</label>
-                          <input type="text" class="form-control" id="editLastName" name="last_name" required>
-                        </div>
-                        
-                        <div class="mb-3">
-                          <label for="editMobile" class="form-label">Mobile</label>
-                          <input type="tel" class="form-control" id="editMobile" name="phone_number" required>
-                        </div>
-                        
-                        <div class="mb-3">
-                          <label for="editEmail" class="form-label">Email</label>
-                          <input type="email" class="form-control" id="editEmail" name="email" required>
-                        </div>
-                        
-                        <div class="mb-3">
-                          <label for="editAddress" class="form-label">Address</label>
-                          <input type="text" class="form-control" id="editAddress" name="street_address" required>
-                        </div>
-                        
-                        <div class="mb-3">
-                          <label for="editCity" class="form-label">City</label>
-                          <input type="text" class="form-control" id="editCity" name="city" required>
-                        </div>
-                        
-                        <div class="mb-3">
-                          <label for="editState" class="form-label">State</label>
-                          <input type="text" class="form-control" id="editState" name="state" required>
-                        </div>
-                        
-                        <div class="mb-3">
-                          <label for="editCountry" class="form-label">Country</label>
-                          <input type="text" class="form-control" id="editCountry" name="country" required>
-                        </div>
-                        
-                        <div class="mb-3">
-                          <label for="editPinCode" class="form-label">Pin Code</label>
-                          <input type="text" class="form-control" id="editPinCode" name="zipCode" required>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary">Update Address</button>
-                      </form>
-                      
-                    
+                    <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                  // Retrieve the subtotal and total from localStorage
+                  const subtotal = localStorage.getItem('subtotal');
+                  const total = localStorage.getItem('total');
+        
+                  // Ensure the values exist before updating the DOM
+                  if (subtotal && total) {
+                    // Update the checkout page with these values
+                    document.getElementById('checkout-subtotal').innerText = subtotal;
+                    document.getElementById('checkout-total').innerText = total;
+                  }
+                });
+              </script>
+
                 </div>
             </div>
+
         </div>
-    </div>
 
-    <!-- JS & Bootstrap Scripts -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <!-- Edit Address Modal -->
+        <div class="modal fade" id="editAddressModal" tabindex="-1"
+            aria-labelledby="editAddressModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editAddressModalLabel">Edit
+                            Address</h5>
+                        <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editAddressForm"
+                            action="/checkoutupdateAddress" method="POST">
+                            <input type="hidden" id="addressId" name="id">
 
-    <script>
+                            <div class="mb-3">
+                                <label for="editFirstName"
+                                    class="form-label">First Name</label>
+                                <input type="text" class="form-control"
+                                    id="editFirstName" name="first_name"
+                                    required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editLastName"
+                                    class="form-label">Last Name</label>
+                                <input type="text" class="form-control"
+                                    id="editLastName" name="last_name" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editMobile"
+                                    class="form-label">Mobile</label>
+                                <input type="tel" class="form-control"
+                                    id="editMobile" name="phone_number"
+                                    required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editEmail"
+                                    class="form-label">Email</label>
+                                <input type="email" class="form-control"
+                                    id="editEmail" name="email" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editAddress"
+                                    class="form-label">Address</label>
+                                <input type="text" class="form-control"
+                                    id="editAddress" name="street_address"
+                                    required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editCity"
+                                    class="form-label">City</label>
+                                <input type="text" class="form-control"
+                                    id="editCity" name="city" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editState"
+                                    class="form-label">State</label>
+                                <input type="text" class="form-control"
+                                    id="editState" name="state" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editCountry"
+                                    class="form-label">Country</label>
+                                <input type="text" class="form-control"
+                                    id="editCountry" name="country" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editPinCode" class="form-label">Pin
+                                    Code</label>
+                                <input type="text" class="form-control"
+                                    id="editPinCode" name="zipCode" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Update
+                                Address</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JS & Bootstrap Scripts -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <script>
         // Open edit modal with pre-filled data
         function openEditModal(id, firstName, lastName, mobile, email, address, city, state, country, pinCode) {
             document.getElementById('addressId').value = id;
@@ -576,8 +682,62 @@
             $('#editAddressModal').modal('show');
         }
     </script>
-</body>
 
+        <script>
+
+document.getElementById("chekoutform").addEventListener("submit", async (event) => {
+    event.preventDefault(); // Prevent default form submission
+
+    // Get the selected address value from radio buttons
+    const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
+
+    if (!selectedAddress) {
+        alert("Please select a shipping address.");
+        return;  // Stop form submission if no address is selected
+    }
+
+    // Assign the selected address to the hidden input field
+    document.getElementById("deliveryAddress").value = selectedAddress.value;
+
+    // Gather the other form data
+    const data = {};
+    const subtotalText = document.getElementById("checkout-subtotal").textContent;
+data.totalAmount = subtotalText.replace('$', '').trim();  // Removes the $ sign and trims any extra spaces
+
+    console.log("toddfdkjafklvadalfjdj:",data.totalAmount)
+    data.deliveryAddress = selectedAddress.value;
+    data.estimatedDelivery = document.querySelector('input[name="estimatedDelivery"]').value;
+    data.cartItems = document.querySelector('input[name="cartItems"]').value;
+    
+    // For additional details like email, phoneNumber, pincode (if required)
+    data.email = selectedAddress.dataset.email || '';  // Assuming dataset stores extra info
+    data.phoneNumber = selectedAddress.dataset.phoneNumber || '';
+    data.pincode = selectedAddress.dataset.pincode || '';
+
+    // Log the data for debugging
+    console.log("this is data", data);
+
+    // Send the data as JSON to the server
+    const response = await fetch("/placeorder", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (response.ok) {
+        console.log("Order is placed successfully");
+        window.location = '/successpage';  // Redirect to success page
+    } else {
+        console.log("Failed to place order");
+    }
+});
+
+
+
+    </script>
+    </body>
 
 </html>
 <%- include("../../views/partials/user/footer") %>

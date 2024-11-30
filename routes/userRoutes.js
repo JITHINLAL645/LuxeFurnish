@@ -24,7 +24,7 @@ import { LoadHomepage,
      checkout,
      checkoutupdateAddress,
      sortProducts,
-     successpage}from "../controller/user/usercontroller.js";  
+     successpage,getOrder,placeorder}from "../controller/user/usercontroller.js";  
 import User from "../models/userschema.js";
 import Address from "../models/addressSchema.js";
 import passport from "passport";
@@ -43,6 +43,8 @@ router.get('/auth/google',passport.authenticate('google',{scope:['profile','emai
 router.get('/auth/google/callback',passport.authenticate('google',{failureRedirect:'/signup'}),(req,res)=>{
   res.redirect('/')
 })
+// router.get('/forgot-password',getforgotpassword)
+
 
 router.get('/login',loadLogin)
 router.post("/login",login)
@@ -72,6 +74,10 @@ router.delete('/delete/:productId', deleteCart);
 router.get('/checkout', checkout);
 router.post('/checkoutupdateAddress',checkoutupdateAddress)
 
-router.post('/successpage',successpage)
+router.post('/placeorder',placeorder)
+router.get('/successpage',successpage)
 
+
+router.get('/order',getOrder);
+// userRouter.post('/orders/:orderId',isBlockAuth,userAuthentication,orderController.cancelOrder);
 export default router;
