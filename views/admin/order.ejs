@@ -114,70 +114,69 @@
 <%- include("../../views/partials/admin/header") %>
 
 <body>
-
-   
-
     <div class="container-fluid">
-       
         <div class="row">
-           
-
             <!-- Main Content -->
             <div class="col-md-10 content">
                 <div class="d-flex justify-content-between mb-4"></div>
                 <div class="container mt-4">
-    <h2>Order Management</h2>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>Date</th>
-                <th>User</th>
-                <th>Total Amount</th>
-                <th>Payment Method</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% orders.forEach(order => { %>
-                <tr>
-                    <td><%= order.orderId %></td>
-                    <td>
-                        <%= order.createdAt && !isNaN(Date.parse(order.createdAt)) 
-                            ? new Date(order.createdAt).toLocaleDateString() 
-                            : 'Invalid Date' %>
-                    </td>
-                    <td><%= order.user ? order.user.name : 'N/A' %></td>
-                    <td>
-                        $<%= order.totalAmount && !isNaN(order.totalAmount) ? order.totalAmount.toFixed(2) : '0.00' %>
-                    </td>
-                    <td><%= order.paymentMethod %></td>
+                    <h2>Order Management</h2>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <!-- Removed Date Column -->
+                                <th>User</th>
+                                <th>Total Amount</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% orders.forEach(order => { %>
+                                <tr>
+                                    <td><%= order.orderId %></td>
+                                    <!-- Removed Date Cell -->
+                                    <td><%= order.address ? order.address.firstName + ' ' + order.address.lastName : 'N/A' %></td>
+                                    <td>
+                                        <% if (order.finalAmount) { %>
+                                            $<%= order.finalAmount && !isNaN(order.finalAmount) ? order.finalAmount.toFixed(2) : '0.00' %>
+                                        <% } else { %>
+                                            <span class="text-warning">Amount Not Found</span>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <select class="form-control status-select" data-order-id="<%= order._id %>" 
+                                                <%= (order.orderStatus === 'Cancelled' || order.orderStatus === 'Returned') ? 'disabled' : '' %>>
+                                            <option value="Pending" <%= order.orderStatus === 'Pending' ? 'selected' : '' %>>Pending</option>
+                                            <option value="Processing" <%= order.orderStatus === 'Processing' ? 'selected' : '' %>>Processing</option>
+                                            <option value="Shipped" <%= order.orderStatus === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                                            <option value="Delivered" <%= order.orderStatus === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                                            <option value="Cancelled" <%= order.orderStatus === 'Cancelled' ? 'selected' : '' %> 
+                                                <%= order.orderStatus === 'Cancelled' ? 'disabled' : '' %>>Cancelled</option>
+                                            <option value="Returned" <%= order.orderStatus === 'Returned' ? 'selected' : '' %> disabled>Returned</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/getOrderDetails/<%= order._id %>" class="btn btn-info btn-sm">View Details</a>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
                     
-                    <td>
-                        <select class="form-control status-select" data-order-id="<%= order._id %>" 
-                                <%= (order.orderStatus === 'Cancelled' || order.orderStatus === 'Returned') ? 'disabled' : '' %>>
-                            <option value="Pending" <%= order.orderStatus === 'Pending' ? 'selected' : '' %>>Pending</option>
-                            <option value="Processing" <%= order.orderStatus === 'Processing' ? 'selected' : '' %>>Processing</option>
-                            <option value="Shipped" <%= order.orderStatus === 'Shipped' ? 'selected' : '' %>>Shipped</option>
-                            <option value="Delivered" <%= order.orderStatus === 'Delivered' ? 'selected' : '' %>>Delivered</option>
-                            <option value="Cancelled" <%= order.orderStatus === 'Cancelled' ? 'selected' : '' %> 
-                                <%= order.orderStatus === 'Cancelled' ? 'disabled' : '' %>>Cancelled</option>
-                            <option value="Returned" <%= order.orderStatus === 'Returned' ? 'selected' : '' %> disabled>Returned</option>
-                        </select>
-                    </td>
-                    <td>
-                        <a href="/admin/orders/<%= order._id %>" class="btn btn-info btn-sm">View Details</a>
-                    </td>
                     
-            <% }); %>
-        </tbody>
-        
-        </table>
-         </div>
+                    
+                    
+                    
+                    
+                    
+                    
+                </div>
+            </div>
+        </div>
     </div>
-    </div>
-    </div>
+
     <div class="d-flex justify-content-center pagination-container">
         <nav aria-label="Page navigation">
             <ul class="pagination">
@@ -186,13 +185,13 @@
                         <a class="page-link" href="?page=<%= currentPage - 1 %>&limit=<%= limit %>">Previous</a>
                     </li>
                 <% } %>
-    
+
                 <% for (let i = 1; i <= totalPages; i++) { %>
                     <li class="page-item <%= i === currentPage ? 'active' : '' %>">
                         <a class="page-link" href="?page=<%= i %>&limit=<%= limit %>"><%= i %></a>
                     </li>
                 <% } %>
-    
+
                 <% if (currentPage < totalPages) { %>
                     <li class="page-item">
                         <a class="page-link" href="?page=<%= currentPage + 1 %>&limit=<%= limit %>">Next</a>
@@ -201,7 +200,6 @@
             </ul>
         </nav>
     </div>
-    
 
     <!-- JavaScript dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -238,7 +236,6 @@
                             showConfirmButton: false,
                         });
 
-                        
                         if (status === 'Cancelled') {
                             this.disabled = true;
                         }
@@ -260,7 +257,6 @@
             });
         });
 
-       
         function updateCancelledOrders() {
             document.querySelectorAll('.status-select').forEach(select => {
                 if (select.value === 'Cancelled') {
@@ -269,11 +265,8 @@
             });
         }
 
-        
         window.addEventListener('load', updateCancelledOrders);
     </script>
-    
-
 </body>
 
 </html>

@@ -1,57 +1,46 @@
-const cancelOrder = async (req, res) => {
-    try {
-      const { orderId } = req.params;
-      const userId = req.session.userId;
-      if (!userId) {
-          return res.status(401).json({ message: "Unauthorized" });
-      }
-      const order = await Order.findOne({ orderId, user: userId });
-      if (!order) {
-          return res.status(404).json({ message: "Order not found" });
-      }
-      if (order.orderStatus === 'Cancelled') {
-          return res.status(400).json({ message: "Order is already cancelled" });
-      }
-  
-      if (['Shipped', 'Delivered'].includes(order.orderStatus)) {
-          return res.status(400).json({ message: "Cannot cancel order at this stage" });
-      }
-  
-      order.orderStatus = 'Cancelled';
-      order.orderStatusTimestamps.cancelled = new Date();
-  
-      for (const item of order.items) {
-          await Product.findByIdAndUpdate(item.product, {
-              $inc: { stock: item.quantity }
-          });
-      }
-      if (order.paymentStatus === "Paid") {
-        const refund = order.totalAmount;
-        let wallet = await Wallet.findOne({ user: userId });
-        if (!wallet) {
-          wallet = new Wallet({
-            user: order.user,
-            balanceAmount: 0,
-            wallet_history: [],
-          });
-        }
-        wallet.balanceAmount += refund;
-        wallet.wallet_history.push({
-          date: new Date(),
-          amount: refund,
-          description: Refund for cancelled item (Order ID: ${order.orderId}),
-          transactionType: "credited",
-        });
-        await wallet.save();
-      }
-  
-      await order.save();
-  
-      res.status(200).json({ message: "Order cancelled successfully" });
-  } catch (error) {
-      console.error("Error cancelling order:", error);
-      res.status(500).json({ message: "Internal Server Error" });
-  }
-  };
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Order Details</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Order ID: <%= order.orderId %></h5>
+                <p class="card-text">User: <%= order.user.name %> (<%= order.user.email %>)</p>
+                <p class="card-text">Status: <%= order.orderStatus %></p>
+                <p class="card-text">Total Amount: $<%= order.totalAmount.toFixed(2) %></p>
+                <p class="card-text">Date: <%= order.createdAt.toLocaleString() %></p>
 
-  userRouter.post('/orders/:orderId',isBlockAuth,userAuthentication,orderController.cancelOrder);
+                <h6 class="mt-4">Items:</h6>
+                <ul class="list-group">
+                    <% order.items.forEach(item => { %>
+                        <li class="list-group-item">
+                            <%= item.product.productname %> - Quantity: <%= item.quantity %> - Price: $<%= item.price.toFixed(2) %>
+                        </li>
+                        <li>
+                            <img src="<%= item.product.images[0] %>" alt="<%= item.product.productname %>" class="order-image" width="100px">
+                            
+                        </li>
+                    <% }); %>
+                </ul>
+
+                <h6 class="mt-4">Shipping Address:</h6>
+                <p>
+                    <%= order.address.country %>, <%= order.address.city %>, <%= order.address.state %> <%= order.address.zipCode %>
+                </p>
+            </div>
+        </div>
+        <a href="/admin/loardOrderMng" class="btn btn-primary mt-3">Back to Orders</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

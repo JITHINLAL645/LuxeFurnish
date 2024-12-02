@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .card {
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+        h1 {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .card-title {
+            font-size: 1.5rem;
+            color: #333333;
+        }
+        .card-text {
+            font-size: 1rem;
+            color: #555555;
+        }
+        .card-body {
+            padding: 2rem;
+        }
+        h6 {
+            color: #007bff;
+            font-weight: bold;
+            margin-top: 1.5rem;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .mt-5 {
+            margin-top: 3rem !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Order Details</h1>
+        <div class="card">
+            <div class="card-body">
+                <!-- Render order details -->
+                <h5 class="card-title">Order ID: <%= order ? order._id : 'Not Available' %></h5>
+                
+                <!-- User Details (Email) from Address -->
+                <p class="card-text"><strong>User Email:</strong> <%= order && order.address ? order.address.email : 'Not Available' %></p>
+
+                <p class="card-text"><strong>Status:</strong> <%= order ? order.status : 'Not Available' %></p>
+                <p class="card-text"><strong>Total Amount:</strong> $<%= order ? order.totalPrice.toFixed(2) : '0.00' %></p>
+                <p class="card-text"><strong>Date:</strong> <%= order ? new Date(order.createdOn).toLocaleString() : 'Not Available' %></p>
+
+                <h6>Shipping Address:</h6>
+                <p class="card-text">
+                    <%= order && order.address ? order.address.firstName + ' ' + order.address.lastName : 'Not Available' %> <br>
+                    <%= order && order.address ? order.address.addressLine : 'Not Available' %> <br>
+                    <%= order && order.address ? order.address.city + ', ' + order.address.district + ', ' + order.address.state : 'Not Available' %> <br>
+                    <%= order && order.address ? order.address.country : 'Not Available' %> - <%= order && order.address ? order.address.pincode : 'Not Available' %>
+                </p>
+                <p class="card-text"><strong>Phone:</strong> <%= order && order.address ? order.address.phoneNumber : 'Not Available' %></p>
+            </div>
+        </div>
+        <a href="/admin/loardOrderMng" class="btn btn-primary mt-3">Back to Orders</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

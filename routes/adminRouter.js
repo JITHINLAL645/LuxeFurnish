@@ -3,7 +3,7 @@ import { loadLogin, login, loadDashboard, logout } from "../controller/admin/adm
 import { customerInfo, customerBlocked, customerunBlocked } from "../controller/admin/customercontroller.js";
 import { restore_Category, delete_Category, edit_Category, add_Category, load_CategoryPage, } from "../controller/admin/categorycontroller.js"
 import { loadProductPage, addProductPage, loadAdminDash, add_Product, loadEditProductPage, editProduct, delete_Product, restore_Product } from "../controller/admin/productcontroller.js";
-import { loard_OrderMng} from "../controller/admin/ordercontroller.js"
+import { loard_OrderMng,getOrderDetails} from "../controller/admin/ordercontroller.js"
 
 import { adminAuth } from "../middlewares/auth.js";
 
@@ -47,6 +47,10 @@ router.get("/loadAdminDash", adminAuth, (req, res) => {
 
 
 router.get('/loardOrderMng',adminAuth,loard_OrderMng)
+
+router.get('/getOrderDetails/:id', adminAuth, getOrderDetails);
+
+
 
 
 export default router;
