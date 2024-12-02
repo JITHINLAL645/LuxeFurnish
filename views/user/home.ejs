@@ -1,16 +1,73 @@
 <%- include("..//partials/user/header") %>
 
 <!-- Navbar Start -->
-<nav class="navbar" style="background-color: #3c3c3c; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;">
+<nav class="navbar" style="background-color: #3c3c3c; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+    <!-- Navbar Brand with a smooth hover effect -->
     <div class="navbar-brand">
-        <a href="/" style="color: #ffffff; font-size: 24px; font-weight: bold; text-decoration: none;">LuxeFurnish</a>
+        <a href="/" style="color: #ffffff; font-size: 28px; font-weight: bold; text-decoration: none; 
+            background-image: linear-gradient(to right, #ff6347, #ffbd00); 
+            background-clip: text; -webkit-background-clip: text; color: transparent; 
+            transition: transform 0.3s ease, text-shadow 0.3s ease;">
+            LuxeFurnish
+        </a>
     </div>
+
+    <!-- Navbar Profile with animated hover effect -->
     <div class="navbar-profile">
-        <a href="/profile" class="btn profile-btn">
-            <img src="data:image/png;base64,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" alt="User Profile" style="border-radius: 50%; width: 40px; height: 40px;">
+        <a href="/profile" class="btn profile-btn" style="display: flex; align-items: center; transition: transform 0.3s ease;">
+            <img src="data:image/png;base64,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" alt="User Profile" style="border-radius: 50%; width: 50px; height: 50px; object-fit: cover; transition: transform 0.3s ease;">
         </a>
     </div>
 </nav>
+
+<style>
+    .navbar {
+        background-color: #333333;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar-brand a {
+        font-size: 28px;
+        font-weight: bold;
+        text-decoration: none;
+        background-image: linear-gradient(to right, #ff6347, #ffbd00); 
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: transform 0.3s ease, background-color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+   
+
+
+    .navbar-profile a {
+        display: flex;
+        align-items: center;
+        transition: transform 0.3s ease;
+    }
+
+    .navbar-profile a:hover {
+        transform: scale(1.1);
+    }
+
+    .navbar-profile img {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .navbar-profile img:hover {
+        transform: rotate(360deg);
+    }
+</style>
+
+
 <!-- Navbar End -->
 
 <!-- Search Wrapper Area Start -->
@@ -23,8 +80,8 @@
             <div class="col-12">
                 <div class="search-content">
                     <form action="#" method="get">
-                        <input type="search" name="search" id="search" placeholder="Type your keyword...">
-                        <button type="submit"><img src="img/core-img/search.png" alt></button>
+                        <input type="search" name="search" id="search" placeholder="Type your keyword..." class="search-input">
+                        <button type="submit" class="search-button"><img src="img/core-img/search.png" alt></button>
                     </form>
                 </div>
             </div>
@@ -47,13 +104,15 @@
 
     <%- include("../partials/user/sidenav") %>
 
-    <!-- Product Catagories Area Start -->
-    <div class="products-catagories-area clearfix">
-        <div class="amado-pro-catagory clearfix">
-            <div class="single-products-catagory clearfix">
+    <!-- Product Categories Area Start -->
+    <div class="products-categories-area clearfix" style="padding: 50px 20px;">
+        <div class="amado-pro-category clearfix" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+            
+            <!-- Product Item 1 -->
+            <div class="single-products-category clearfix" style="position: relative; overflow: hidden; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                 <a href="shop">
-                    <img src="img/bg-img/1.jpg" alt>
-                    <div class="hover-content">
+                    <img src="img/bg-img/1.jpg" alt style="width: 100%; height: auto; object-fit: cover;">
+                    <div class="hover-content" style="position: absolute; bottom: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, 0.6); padding: 15px; color: #fff; text-align: center;">
                         <div class="line"></div>
                         <p>From $180</p>
                         <h4>Modern Chair</h4>
@@ -61,32 +120,11 @@
                 </a>
             </div>
 
-            <!-- <div class="single-products-catagory clearfix">
+            <!-- Product Item 2 -->
+            <div class="single-products-category clearfix" style="position: relative; overflow: hidden; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                 <a href="shop">
-                    <img src="img/bg-img/2.jpg" alt>
-                    <div class="hover-content">
-                        <div class="line"></div>
-                        <p>From $180</p>
-                        <h4>Minimalistic Plant Pot</h4>
-                    </div>
-                </a>
-            </div> -->
-
-            <!-- <div class="single-products-catagory clearfix">
-                <a href="shop">
-                    <img src="img/bg-img/3.jpg" alt>
-                    <div class="hover-content">
-                        <div class="line"></div>
-                        <p>From $180</p>
-                        <h4>Modern Chair</h4>
-                    </div>
-                </a>
-            </div> -->
-
-            <div class="single-products-catagory clearfix">
-                <a href="shop">
-                    <img src="img/bg-img/4.jpg" alt>
-                    <div class="hover-content">
+                    <img src="img/bg-img/4.jpg" alt style="width: 100%; height: auto; object-fit: cover;">
+                    <div class="hover-content" style="position: absolute; bottom: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, 0.6); padding: 15px; color: #fff; text-align: center;">
                         <div class="line"></div>
                         <p>From $180</p>
                         <h4>Night Stand</h4>
@@ -94,10 +132,11 @@
                 </a>
             </div>
 
-            <div class="single-products-catagory clearfix">
+            <!-- Product Item 3 -->
+            <div class="single-products-category clearfix" style="position: relative; overflow: hidden; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                 <a href="shop">
-                    <img src="img/bg-img/5.jpg" alt>
-                    <div class="hover-content">
+                    <img src="img/bg-img/5.jpg" alt style="width: 100%; height: auto; object-fit: cover;">
+                    <div class="hover-content" style="position: absolute; bottom: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, 0.6); padding: 15px; color: #fff; text-align: center;">
                         <div class="line"></div>
                         <p>From $18</p>
                         <h4>Plant Pot</h4>
@@ -105,19 +144,330 @@
                 </a>
             </div>
 
-            <div class="single-products-catagory clearfix">
+            <!-- Product Item 4 -->
+            <div class="single-products-category clearfix" style="position: relative; overflow: hidden; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                 <a href="shop">
-                    <img src="img/bg-img/6.jpg" alt>
-                    <div class="hover-content">
+                    <img src="img/bg-img/6.jpg" alt style="width: 100%; height: auto; object-fit: cover;">
+                    <div class="hover-content" style="position: absolute; bottom: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, 0.6); padding: 15px; color: #fff; text-align: center;">
                         <div class="line"></div>
                         <p>From $320</p>
                         <h4>Small Table</h4>
                     </div>
                 </a>
             </div>
+            <!-- Single Category 1 -->
+<div class="single-products-category clearfix" style="position: relative; overflow: hidden; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <a href="shop">
+        <img src="img/bg-img/8.jpg" alt="" style="width: 100%; height: auto; object-fit: cover;">
+        <div class="hover-content" style="position: absolute; bottom: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, 0.6); padding: 15px; color: #fff; text-align: center;">
+            <div class="line"></div>
+            <p>From $318</p>
+            <h4>Modern Rocking Chair</h4>
         </div>
-    </div>
-    <!-- Product Catagories Area End -->
+    </a>
 </div>
 
+<!-- Single Category 2 -->
+
+
+            
+        </div>
+    </div>
+    
+    <!-- Product Categories Area End -->
+</div>
+
+
+
 <%- include("../../views/partials/user/footer") %>
+
+<!-- Additional CSS -->
+<style>
+    
+    /* Search input and button styling */
+    .search-input {
+        width: 100%;
+        padding: 14px;
+        border: 2px solid #ddd;
+        border-radius: 30px;
+        outline: none;
+        font-size: 16px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .search-input:focus {
+        border-color: #4CAF50;
+        box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+    }
+    
+    .search-button {
+        background-color: #4CAF50;
+        border: none;
+        cursor: pointer;
+        padding: 12px;
+        border-radius: 30px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        font-size: 16px;
+        color: white;
+    }
+    
+    .search-button:hover {
+        background-color: #45a049;
+        transform: scale(1.1);
+    }
+    
+    /* Hover effect on product items */
+    .single-products-category {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .single-products-category:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    }
+    
+    .single-products-category:hover .hover-content h4,
+    .single-products-category:hover .hover-content p {
+        transform: scale(1.1);
+        color: #4CAF50;
+    }
+    
+    .hover-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        padding: 20px;
+        text-align: center;
+    }
+    
+    .single-products-category:hover .hover-content {
+        opacity: 1;
+    }
+    
+    .hover-content h4 {
+        font-size: 20px;
+        font-weight: bold;
+    }
+    
+    .hover-content p {
+        font-size: 14px;
+    }
+    
+    /* Add to Cart Button */
+    .add-to-cart-btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 15px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    
+    .add-to-cart-btn:hover {
+        background-color: #45a049;
+        transform: scale(1.05);
+    }
+    
+    /* Additional styling for product items */
+    .product-card {
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .product-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    }
+    
+    .product-img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    
+    .product-card:hover .product-img {
+        transform: scale(1.1);
+    }
+    
+    .product-info {
+        padding: 15px;
+        background-color: #f9f9f9;
+        text-align: center;
+        border-top: 1px solid #ddd;
+    }
+    
+    .product-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .product-price {
+        color: #4CAF50;
+        font-size: 16px;
+        margin-top: 5px;
+        font-weight: 600;
+    }
+    
+    /* Hover effect for button */
+    button {
+        position: relative;
+        overflow: hidden;
+        padding: 15px 30px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: transform 0.3s ease;
+    }
+    
+    button::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 300%;
+        height: 300%;
+        background-color: #45a049;
+        transition: width 0.4s ease, height 0.4s ease, top 0.4s ease, left 0.4s ease;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    button:hover::before {
+        width: 0;
+        height: 0;
+        top: 50%;
+        left: 50%;
+    }
+    
+    button:hover {
+        transform: scale(1.1);
+    }
+    
+    /* Adding bounce animation */
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+        40% {
+            transform: translateY(-10px);
+        }
+        60% {
+            transform: translateY(-5px);
+        }
+    }
+    
+    .product-card:hover {
+        animation: bounce 1s;
+    }
+    
+    /* Product Title Hover Effect */
+    .product-title:hover {
+        color: #45a049;
+        text-decoration: underline;
+        transition: color 0.3s ease, text-decoration 0.3s ease;
+    }
+    
+    /* Additional Responsive Design */
+    @media (max-width: 768px) {
+        .single-products-category {
+            flex: 1 0 48%;
+        }
+    
+        .product-card {
+            margin-bottom: 20px;
+        }
+    
+        .search-input, .search-button {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+    }
+    
+    /* Animation for product cards */
+    @keyframes slideIn {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .product-card {
+        animation: slideIn 0.6s ease-out;
+    }
+    
+    /* Loading spinner for search or product loading */
+    .loading-spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0;
+    }
+    
+    .loading-spinner::after {
+        content: '';
+        border: 5px solid #ddd;
+        border-top: 5px solid #4CAF50;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    </style>
+    
+
+<script>
+    // Show spinner when products are loading
+function showSpinner() {
+    document.querySelector('.loading-spinner').style.display = 'flex';
+}
+
+// Hide spinner after products are loaded
+function hideSpinner() {
+    document.querySelector('.loading-spinner').style.display = 'none';
+}
+
+// Simulate loading of products (you can replace this with actual API call)
+setTimeout(function() {
+    showSpinner();
+    setTimeout(function() {
+        hideSpinner();
+        displayProducts(products);
+    }, 2000); // Simulate 2 seconds loading time
+}, 500);
+
+</script>
+
+    

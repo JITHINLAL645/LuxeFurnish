@@ -133,6 +133,7 @@ export const loadEditProductPage  = async (req, res) => {
 
 
 
+
 export const editProduct = async (req, res) => {
   console.log("dfghjk");
   

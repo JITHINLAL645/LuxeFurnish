@@ -1057,26 +1057,22 @@ const deleteCart = async (req, res) => {
 
 const checkout = async (req, res) => {
   try {
-    const userId = req.user._id; // Assuming user is logged in
+    const userId = req.user._id; 
 
-    // Fetch the addresses for the logged-in user
     const addresses = await Address.find({ userId: userId });
     const cart = await Cart.findOne({user:userId})
 
-    // Extract the address details from the array
-    const addressDetails = addresses.map(address => address.address).flat(); // Flatten in case there are multiple addresses
+    const addressDetails = addresses.map(address => address.address).flat(); 
 
     // Calculate total amount
     let totalAmount = 0;
     cart.items.forEach(item => {
-      totalAmount += item.price * item.quantity; // Calculate total price
+      totalAmount += item.price * item.quantity; 
     });
 
-    // Estimated delivery (for now just a dummy value, you can adjust accordingly)
-    const estimatedDelivery = "2024-12-05";  // Example estimated delivery date
+    const estimatedDelivery = "2024-12-05";  
     console.log("totAL AMD:",totalAmount);
 
-    // Pass the necessary data to the checkout page
     res.render('user/checkout', { 
       addresses: addressDetails,
       totalAmount: totalAmount,
@@ -1094,10 +1090,8 @@ const checkout = async (req, res) => {
 
 const checkoutupdateAddress = async (req, res) => {
   try {
-    // Log the incoming request body to verify what you're receiving
     cons
 
-    // Extract form data from req.body
     const {
       id,  // Address ID
       first_name,
@@ -1132,40 +1126,35 @@ const checkoutupdateAddress = async (req, res) => {
       different_address,
     });
 
-    // Prepare order details object to update
     const orderDetails = {
       firstName: first_name,
       lastName: last_name,
       email,
       addressLine: street_address,
       city,
-      district: city, // Assuming "district" is the same as "city" in your case, update if necessary
-      state: "",  // Add state if available
-      country: "",  // Add country if available
+      district: city, 
+      state: "",  
+      country: "",  
       pincode: zipCode,
       phoneNumber: phone_number,
-      altPhoneNumber: "", // Add if available
+      altPhoneNumber: "", 
       comment,
     };
 
-    // Find the address by ID and update it
     const updatedAddress = await Address.findOneAndUpdate(
-      { "address._id": id },  // Find the address by ID in the address array
-      { $set: { "address.$": orderDetails } },  // Use positional operator to update the correct address
-      { new: true }  // Return the updated document
+      { "address._id": id },  
+      { $set: { "address.$": orderDetails } }, 
+      { new: true }  
     );
 
-    // Check if the address was found and updated
     if (!updatedAddress) {
       console.error("Address not found with ID:", id);
       return res.status(404).send('Address not found.');
     }
 
-    // Log the updated address to verify
     console.log('Updated Address:', updatedAddress);
 
-    // Redirect to the checkout page (or payment page)
-    return res.redirect('/checkout');  // Adjust redirect URL as needed
+    return res.redirect('/checkout'); 
   } catch (error) {
     console.error('Error processing checkout:', error);
     return res.status(500).send('Error processing checkout');
@@ -1196,15 +1185,18 @@ const getOrder = async (req, res) => {
       return res.redirect("/login");
     }
 
-    // Fetch user details (assuming User model or req.session holds the user details)
     const user = await User.findById(userId).lean();
+    const userEmail = user.email
+    console.log("user email", userEmail);
+    
 
-    // Fetch cart and handle undefined cases
     const cart = await Cart.findOne({ user: userId });
-
+    
     const cartCount = cart && cart.items ? cart.items.length : 0;
 
-    // Fetch order details
+    const allOrders = await Order.find({"address.email":userEmail})
+    console.log("all orders", allOrders);
+
     const [orders, totalOrders] = await Promise.all([
       Order.find({ user: userId })
         .populate('items.product')
@@ -1214,8 +1206,8 @@ const getOrder = async (req, res) => {
         .lean(),
       Order.countDocuments({ user: userId })
     ]);
+    
 
-    // Clean orders to remove items without products
     orders.forEach(order => {
       order.items = order.items.filter(item => item.product);
     });
@@ -1224,15 +1216,14 @@ const getOrder = async (req, res) => {
 
     console.log(orders)
 
-    // Render the orders view and pass the user object
     res.render('user/orders', {
-      orders,
+      orders: allOrders,
       currentPage: page,
       totalPages,
       limit,
       cartCount,
       wishlistCount: cart && cart.wishlist ? cart.wishlist.length : 0,
-      user // Pass user object to the view
+      user 
     });
   } catch (error) {
     console.error('Error fetching order history:', error);
@@ -1243,33 +1234,26 @@ const getOrder = async (req, res) => {
 
 const placeorder = async (req, res) => {
   try {
-    // Log the request body for debugging
     console.log("this is data", req.body);
 
-    // Extracting necessary fields from req.body
     const { totalAmount, deliveryAddress, estimatedDelivery } = req.body;
 
-    // Check if deliveryAddress is valid
     const parsedAddressOg = await Address.findOne({
       address: {
         $elemMatch: { _id: deliveryAddress }
       }
     });
     const parsedAddress = parsedAddressOg.address[0]
-    // Get the userId from the session (assuming passport.js is being used for authentication)
     const userId = req.session.passport.user;
 
-    // Query the Cart collection to find the cart for the logged-in user
     const userCart = await Cart.findOne({ user: userId, isDelete: false });
 
-    // If no cart is found or the cart is empty, return an error
     if (!userCart || userCart.items.length === 0) {
       return res.status(404).json({
         message: 'Your cart is empty. Cannot place an order.'
       });
     }
 
-    // Creating the order object with cart items and address directly embedded
     const newOrder = new Order({
       orderItems: userCart.items.map(item => ({
         product: item.product,
@@ -1277,7 +1261,7 @@ const placeorder = async (req, res) => {
         price: item.price
       })),
       totalPrice: totalAmount,
-      finalAmount: totalAmount, // Assuming no discount for COD
+      finalAmount: totalAmount, 
       address: {
         firstName: parsedAddress.firstName,
         lastName: parsedAddress.lastName,
@@ -1291,23 +1275,19 @@ const placeorder = async (req, res) => {
         altPhoneNumber: parsedAddress.altPhoneNumber,
         email: parsedAddress.email
       },
-      status: 'Pending', // COD orders typically start as "Pending"
-      couponApplied: false // Assuming no coupon is applied
+      status: 'Pending', 
+      couponApplied: false 
     });
 
-    // Save the new order to the database
     const savedOrder = await newOrder.save();
 
-    // Log the saved order for debugging purposes
     console.log('Order placed:', savedOrder);
 
-    // Send a success response
     res.status(200).json({
       message: 'Order placed successfully!',
       order: savedOrder
     });
 
-    // res.redirect("/successpage")
 
   } catch (error) {
     console.error('Error placing order:', error);
@@ -1319,6 +1299,54 @@ const placeorder = async (req, res) => {
   }
 };
 
+const cancelOrder = async (req, res) => {
+  try {
+    const { orderId } = req.body;  // Make sure to get orderId from body
+    const userId = req.session.userId;
+
+    // Check if the user is logged in
+    if (!userId) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Find the order by orderId and userId
+    const order = await Order.findOne({ _id: orderId, user: userId });
+    if (!order) {
+        return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Check if the order is already cancelled
+    if (order.orderStatus === 'Cancelled') {
+        return res.status(400).json({ message: "Order is already cancelled" });
+    }
+
+    // Check if the order status is either Shipped or Delivered
+    if (['Shipped', 'Delivered'].includes(order.orderStatus)) {
+        return res.status(400).json({ message: "Cannot cancel order at this stage" });
+    }
+
+    // Update the order status to 'Cancelled'
+    order.orderStatus = 'Cancelled';
+    order.orderStatusTimestamps.cancelled = new Date();
+
+    // Loop through each item in the order and update the product stock
+    for (const item of order.items) {
+        await Product.findByIdAndUpdate(item.product, {
+            $inc: { stock: item.quantity }
+        });
+    }
+
+    // Save the updated order status
+    await order.save();
+
+    // Send a success response
+    res.status(200).json({ message: "Order cancelled successfully", redirect: "/orderHistory" });
+
+  } catch (error) {
+    console.error("Error cancelling order:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 
 
 export {
@@ -1351,6 +1379,5 @@ export {
   successpage,
   getOrder,
   placeorder,
-  // getforgotpassword,
-  // forgotEmailValid
+  cancelOrder
 };

@@ -17,7 +17,7 @@
     
 
     <!-- Amado Nav -->
-    <div class="row" style="width: 22%;">
+    <div class="row "  style="width: 22%; border-radius: 10px;">
         <% if (!user) { %>
             <div class="col-12">
                 <a href="/login" class="btn amado-btn w-100">Log in</a>
@@ -28,7 +28,7 @@
     <div class="row" style="width: 22%;">
         <% if (!user) { %>
             <div class="col-12">
-                <a href="/signup" class="btn amado-btn w-100">Sign Up</a>
+                <a href="/signup" class="btn amado-btn w-100" style="border-radius: 10px;">Sign Up</a>
             </div>
         <% } %>
     </div>
@@ -37,7 +37,7 @@
     <% if (user) { %>
         <div class="row" style="width: 22%;">
             <div class="col-12">
-                <a href="/logout" class="btn amado-btn w-100">Log Out</a>
+                <a href="/logout" class="btn amado-btn w-100" style="border-radius: 10px;">Log Out</a>
             </div>
         </div>
     <% } %>
@@ -55,13 +55,13 @@
 
     <!-- Button Group -->
     <div class="amado-btn-group mt-30 mb-100">
-        <a href="#" class="btn amado-btn mb-15">%Discount%</a>
-        <a href="#" class="btn amado-btn active">New this week</a>
+        <!-- <a href="#" class="btn amado-btn mb-15">%Discount%</a> -->
+        <a href="#" class="btn amado-btn active" style="background-color: #fbb710; border-radius: 10px;">New this week</a>
     </div>
 
     <!-- Cart Menu -->
     <div class="cart-fav-search mb-100">
-        <a href="cart" class="cart-nav"><img src="img/core-img/cart.png" alt=""> Cart <span>(0)</span></a>
+        <!-- <a href="cart" class="cart-nav"><img src="img/core-img/cart.png" alt=""> Cart <span>(0)</span></a> -->
         <a href="#" class="fav-nav"><img src="img/core-img/favorites.png" alt=""> Favourite</a>
         <a href="#" class="search-nav"><img src="img/core-img/search.png" alt=""> Search</a>
     </div>

@@ -24,7 +24,7 @@ import { LoadHomepage,
      checkout,
      checkoutupdateAddress,
      sortProducts,
-     successpage,getOrder,placeorder}from "../controller/user/usercontroller.js";  
+     successpage,getOrder,placeorder,cancelOrder}from "../controller/user/usercontroller.js";  
 import User from "../models/userschema.js";
 import Address from "../models/addressSchema.js";
 import passport from "passport";
@@ -79,5 +79,5 @@ router.get('/successpage',successpage)
 
 
 router.get('/order',getOrder);
-// userRouter.post('/orders/:orderId',isBlockAuth,userAuthentication,orderController.cancelOrder);
+router.post('/cancelOrder',cancelOrder);
 export default router;

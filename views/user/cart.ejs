@@ -6,7 +6,6 @@
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title  -->
     <title>Amado - Furniture Ecommerce Template | Cart</title>
@@ -67,9 +66,7 @@
                 <i class="fa fa-close" aria-hidden="true"></i>
             </div>
             <!-- Logo -->
-            <!-- <div class="logo">
-                <a href="index.html"><img src="img/core-img/logo.png" alt=""></a>
-            </div> -->
+            
             <!-- Amado Nav -->
             <nav class="amado-nav">
                 <ul>
@@ -82,16 +79,16 @@
             </nav>
             <!-- Button Group -->
             <div class="amado-btn-group mt-30 mb-100">
-                <a href="#" class="btn amado-btn mb-15">%Discount%</a>
-                <a href="#" class="btn amado-btn active">New this week</a>
+                <!-- <a href="#" class="btn amado-btn mb-15">%Discount%</a>
+                <a href="#" class="btn amado-btn active">New this week</a> -->
             </div>
             <!-- Cart Menu -->
             <div class="cart-fav-search mb-100">
-                <!-- <a href="Cart" class="cart-nav"><img src="img/core-img/cart.png" alt=""> Cart <span>(0)</span></a> -->
-                <a href="#" class="fav-nav"><img src="img/core-img/favorites.png" alt=""> Favourite</a>
-                <a href="#" class="search-nav"><img src="img/core-img/search.png" alt=""> Search</a>
+                <!-- <a href="#" class="fav-nav"><img src="img/core-img/favorites.png" alt=""> Favourite</a>
+                <a href="#" class="search-nav"><img src="img/core-img/search.png" alt=""> Search</a> -->
             </div>
             <!-- Social Button -->
+             <p></p>
             <div class="social-info d-flex justify-content-between">
                 <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
                 <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
@@ -111,23 +108,7 @@
                         <div class="cart-table clearfix">
 
 
-
-
-
-
-
-
-
-
-
-
-<!-- -------------------------------------- -->
-
-
-
-
-
-                            <!-- Product Table -->
+<!-- Product Table -->
 <table>
     <tbody>
       <% if (cart && cart.items.length > 0) { %>
@@ -160,27 +141,22 @@
               </div>
             </td>
             <script>
-                // Function to update the quantity of a product in the cart
                 function updateQuantity(productId, change, newValue, pricePerItem) {
                   const qtyInput = document.getElementById('qty' + productId);
                   let currentQty = parseInt(qtyInput.value);
                 
-                  // Handle the quantity change either via buttons or direct input
                   if (change !== 0) {
                     currentQty += change;
                   } else {
                     currentQty = parseInt(newValue);
                   }
                 
-                  // Ensure quantity is a valid number
                   if (isNaN(currentQty) || currentQty < 1) {
                     currentQty = 1; // Set minimum quantity to 1
                   }
                 
-                  // Update the input value
                   qtyInput.value = currentQty;
                 
-                  // Send the updated quantity to the server via AJAX
                   fetch('/cart/update-quantity', {
                     method: 'POST',
                     headers: {
@@ -194,11 +170,9 @@
                   .then(response => response.json())
                   .then(data => {
                     if (data.success) {
-                      // Update the price for this product
                       const priceElement = document.getElementById('price' + productId);
                       priceElement.innerText = '$' + data.updatedItem.totalItemPrice.toFixed(2);
                 
-                      // Update the total price of the cart
                       updateCartTotal(data.totalCartPrice);
                     } else {
                       alert('Failed to update quantity.');
@@ -207,7 +181,6 @@
                   .catch(error => console.error('Error updating quantity:', error));
                 }
                 
-                // Function to update the Cart Total (subtotal and total)
                 function updateCartTotal(totalCartPrice) {
                   document.getElementById('subtotal').innerText = '$' + totalCartPrice.toFixed(2);
                   document.getElementById('total').innerText = '$' + totalCartPrice.toFixed(2); // Assuming no delivery charge
@@ -236,26 +209,9 @@
     </tbody>
   </table>
   
-
-
-
-
-
-
-
-
-
-
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-4">
-
-
-
-
-
-<!-- ------------------------------------------------------ -->
-
+     </div>
+       </div>
+      <div class="col-12 col-lg-4">
                        <!-- Cart Total -->
 <div class="cart-summary">
     <h5>Order Summary</h5>
@@ -297,16 +253,7 @@
 updateCartTotal();
 
   </script>
-  
-
-
-
-
-
-
-
-   <!-- ------------------------------------------------------------ -->
-
+ 
                         <div class="container mt-5">
                             <div class="coupon-box p-4 rounded shadow-lg bg-light">
                                 <h3 class="text-center mb-4">Coupon</h3>
@@ -353,10 +300,7 @@ updateCartTotal();
         </div>
     </section>
     <!-- ##### Newsletter Area End ##### -->
-  <!-- --------------------------------------------------------------------------------------- -->
-   <!-- Footer Area Continued -->
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        
+
                     
                 </div>
             </div>

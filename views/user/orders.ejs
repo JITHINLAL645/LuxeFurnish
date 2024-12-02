@@ -227,107 +227,44 @@
             color: #6c757d; 
         }
   </style>
-  <header class="header_section bg-dark fixed-header  " style="color: #c4d1d3;" >
+  <header class="header_section bg-dark fixed-top" style="color: #c4d1d3;">
     <div class="container">
-      <nav class="navbar navbar-expand-lg custom_nav-container">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/">
-          <span>
-        
-          </span>
+          <span class="font-weight-bold">YourLogo</span>
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-          <span class=""> </span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
         </button>
   
-
-
-
-
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mx-auto">
             <li class="nav-item active">
               <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">About us</a>
+              <a class="nav-link" href="#">About Us</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Contact us</a>
+              <a class="nav-link" href="#">Contact Us</a>
             </li>
           </ul>
   
-          <div class="user_option">
-            <!-- <a class="cart_link position-relative" href="/getCartPage">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 456.029 456.029" width="50" height="50">
-                <path d="M345.6 338.862c-29.184 0-53.248 23.552-53.248 53.248s23.552 53.248 53.248 53.248 53.248-23.552 53.248-53.248-23.552-53.248-53.248-53.248zM439.296 84.91h-330.56l-5.12-34.304c-2.048-13.824-21.504-30.72-44.544-30.72H20.48C9.216 19.886 0 29.102 0 40.366S9.216 60.846 20.48 60.846h41.472c2.56 0 4.608 2.048 5.12 4.608l31.744 216.064c4.096 27.136 27.648 47.616 55.296 47.616h212.992c26.624 0 49.664-18.944 55.296-45.056l33.28-166.4c4.096-21.504-3.072-32.256-14.336-34.304zM215.04 389.55c-1.024-28.16-24.576-50.688-52.736-50.688-29.696 1.536-52.224 26.112-51.2 55.296 1.024 28.16 24.064 50.688 52.224 50.688 29.184 0 52.224-24.576 51.712-55.296z"/>
-              </svg>
-              <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                <%= cartCount %>
-              </span>
-            </a> -->
-            <!-- <a class="cart_link position-relative" href="/wishlist">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="50" height="50" fill="red">
-                <path d="M462.3 62.7C407 7.4 324.8 23.9 270.1 79.1L256 93.3l-14.1-14.2c-54.8-55.2-136.9-71.7-192.2-16.4S-7.4 199.9 48 255.2L239 445.5c7.4 7.5 19.6 7.5 27 0l205.4-205.4c55.2-54.8 71.7-136.9 16.4-192.2z"/>
-              </svg>
-              <span data-toggle="tooltip" data-placement="bottom" title="<%= wishlistCount %>" id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                <%= wishlistCount %>
-              </span>
-            </a> -->
-            <p class="user_proname"><%= user.name %></p>
-  
-            <!-- <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown">
-                <i class="fa fa-user" aria-hidden="true"></i>
-              </button> -->
-  
-              <!-- <div class="dropdown-menu">
-                <a href="/profilePage" class="profile-link">
-                  <img src="/images/profile.png" class="profile-avatar"> Profile
-                </a>
-                <a href="/orderHistory" class="profile-link">
-                  <img src="/images/purchase-order.png" class="profile-avatar"> Orders
-                </a>
-                <a href="/getCartPage" class="profile-link">
-                  <img src="/images/shopping-cart (1).png" class="profile-avatar"> Cart
-                </a>
-                <a href="wishlist" class="profile-link">
-                  <img src="/images/wishlist.png" class="profile-avatar"> Wishlist
-                </a>
-                <a href="/loadWalletPage" class="profile-link">
-                  <img src="/images/wallet.png" class="profile-avatar"> Wallet
-                </a>
-                <a href="/logout"class="profile-link logout-link">
-                  <img src="/images/shutdown.png" class="profile-avatar"> Logout
-                </a>
-              </div> -->
-            </div>
+          <div class="d-flex align-items-center">
+            <p class="mb-0 text-white font-weight-semibold" style="font-size: 16px;"><%= user.name %></p>
           </div>
-
-
-
-
-
-
-
-          
         </div>
-
-
-
-
-
-
-
-        
       </nav>
     </div>
   </header>
+  
   <div class="container mt-5">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-light p-3 shadow-sm rounded">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
             <li class="breadcrumb-item"><a href="/Cart">Cart Page</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Order History</li>
+            <li class="breadcrumb-item acti
+            ve" aria-current="page">Order History</li>
         </ol>
     </nav>
 
@@ -335,126 +272,98 @@
 
     <div class="card shadow-sm p-4 border-0 rounded">
         <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead class="table-dark">
-                    <tr class="text-center">
-                        <th scope="col">Order Id</th>
-                        <th scope="col">Product Name</th>
-                        <th scope="col">Order Status</th>
-                        <th scope="col">Payment Method</th>
-                        <th scope="col">Payment Status</th>
-                        <th scope="col">Discount Amount</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% if (orders.length > 0) { %>
-                        <% orders.forEach((order, index) => { %>
-                            <tr class="bg-light">
-                                <th scope="row" class="text-center"><%= order.orderId %></th>
-                                <td class="text-center">
-                                    <% order.items.forEach((item) => { %>
-                                        <span class="d-block"><%= item.product.productname %></span>
-                                    <% }); %>
-                                </td>
-                                <td class="text-center">
-                                    <span class="badge 
-                                        <%= order.orderStatus === 'Delivered' ? 'bg-success' : 
-                                        order.orderStatus === 'Cancelled' ? 'bg-danger' : 
-                                        order.orderStatus === 'Shipped' ? 'bg-warning' :
-                                        order.orderStatus === 'Returned' ? 'bg-primary': 
-                                        'bg-secondary' %>">
-                                        <%= order.orderStatus %>
-                                    </span>
-                                </td>
-                                <td class="text-center"><%= order.paymentMethod %></td>
-                                <td class="text-center"><%= order.paymentStatus %></td>
-                                <td class="text-center"><%= order.discountAmount %></td>
-                                <td class="text-center"><%= order.totalAmount %></td>
-                                <%= console.log(order.orderStatus) %>
-                                
-                                <td>
-                                    <% if (order.orderStatus === 'Delivered') { %>
-                                        <%= console.log(order.orderStatus) %>
-                                          <button type="button" class="btn btn-warning" onclick="handleReturn('<%= order._id %>', this)" data-toggle="tooltip" data-placement="bottom" title="Return Order">Return</button> 
-
-                                    <% } else if (order.orderStatus === 'Returned') { %>
-                                        
-                                        <span class="text-muted">Returned</span>
-                                    <% } else if (['Processing', 'Shipped', 'Cancelled'].includes(order.orderStatus)) { %>
-                                        <button type="button" class="btn btn-secondary" disabled>
-                                            <%= order.orderStatus === 'Cancelled' ? 'Cancelled' : 'Cancel' %>
-                                        </button>
-                                    <% } else { %>
-                                        <button type="button" class="btn btn-outline-danger" onclick="cancelOrder('<%= order.orderId %>', this)" data-toggle="tooltip" data-placement="bottom" title="You Want to Cancel Order">Cancel</button>
-                                    <% } %>
-                                  
-                                    <button class="btn btn-outline-info ms-2" onclick="toggleDetails('<%= index %>')" data-toggle="tooltip" data-placement="bottom" title="Click Item Details" >
-                                        <i class="bi bi-info-circle"></i>
-                                    </button>
-                                    
-                                    <% if (order.paymentStatus === 'Failed') { %>
-                                        <button type="button" onclick="Repayment('<%= order._id %>')" class="btn btn-outline-success ms-2" data-toggle="tooltip" data-placement="bottom" title="Retry Payment">
-                                            <i class="bi bi-arrow-repeat"></i>
-                                        </button>
-                                        <% } else { %>
-                                            
-                                        <a href="/invoice/<%= order._id %>" class="btn btn-outline-success ms-2" data-toggle="tooltip" data-placement="bottom" title="Download Invoice"><i class="bi bi-download"></i></a>
-                                        <% } %>
-                                </td>
-                            </tr>
-                            <tr class="details-row" id="details<%= index %>" style="display: none;">
-                                <td colspan="7">
-                                    <div class="p-4 border rounded bg-light shadow-sm">
-                                        <h5 class="text-primary mb-3">Order Details</h5>
-                                        <div class="d-flex flex-wrap align-items-start">
-                                            <div class="me-4 mb-3 d-flex flex-wrap">
-                                                <% order.items.forEach((item) => { %>
-                                                    <div class="me-4 mb-3 text-center border rounded bg-white shadow-sm p-3" style="width: 150px;">
-                                                        <img src="<%= item.product.images[0] %>" alt="<%= item.product.productname %>" class="img-fluid rounded mb-2" style="width: 100%; height: auto;">
-                                                        <p class="m-0"><strong><%= item.product.productname %></strong></p>
-                                                        <p class="text-muted">Qty: <%= item.quantity %></p>
-                                                    </div>
-                                                <% }); %>
-
-                                                
-                                                
-                                            </div>
-                                            <div class="flex-grow-1">
-                                                <ul class="list-unstyled">
-                                                    <li class="mb-2"><strong>Order Date:</strong> <span class="text-muted"><%= order.createdAt.toLocaleString() %></span></li>
-                                                    <li class="mb-2"><strong>Delivered Time:</strong> 
-                                                        <span class="text-muted">
-                                                            <%= new Date(order.createdAt.getTime() + 30 * 60 * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
-                                                        </span>
-                                                    </li>
-                                                    <li>
-                                                        <strong>Shipping Address:</strong>
-                                                        <div class="text-muted">
-                                                            <p class="m-0"><strong><%= order.address[0].fullName %></strong></p>
-                                                            <p class="m-0"><%= order.address[0].streetAddress %>, <%= order.address[0].city %></p>
-                                                            <p class="m-0"><strong>Phone:</strong> <%= order.address[0].phone %></p>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            
-                            
-                        <% }); %>
-                    <% } else { %>
-                        <tr>
-                            <td colspan="7" class="text-center text-muted">No orders found.</td>
-                        </tr>
-                    <% } %>
-                </tbody>
-            </table>
+          <table class="table table-hover align-middle">
+            <thead class="table-dark">
+              <tr class="text-center">
+                <th scope="col">Order Id</th>
+                <th scope="col">User Name</th>
+                <th scope="col">Order Status</th>
+                <th scope="col">Total</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (orders.length > 0) { %>
+                <% orders.forEach((order, index) => { %>
+                  <tr class="bg-light hover-shadow">
+                    <th scope="row" class="text-center"><%= order.orderId %></th>
+                    <td class="text-center">
+                      <%= order.address.firstName %> <%= order.address.lastName %>
+                    </td>
+                    <td class="text-center">
+                      <span class="badge 
+                        <%= order.status === 'Delivered' ? 'bg-success' : 
+                          order.status === 'Cancelled' ? 'bg-danger' : 
+                          order.status === 'Shipped' ? 'bg-warning' :
+                          order.status === 'Returned' ? 'bg-primary' : 
+                          'bg-secondary' %>">
+                        <%= order.status %>
+                      </span>
+                    </td>
+                    <td class="text-center"><%= order.finalAmount %></td>
+                    <td>
+                      <% if (order.status === 'Delivered') { %>
+                        <button type="button" class="btn btn-warning" onclick="handleReturn('<%= order._id %>', this)" data-toggle="tooltip" data-placement="bottom" title="Return Order">Return</button>
+                      <% } else if (order.status === 'Returned') { %>
+                        <span class="text-muted">Returned</span>
+                      <% } else if (['Processing', 'Shipped', 'Cancelled'].includes(order.status)) { %>
+                        <button type="button" class="btn btn-secondary" disabled>
+                          <%= order.status === 'Cancelled' ? 'Cancelled' : 'Cancel' %>
+                        </button>
+                      <% } else { %>
+                        <button type="button" class="btn btn-outline-danger" onclick="cancelOrder('<%= order.orderId %>', this)" data-toggle="tooltip" data-placement="bottom" title="You Want to Cancel Order">Cancel</button>
+                      <% } %>
+      
+                      <button class="btn btn-outline-info ms-2" onclick="toggleDetails('<%= index %>')" data-toggle="tooltip" data-placement="bottom" title="Click for Item Details">
+                        <i class="bi bi-info-circle"></i>
+                      </button>
+      
+                      <% if (order.paymentStatus === 'Failed') { %>
+                        <button type="button" onclick="Repayment('<%= order._id %>')" class="btn btn-outline-success ms-2" data-toggle="tooltip" data-placement="bottom" title="Retry Payment">
+                          <img src="path/to/your/image.jpg" alt="retry" class="img-fluid rounded-circle" style="width: 20px; height: 20px; margin-right: 5px;">
+                          <i class="bi bi-arrow-repeat"></i>
+                        </button>
+                      <% } %>
+                    </td>
+                  </tr>
+                  <tr class="details-row" id="details<%= index %>" style="display: none;">
+                    <td colspan="5">
+                      <div class="p-4 border rounded bg-light shadow-sm">
+                        <h5 class="text-primary mb-3">Order Details</h5>
+                        <div class="d-flex flex-wrap align-items-start">
+                          <div class="me-4 mb-3 d-flex flex-wrap">
+                            <!-- Add more product details here -->
+                          </div>
+                          <div class="flex-grow-1">
+                            <ul class="list-unstyled">
+                              <li class="mb-2"><strong>User Name:</strong> <span class="text-muted"><%= order.address.firstName %> <%= order.address.lastName %></span></li>
+                              <li class="mb-2"><strong>Order Date:</strong> <span class="text-muted"><%= order.createdOn.toLocaleDateString() %></span></li>
+                              <li class="mb-2"><strong>Order Status:</strong> <span class="text-muted"><%= order.status %></span></li>
+                              <li class="mb-2"><strong>Total Amount:</strong> <span class="text-muted"><%= order.finalAmount %></span></li>                              
+                            </ul>
+                          </div>
+                          
+                          
+                          
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
+                <tr>
+                  <td colspan="5" class="text-center text-muted">No orders found.</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
         </div>
-    </div>
+      </div>
+      
+      
+      
+    
+    
 
     <!-- Cancel Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -489,47 +398,43 @@
 
       <div class="d-flex justify-content-center mt-4">
         <nav aria-label="Page navigation">
-            <ul class="pagination">
-                <% if (currentPage > 1) { %>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<%= currentPage - 1 %>&limit=<%= limit %>">Previous</a>
-                    </li>
-                <% } %>
-    
-                <% for (let i = 1; i <= totalPages; i++) { %>
-                    <li class="page-item <%= i === currentPage ? 'active' : '' %>">
-                        <a class="page-link" href="?page=<%= i %>&limit=<%= limit %>"><%= i %></a>
-                    </li>
-                <% } %>
-    
-                <% if (currentPage < totalPages) { %>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<%= currentPage + 1 %>&limit=<%= limit %>">Next</a>
-                    </li>
-                <% } %>
-            </ul>
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Previous">Previous</a>
+            </li>
+            <li class="page-item active">
+              <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#">3</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Next">Next</a>
+            </li>
+          </ul>
         </nav>
-    </div>
+      </div>
+      
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    
+    
+    
     <script>
-
-
-function toggleDetails(index) {
-  const detailsRow = document.getElementById(`details${index}`);
-  if (detailsRow.style.display === "none") {
-            detailsRow.style.display = "table-row";
-        } else {
-            detailsRow.style.display = "none";
+        function toggleDetails(index) {
+            const detailsRow = document.getElementById(`details${index}`);
+            detailsRow.style.display = (detailsRow.style.display === "none") ? "table-row" : "none";
         }
-    }
-
-
-    async function cancelOrder(orderId,button) {
+        
+        async function cancelOrder(orderId, button) {
     if (button.disabled) {
         Swal.fire({
             title: 'Cannot Cancel',
@@ -538,6 +443,8 @@ function toggleDetails(index) {
         });
         return;
     }
+
+    // Confirmation dialog
     const confirmation = await Swal.fire({
         title: 'Are you sure?',
         text: 'Do you really want to cancel this order?',
@@ -548,27 +455,34 @@ function toggleDetails(index) {
         confirmButtonText: 'Yes, cancel it!',
         cancelButtonText: 'No, keep it'
     });
+
+    // If user cancels the action, exit
     if (!confirmation.isConfirmed) {
         return;
     }
 
     try {
+        // Disabling button while request is processing
         button.disabled = true;
         button.textContent = 'Cancelling...';
 
-        const response = await fetch(`/orders/${orderId}`, {
-          method: 'POST',
+        const response = await fetch('/cancelOrder', {  // Updated route
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ orderId}),
+            body: JSON.stringify({ orderId })  // Send orderId in the body
         });
 
+        // Check if the response is OK
         if (!response.ok) {
-          throw new Error(`Server error: ${response.status}`);
+            throw new Error(`Server error: ${response.status}`);
         }
 
+        // Process the server response
         const result = await response.json();
+
+        // Update button and UI if cancellation was successful
         button.textContent = 'Cancelled';
         button.classList.remove('btn-danger');
         button.classList.add('btn-secondary');
@@ -583,9 +497,11 @@ function toggleDetails(index) {
         });
 
     } catch (error) {
+        // Handling errors
         button.disabled = false;
         button.textContent = 'Cancel';
-        console.error('Fetch error:', error);  
+        console.error('Fetch error:', error);
+
         Swal.fire({
             title: 'Error!',
             text: 'Something went wrong. Please try again.',
@@ -594,8 +510,7 @@ function toggleDetails(index) {
     }
 }
 
-
-
+        
         async function Repayment(orderId) {
             try {
                 const response = await fetch('/repaymentRazorpay', {
@@ -605,12 +520,12 @@ function toggleDetails(index) {
                     },
                     body: JSON.stringify({ orderId })
                 });
-
+        
                 if (response.ok) {
                     const result = await response.json();
-
+        
                     console.log(result);
-                    
+        
                     if (result.success) {
                         const options = {
                             key: result.key,
@@ -632,14 +547,14 @@ function toggleDetails(index) {
                                         razorpay_signature: response.razorpay_signature
                                     })
                                 });
-
+        
                                 const verifyResult = await verifyResponse.json();
-
+        
                                 if (verifyResult.success) {
                                     Swal.fire({
                                         icon: 'success',
-                                        title: 'payment success',
-                                        text: 'Your payment has been  successfully.',
+                                        title: 'Payment Success',
+                                        text: 'Your payment has been successfully processed.',
                                         confirmButtonText: 'OK',
                                         timer: 2000
                                     }).then(() => {
@@ -662,8 +577,7 @@ function toggleDetails(index) {
                                 color: '#000000'
                             }
                         };
-                        
-
+        
                         const rzp = new Razorpay(options);
                         rzp.open();
                     } else {
@@ -677,7 +591,7 @@ function toggleDetails(index) {
                 } else {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Failed to pay',
+                        title: 'Failed to Pay',
                         text: 'Error fetching payment details. Please try again later.',
                         confirmButtonText: 'OK'
                     });
@@ -687,91 +601,86 @@ function toggleDetails(index) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'An error occurred. try agian later..',
+                    text: 'An error occurred. Try again later.',
                     confirmButtonText: 'OK'
                 });
             }
         }
-
+        
         function handleReturn(orderId, buttonElement) {
-    console.log("Returning order with orderId:", orderId); 
-
-    
-    if (!orderId) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Order ID Missing',
-            text: 'The order ID is missing, please try again.',
-            confirmButtonColor: '#3085d6',
-        });
-        return;
-    }
-
-    Swal.fire({
-        title: "Are you sure?",
-        text: "Do you want to return this order?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, return it!"
-    }).then((result) => {
-        if (result.isConfirmed) {
-
-    
-    fetch('/return-order', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json' 
-        },
-        body: JSON.stringify({ orderId: orderId }) 
-    })
-    .then(response => {
-        console.log("Response from server:", response); 
-        if (!response.ok) {
-            throw new Error("Server error: " + response.statusText);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log("Response data:", data); 
-        if (data.success) {
-            buttonElement.closest('tr').querySelector('.badge').classList.remove('bg-success');
-            buttonElement.closest('tr').querySelector('.badge').classList.add('bg-secondary');
-            buttonElement.closest('tr').querySelector('.badge').textContent = 'Returned';
-            buttonElement.textContent = 'Returned';
-                    buttonElement.disabled = true;
-                    buttonElement.classList.remove('btn-warning');
-                    buttonElement.classList.add('btn-secondary');
+            console.log("Returning order with orderId:", orderId);
+        
+            if (!orderId) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Order ID Missing',
+                    text: 'The order ID is missing, please try again.',
+                    confirmButtonColor: '#3085d6',
+                });
+                return;
+            }
+        
             Swal.fire({
-                icon: 'success',
-                title: 'Order Returned!',
-                text: 'Your order has been successfully returned.',
-                confirmButtonColor: '#28a745',
-            });
-        } else {
-            Swal.fire({
-                        title: "Unable to Return",
-                        // text: "Return period has expired or there was an error processing your return.",
-                        text: data.message || "An error occurred while processing your return.",
-                        icon: "error",
-                        confirmButtonColor: "#d33"
+                title: "Are you sure?",
+                text: "Do you want to return this order?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, return it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+        
+                    fetch('/return-order', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ orderId: orderId })
+                    })
+                    .then(response => {
+                        console.log("Response from server:", response);
+                        if (!response.ok) {
+                            throw new Error("Server error: " + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Response data:", data);
+                        if (data.success) {
+                            buttonElement.closest('tr').querySelector('.badge').classList.remove('bg-success');
+                            buttonElement.closest('tr').querySelector('.badge').classList.add('bg-secondary');
+                            buttonElement.closest('tr').querySelector('.badge').textContent = 'Returned';
+                            buttonElement.textContent = 'Returned';
+                            buttonElement.disabled = true;
+                            buttonElement.classList.remove('btn-warning');
+                            buttonElement.classList.add('btn-secondary');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Order Returned!',
+                                text: 'Your order has been successfully returned.',
+                                confirmButtonColor: '#28a745',
+                            });
+                        } else {
+                            Swal.fire({
+                                title: "Unable to Return",
+                                text: data.message || "An error occurred while processing your return.",
+                                icon: "error",
+                                confirmButtonColor: "#d33"
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error in fetch:", error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Something Went Wrong!',
+                            text: 'There was an issue with processing your request.',
+                            confirmButtonColor: '#dc3545',
+                        });
                     });
+                }
+            });
         }
-    })
-    .catch(error => {
-        console.error("Error in fetch:", error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Something Went Wrong!',
-            text: 'There was an issue with processing your request.',
-            confirmButtonColor: '#dc3545',
-        });
-    });
-}
-})
-}
-
-
-
-    </script>
+        </script>
+        

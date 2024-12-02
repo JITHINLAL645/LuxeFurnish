@@ -1,120 +1,57 @@
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #edf7f8; /* Light cyan background */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
-    
-    .content-main {
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    .card {
-        width: 100%;
-        max-width: 400px;
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        border-top: 5px solid #00796b; /* Teal border at the top */
-    }
-
-    .card-title {
-        text-align: center;
-        font-size: 1.6rem;
-        color: #00796b; /* Teal color */
-        margin-bottom: 20px;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 10px;
-        font-size: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    .btn {
-        width: 100%;
-        padding: 10px;
-        background-color: #00796b; /* Teal button */
-        border: none;
-        border-radius: 4px;
-        color: #ffffff;
-        font-size: 1rem;
-        cursor: pointer;
-    }
-
-    .btn:hover {
-        background-color: #004d40; /* Darker teal when hovered */
-    }
-
-    .error-message {
-        color: #d32f2f; /* Red color for error message */
-        font-size: 0.875rem;
-        margin-top: 0.25rem;
-    }
-
-    .is-invalid {
-        border-color: #d32f2f; /* Red border on invalid input */
-    }
-
-    .text-center {
-        text-align: center;
-    }
-
-    a {
-        color: #00796b; /* Teal links */
-        text-decoration: none;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
-</style>
-
-<section class="content-main">
-    <div class="card">
-        <h4 class="card-title">Email Verification</h4>
-        <form method="" action="" onsubmit="return validateLoginForm()">
-            <div class="mb-3">
-                <input class="form-control" name="email" placeholder="Enter your email" type="text" id="email">
-                <div class="error-message" id="email-error"></div>
-            </div>
-            <div class="mb-4">
-                <button type="submit" class="btn">Verify</button>
-            </div>
-        </form>
-        <p class="text-center">Don't have an account? <a href="/signup">Sign up</a></p>
-    </div>
-</section>
-
-<script>
-    function validateLoginForm() {
-        const emailInput = document.getElementById('email');
-        const emailError = document.getElementById('email-error');
-        const emailValue = emailInput.value.trim();
-        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
-        if (emailValue === '') {
-            emailError.textContent = 'Please enter your email.';
-            emailInput.classList.add('is-invalid');
-            return false;
-        } else if (!emailPattern.test(emailValue)) {
-            emailError.textContent = 'Please enter a valid email address.';
-            emailInput.classList.add('is-invalid');
-            return false;
-        } else {
-            emailError.textContent = '';
-            emailInput.classList.remove('is-invalid');
-            return true;
+const cancelOrder = async (req, res) => {
+    try {
+      const { orderId } = req.params;
+      const userId = req.session.userId;
+      if (!userId) {
+          return res.status(401).json({ message: "Unauthorized" });
+      }
+      const order = await Order.findOne({ orderId, user: userId });
+      if (!order) {
+          return res.status(404).json({ message: "Order not found" });
+      }
+      if (order.orderStatus === 'Cancelled') {
+          return res.status(400).json({ message: "Order is already cancelled" });
+      }
+  
+      if (['Shipped', 'Delivered'].includes(order.orderStatus)) {
+          return res.status(400).json({ message: "Cannot cancel order at this stage" });
+      }
+  
+      order.orderStatus = 'Cancelled';
+      order.orderStatusTimestamps.cancelled = new Date();
+  
+      for (const item of order.items) {
+          await Product.findByIdAndUpdate(item.product, {
+              $inc: { stock: item.quantity }
+          });
+      }
+      if (order.paymentStatus === "Paid") {
+        const refund = order.totalAmount;
+        let wallet = await Wallet.findOne({ user: userId });
+        if (!wallet) {
+          wallet = new Wallet({
+            user: order.user,
+            balanceAmount: 0,
+            wallet_history: [],
+          });
         }
-    }
-</script>
+        wallet.balanceAmount += refund;
+        wallet.wallet_history.push({
+          date: new Date(),
+          amount: refund,
+          description: Refund for cancelled item (Order ID: ${order.orderId}),
+          transactionType: "credited",
+        });
+        await wallet.save();
+      }
+  
+      await order.save();
+  
+      res.status(200).json({ message: "Order cancelled successfully" });
+  } catch (error) {
+      console.error("Error cancelling order:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+  }
+  };
+
+  userRouter.post('/orders/:orderId',isBlockAuth,userAuthentication,orderController.cancelOrder);

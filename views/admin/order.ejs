@@ -13,50 +13,7 @@
 
     <style>
         
-        /* .sidebar {
-            height: 100vh;
-            background-color: #ffbe33;
-            color: #fff;
-            padding-top: 1rem;
-        }
-
-        .sidebar a {
-            color: #fff;
-            text-decoration: none;
-        } 
-
-        .sidebar a:hover {
-            background-color: #071553;
-        }
-
        
-        @media (max-width: 767px) {
-            .sidebar {
-                display: none;
-            }
-        }
-
-       
-        .content {
-            padding: 2rem;
-        }
-
-        
-        .navbar {
-            margin-bottom: 0;
-        }
-
-       
-        .navbar-toggler {
-            border: none;
-        }
-
-        
-        @media (min-width: 768px) {
-            .navbar-collapse {
-                display: none;
-            }
-        }*/
         body {
             background-color: #f8f9fa;
         }
@@ -158,86 +115,12 @@
 
 <body>
 
-    <!-- Navbar for mobile -->
-    <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light d-md-none">
-        <a class="navbar-brand" href="#">Admin Dashboard</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobileNavbar" aria-controls="mobileNavbar" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="mobileNavbar">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="admin/admin_Dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/loaduserMng"><i class="fas fa-users"></i> <span class="sr-only">(current)</span>Users</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/loadProuctPage"><i class="fas fa-box"></i> Products</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Orders</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/categoryPage"><i class="fas fa-sliders-h"></i> Category</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/loadCouponPage"><i class="fas fa-tag"></i> Coupon</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/offer"><i class="fas fa-credit-card"></i> Offer</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/logout"><i class="fas fa-credit-card"></i> Logout</a>
-                </li>
-            </ul>
-        </div>
-    </nav> -->
+   
 
     <div class="container-fluid">
-        <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">Admin Dashboard</a>
-            <div class="collapse navbar-collapse justify-content-end">
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-user"></i> Admin
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="adminDropdown">
-                            <a class="dropdown-item" href="/admin/logout" id="logoutBtn">Logout</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </nav> -->
+       
         <div class="row">
-            <!-- Sidebar for large screens -->
-            <!-- <nav class="col-md-2 sidebar">
-                <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link active" href="/admin/loadAdminDash"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/admin/loaduserMng"><i class="fas fa-users"></i> Users</a></li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin/loadProuctPage"><i class="fas fa-box"></i> Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin/loardOrderMng"><i class="fas fa-shopping-cart"></i> Orders</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="/admin/categoryPage"><i class="fas fa-sliders-h"></i> Category</a></li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin/loadCouponPage" id="couponLink">
-                            <i class="fas fa-tag"></i> Coupon
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin/offer">
-                            <i class="fas fa-credit-card"></i> Offer
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                    </li>
-                </ul>
-            </nav> -->
+           
 
             <!-- Main Content -->
             <div class="col-md-10 content">
@@ -260,29 +143,36 @@
             <% orders.forEach(order => { %>
                 <tr>
                     <td><%= order.orderId %></td>
-                    <td><%= order.createdAt.toLocaleDateString() %></td>
+                    <td>
+                        <%= order.createdAt && !isNaN(Date.parse(order.createdAt)) 
+                            ? new Date(order.createdAt).toLocaleDateString() 
+                            : 'Invalid Date' %>
+                    </td>
                     <td><%= order.user ? order.user.name : 'N/A' %></td>
-                    <td>$<%= order.totalAmount.toFixed(2) %></td>
+                    <td>
+                        $<%= order.totalAmount && !isNaN(order.totalAmount) ? order.totalAmount.toFixed(2) : '0.00' %>
+                    </td>
                     <td><%= order.paymentMethod %></td>
                     
                     <td>
-                        <!-- <select class="form-control status-select" data-order-id="<%= order._id %>" <%= order.orderStatus === 'Cancelled' ? 'disabled' : '' %>> -->
-                            <select class="form-control status-select" data-order-id="<%= order._id %>" <%= (order.orderStatus === 'Cancelled' || order.orderStatus === 'Returned') ? 'disabled' : '' %>>
+                        <select class="form-control status-select" data-order-id="<%= order._id %>" 
+                                <%= (order.orderStatus === 'Cancelled' || order.orderStatus === 'Returned') ? 'disabled' : '' %>>
                             <option value="Pending" <%= order.orderStatus === 'Pending' ? 'selected' : '' %>>Pending</option>
                             <option value="Processing" <%= order.orderStatus === 'Processing' ? 'selected' : '' %>>Processing</option>
                             <option value="Shipped" <%= order.orderStatus === 'Shipped' ? 'selected' : '' %>>Shipped</option>
                             <option value="Delivered" <%= order.orderStatus === 'Delivered' ? 'selected' : '' %>>Delivered</option>
-                            <option value="Cancelled" <%= order.orderStatus === 'Cancelled' ? 'selected' : '' %> <%= order.orderStatus === 'Cancelled' ? 'disabled' : '' %>>Cancelled</option>
+                            <option value="Cancelled" <%= order.orderStatus === 'Cancelled' ? 'selected' : '' %> 
+                                <%= order.orderStatus === 'Cancelled' ? 'disabled' : '' %>>Cancelled</option>
                             <option value="Returned" <%= order.orderStatus === 'Returned' ? 'selected' : '' %> disabled>Returned</option>
-    
                         </select>
                     </td>
                     <td>
                         <a href="/admin/orders/<%= order._id %>" class="btn btn-info btn-sm">View Details</a>
                     </td>
-                </tr>
+                    
             <% }); %>
-           </tbody>
+        </tbody>
+        
         </table>
          </div>
     </div>

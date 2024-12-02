@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Edit Products</title>
+        <link rel="shortcut icon" href="/images/iconshoe.jpg" type>
+        <link rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <style>
+        /* Form container styling */
+        .form-container {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+
+        .form-container h2 {
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .form-container label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-container .form-control {
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: -0.25rem 1.25rem;
+        }
+
+        .form-container .btn-submit {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 0.75rem 1.25rem;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .form-container .btn-submit:hover {
+            background-color: #0056b3;
+            color: #fff;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 767px) {
+            .form-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+    </head>
+
+    <body>
+        <section>
+            <div class="container mt-4">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-6">
+                        <div class="form-container p-4 shadow-sm rounded bg-light">
+                            <h2 class="text-center mb-4">Edit Product</h2>
+                            <form id="editProductForm" action="/admin/editProduct/<%= Product._id %>" method="post" enctype="multipart/form-data">
+                                
+                                <!-- Product Name -->
+                                <div class="form-group">
+                                    <label for="name">Product Name</label>
+                                    <input type="text" id="name" name="productName" class="form-control" value="<%= Product.productname %>" required>
+                                </div>
+    
+                                <!-- Category -->
+                                <div class="form-group">
+                                    <label for="category">Category</label>
+                                    <select id="category" name="Category_id" class="form-control" required>
+                                        <option value="<%= Product.category_id._id %>"><%= Product.category_id.category_name %></option>
+                                        <% Category.forEach((category) => { %>
+                                            <% if(category.category_name != Product.category_id.category_name){ %>
+                                            <option value="<%= category._id %>"><%= category.category_name %></option>
+                                            <% } %>
+                                        <% }) %>
+                                    </select>
+                                </div>
+    
+                                <!-- Price, Stock, Description -->
+                                <div class="form-group">
+                                    <label for="price">Price</label>
+                                    <input type="number" id="price" name="price" class="form-control" value="<%= Product.price %>" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="stock">Stock</label>
+                                    <input type="number" id="stock" name="stock" class="form-control" value="<%= Product.stock %>" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <textarea id="description" name="description" class="form-control" rows="3" required><%= Product.description %></textarea>
+                                </div>
+    
+                                <!-- Images -->
+                                <div class="form-group">
+                                    <label for="image1">Image 1</label>
+                                    <img src="<%= Product.images[0] %>" alt="Image 1" class="img-thumbnail mt-2" id="imgview1" style="width: 100px; height: auto;">
+                                    <input type="file" name="image1" class="form-control mt-2" onchange="viewImage(event, 'imgview1')">
+                                </div>
+    
+                                <div class="form-group">
+                                    <label for="image2">Image 2</label>
+                                    <img src="<%= Product.images[1] %>" alt="Image 2" class="img-thumbnail mt-2" id="imgview2" style="width: 100px; height: auto;">
+                                    <input type="file" name="image2" class="form-control mt-2" onchange="viewImage(event, 'imgview2')">
+                                </div>
+    
+                                <div class="form-group">
+                                    <label for="image3">Image 3</label>
+                                    <img src="<%= Product.images[2] %>" alt="Image 3" class="img-thumbnail mt-2" id="imgview3" style="width: 100px; height: auto;">
+                                    <input type="file" name="image3" class="form-control mt-2" onchange="viewImage(event, 'imgview3')">
+                                </div>
+    
+                                <div class="form-group">
+                                    <label for="image4">Image 4</label>
+                                    <img src="<%= Product.images[3] %>" alt="Image 4" class="img-thumbnail mt-2" id="imgview4" style="width: 100px; height: auto;">
+                                    <input type="file" name="image4" class="form-control mt-2" onchange="viewImage(event, 'imgview4')">
+                                </div>
+                                <!-- specification Button -->
+
+                                <!-- Button to trigger modal -->
+<button type="button" class="btn btn-secondary" onclick="openSpecModal()">Add Spec</button>
+
+<!-- Hidden input to store specifications in JSON format -->
+<input type="hidden" id="specificationsInput" name="specifications" />
+
+<!-- Modal for adding specifications -->
+<div class="modal fade" id="specModal" tabindex="-1" aria-labelledby="specModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="specModalLabel">Add Specification</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="specKey">Specification Name</label>
+          <input type="text" id="specKey" class="form-control" placeholder="e.g., Color" />
+        </div>
+        <div class="form-group">
+          <label for="specValue">Specification Value</label>
+          <input type="text" id="specValue" class="form-control" placeholder="e.g., Red" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="addSpec()">Add Specification</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section to display added specifications -->
+<div id="specificationsDisplay" class="mt-3">
+  <h5>Specifications</h5>
+  <ul id="specList" class="list-group">
+    <!-- Added specifications will be displayed here -->
+  </ul>
+</div>
+
+<!-- Hidden input to store specifications as JSON for form submission -->
+<input type="hidden" id="specificationsInput" name="specifications">
+
+<script>
+  // Array to hold specifications
+  let specifications = [];
+
+  // Open the modal to add specifications
+  function openSpecModal() {
+    $('#specModal').modal('show');
+  }
+
+  // Add a specification
+  function addSpec() {
+    const specKey = document.getElementById('specKey').value;
+    const specValue = document.getElementById('specValue').value;
+
+    if (specKey && specValue) {
+      // Add the new spec to the array
+      specifications.push({ key: specKey, value: specValue });
+
+      // Update the hidden input field with the specifications JSON
+      document.getElementById('specificationsInput').value = JSON.stringify(specifications);
+
+      // Display the added spec in the UI
+      const specList = document.getElementById('specList');
+      const listItem = document.createElement('li');
+      listItem.className = 'list-group-item';
+      listItem.innerText = `${specKey}: ${specValue}`;
+      specList.appendChild(listItem);
+
+      // Clear the input fields
+      document.getElementById('specKey').value = '';
+      document.getElementById('specValue').value = '';
+
+      // Close the modal
+      $('#specModal').modal('hide');
+    } else {
+      alert('Please fill out both fields');
+    }
+  }
+</script>
+
+                                
+    
+                                <!-- Submit Button -->
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary btn-block mt-4">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- JavaScript Libraries -->
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+            <script>
+                // Function to preview image on selection
+                function viewImage(event, imgId) {
+                    document.getElementById(imgId).src = URL.createObjectURL(event.target.files[0]);
+                }
+    
+                // Optional: Edit product confirmation with SweetAlert (Uncomment if needed)
+                // document.getElementById('editProductForm').addEventListener('submit', function(event) {
+                //     event.preventDefault();
+                //     Swal.fire({
+                //         title: 'Are you sure?',
+                //         text: "Do you want to save the changes to this product?",
+                //         icon: 'warning',
+                //         showCancelButton: true,
+                //         confirmButtonColor: '#146a0f',
+                //         cancelButtonColor: '#d33',
+                //         confirmButtonText: 'Yes, save it!'
+                //     }).then((result) => {
+                //         if (result.isConfirmed) {
+                //             Swal.fire(
+                //                 'Saved!',
+                //                 'Product details have been updated.',
+                //                 'success'
+                //             );
+                //             setTimeout(() => {
+                //                 event.target.submit();
+                //             }, 1000);
+                //         }
+                //     });
+                // });
+            </script>
+        </section>
+    </body>
+    
+
+</html>
