@@ -133,13 +133,40 @@
                   <span class="qty-minus" onclick="updateQuantity('<%= item.product._id %>', -1, '<%= item.product.price %>')">
                     <i class="fa fa-minus" aria-hidden="true"></i>
                   </span>
-                  <input type="number" class="qty-text" id="qty<%= item.product._id %>" step="1" min="1" max="300" name="quantity" value="<%= item.quantity %>" onchange="updateQuantity('<%= item.product._id %>', 0, this.value, '<%= item.product.price %>')">
-                  <span class="qty-plus" onclick="updateQuantity('<%= item.product._id %>', 1, '<%= item.product.price %>')">
+                  <input type="number" class="qty-text" id="qty<%= item.product._id %>" step="1" min="1" max="5" name="quantity" value="<%= item.quantity %>" onchange="updateQuantity('<%= item.product._id %>', 0, this.value, '<%= item.product.price %>')">
+                  <span class="qty-plus" onclick="increaseQuantity('<%= item.product._id %>', '<%= item.product.price %>')">
                     <i class="fa fa-plus" aria-hidden="true"></i>
                   </span>
                 </div>
               </div>
             </td>
+            
+            <script>
+              function increaseQuantity(productId, price) {
+                const qtyInput = document.getElementById('qty' + productId);
+                let currentQty = parseInt(qtyInput.value);
+            
+                if (currentQty < 5) {
+                  updateQuantity(productId, 1, price);
+                } else {
+                  alert('Maximum quantity is 5.');
+                }
+              }
+            
+              function updateQuantity(productId, change, price) {
+                const qtyInput = document.getElementById('qty' + productId);
+                let currentQty = parseInt(qtyInput.value);
+            
+                if (change === 1 && currentQty < 5) {
+                  qtyInput.value = currentQty + 1;
+                } else if (change === -1 && currentQty > 1) {
+                  qtyInput.value = currentQty - 1;
+                }
+            
+                // Logic for updating total price, etc.
+              }
+            </script>
+            
             <script>
                 function updateQuantity(productId, change, newValue, pricePerItem) {
                   const qtyInput = document.getElementById('qty' + productId);

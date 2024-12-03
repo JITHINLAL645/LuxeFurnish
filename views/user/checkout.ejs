@@ -26,6 +26,9 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
             rel="stylesheet">
 
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.9/dist/sweetalert2.all.min.js"></script>
+
         <style>
         /* Global Styles */
         body {
@@ -337,6 +340,8 @@
 
 
     </style>
+    <!-- SweetAlert2 CDN -->
+
     </head>
 
     <body>
@@ -464,20 +469,20 @@
                             <h3 class="card-title">Select Payment Method</h3>
 
                             <!-- Payment Method Radio Buttons -->
-                            <div class="form-check">
+                            <!-- <div class="form-check">
                                 <input class="form-check-input" type="radio"
                                     name="paymentMethod" id="razorpay"
                                     value="razorpay" required>
                                 <label class="form-check-label"
                                     for="razorpay">Razorpay</label>
-                            </div>
-                            <div class="form-check">
+                            </div> -->
+                            <!-- <div class="form-check">
                                 <input class="form-check-input" type="radio"
                                     name="paymentMethod" id="wallet"
                                     value="wallet" required>
                                 <label class="form-check-label"
                                     for="wallet">Wallet</label>
-                            </div>
+                            </div> -->
                             <div class="form-check">
                                 <input class="form-check-input" type="radio"
                                     name="paymentMethod" id="cashOnDelivery"
@@ -510,9 +515,7 @@
                     </div>
 
                     <script>
-                // Function to validate address selection and payment method
                 document.getElementById('placeOrderBtn').addEventListener('click', function(event) {
-                  // Validate Address Selection
                   const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
                   if (!selectedAddress) {
                     alert("Please select a shipping address.");
@@ -520,7 +523,6 @@
                     return;
                   }
         
-                  // Validate Payment Method Selection
                   const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
                   if (!selectedPaymentMethod) {
                     alert("Please select a payment method.");
@@ -528,34 +530,27 @@
                     return;
                   }
         
-                  // Get the selected address details and pass it as JSON to the hidden field
                   const addressId = selectedAddress.value;
                   const selectedAddressDetails = addresses.find(address => address._id === addressId);
         
-                  // If address found, update the hidden deliveryAddress input
                   if (selectedAddressDetails) {
                     document.getElementById('deliveryAddress').value = JSON.stringify(selectedAddressDetails);
                   }
         
-                  // Calculate total and update hidden totalAmount input
                   const subtotal = parseFloat("<%= totalAmount %>");
                   const deliveryFee = 50.00;
                   const total = subtotal + deliveryFee;
         
-                  // Update the hidden totalAmount input
                   document.getElementById('totalAmount').value = total.toFixed(2);
                 });
               </script>
 
                     <script>
                 document.addEventListener('DOMContentLoaded', function() {
-                  // Retrieve the subtotal and total from localStorage
                   const subtotal = localStorage.getItem('subtotal');
                   const total = localStorage.getItem('total');
         
-                  // Ensure the values exist before updating the DOM
                   if (subtotal && total) {
-                    // Update the checkout page with these values
                     document.getElementById('checkout-subtotal').innerText = subtotal;
                     document.getElementById('checkout-total').innerText = total;
                   }

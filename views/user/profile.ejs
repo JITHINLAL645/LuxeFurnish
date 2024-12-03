@@ -277,6 +277,58 @@ button[type="submit"]:hover {
         width: 90%;
     }
 }
+/* General List Styling */
+ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+    display: flex; /* Flexbox for horizontal layout */
+    justify-content: flex-start; /* Align links to the start */
+}
+
+/* List Item Styling */
+li {
+    margin-right: 15px; /* Spacing between items */
+}
+
+/* Link Styling */
+li a {
+    display: inline-block; /* Make it behave like a button */
+    text-decoration: none; /* Remove underline */
+    padding: 12px 30px; /* Add padding for a better clickable area */
+    background: linear-gradient(135deg, #ff7a7a, #ff4141); /* Gradient background */
+    color: white; /* Text color */
+    font-size: 16px; /* Font size */
+    font-weight: bold; /* Bold text */
+    border-radius: 50px; /* Fully rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    transition: transform 0.3s ease, background-color 0.3s ease; /* Smooth hover effect */
+}
+
+/* Hover Effect */
+li a:hover {
+    background-color: #ff4141; /* Solid color on hover */
+    transform: translateY(-3px); /* Slight lift effect on hover */
+}
+
+/* Active/Selected Link Styling */
+li a.active {
+    background-color: #333; /* Darker background for active link */
+    color: #fff; /* White text for active link */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    ul {
+        flex-direction: column; /* Stack items vertically on smaller screens */
+        align-items: flex-start;
+    }
+
+    li {
+        margin-bottom: 10px; /* Add margin below list items */
+    }
+}
+
 
 
 
@@ -284,23 +336,32 @@ button[type="submit"]:hover {
     </head>
     <body>
         <section class="profile-section">
+
             <div class="container">
+
                 <div class="profile-header">
                     <h2>User Profile</h2>
-                    <form action="/userlogout" method="post">
-                        <button class="logout-button">Logout</button>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="order">Orders</a></li>
+                    
 
+
+                    <form action="/userlogout" method="post">
+                        
+                        <button class="logout-button">Logout</button>
+                        
                     </form>
 
+                    
+
                 </div>
+                
 
                 <div class="profile-info">
-
                     <h3>General Information</h3>
                     <p><strong>Username:</strong> <%= user.name %></p>
                     <p><strong>Email:</strong> <%= user.email %></p>
-                    <p><strong>Phone:</strong> <%= user.phone %></p>
-
+                    <p><strong>Phone:</strong> <%= user.phoneNumber %></p>
                 </div>
 
             </div>

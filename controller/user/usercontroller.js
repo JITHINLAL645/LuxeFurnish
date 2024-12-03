@@ -154,17 +154,14 @@ const LoadHomepage = async (req, res) => {
   };
 
   try {
-    // Assuming 'Category' is a mongoose model for categories
     const Category = await category.find({ isDeleted: false }).lean();
 
-    // Use 'Product' instead of 'product' (capital P)
     const totalProducts = await Product.countDocuments({ isDelete: false });
     const totalPages = Math.ceil(totalProducts / limit);
 
     const user = await User.findById(req.session?.passport?.user);
     console.log(user);
 
-    // Again, use 'Product' instead of 'product'
     const Products = await Product.find({ isDelete: false })
       .populate('offer')
       .skip(skip)
@@ -173,8 +170,8 @@ const LoadHomepage = async (req, res) => {
 
     res.render('user/home', {
       user: user,
-      Category: Category,  // Correctly use 'Category' (not 'category')
-      products: Products,  // Ensure the correct products array is passed
+      Category: Category,  
+      products: Products, 
       currentPage: page,
       totalPages: totalPages,
     });
@@ -1291,7 +1288,6 @@ const placeorder = async (req, res) => {
 
   } catch (error) {
     console.error('Error placing order:', error);
-    // Send an error response
     res.status(500).json({
       message: 'Failed to place order',
       error: error.message
@@ -1301,45 +1297,37 @@ const placeorder = async (req, res) => {
 
 const cancelOrder = async (req, res) => {
   try {
-    const { orderId } = req.body;  // Make sure to get orderId from body
+    const { orderId } = req.body;  
     const userId = req.session.userId;
 
-    // Check if the user is logged in
     if (!userId) {
         return res.status(401).json({ message: "Unauthorized" });
     }
 
-    // Find the order by orderId and userId
     const order = await Order.findOne({ _id: orderId, user: userId });
     if (!order) {
         return res.status(404).json({ message: "Order not found" });
     }
 
-    // Check if the order is already cancelled
     if (order.orderStatus === 'Cancelled') {
         return res.status(400).json({ message: "Order is already cancelled" });
     }
 
-    // Check if the order status is either Shipped or Delivered
     if (['Shipped', 'Delivered'].includes(order.orderStatus)) {
         return res.status(400).json({ message: "Cannot cancel order at this stage" });
     }
 
-    // Update the order status to 'Cancelled'
     order.orderStatus = 'Cancelled';
     order.orderStatusTimestamps.cancelled = new Date();
 
-    // Loop through each item in the order and update the product stock
     for (const item of order.items) {
         await Product.findByIdAndUpdate(item.product, {
             $inc: { stock: item.quantity }
         });
     }
 
-    // Save the updated order status
     await order.save();
 
-    // Send a success response
     res.status(200).json({ message: "Order cancelled successfully", redirect: "/orderHistory" });
 
   } catch (error) {
