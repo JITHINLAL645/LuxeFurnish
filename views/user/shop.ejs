@@ -19,12 +19,240 @@
     <link rel="stylesheet" href="style.css">
     
     <style>
+
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -220px;
+    margin-left: -15px;
+
+}
         .custom-control-label{
             color: #959595;
         }
+
+        /* Product Card Styling */
+.single-product-wrapper {
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  margin-bottom: 30px;
+}
+
+.single-product-wrapper:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.product-img {
+  position: relative;
+  overflow: hidden;
+  height: 350px;
+}
+
+.product-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-img:hover img {
+  transform: scale(1.1);
+}
+
+.product-hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 18px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.product-img:hover .product-hover-overlay {
+  opacity: 1;
+}
+
+.product-description {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #ddd;
+  text-align: center;
+}
+
+.product-price {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+}
+
+.product-name {
+  font-size: 18px;
+  font-weight: normal;
+  color: #333;
+  text-decoration: none;
+  margin: 10px 0;
+  transition: color 0.3s ease;
+}
+
+.product-name:hover {
+  color: #007bff;
+}
+
+.ratings {
+  color: #f39c12;
+}
+
+.ratings i {
+  font-size: 18px;
+}
+
+.add-to-cart-btn {
+  background-color: #ffffff;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #c9d2dc;
+}
+
+.cart img {
+  width: 22px;
+  height: 22px;
+}
+
+@media (max-width: 1200px) {
+  .col-lg-6 {
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 992px) {
+  .col-md-6 {
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .col-sm-6 {
+    max-width: 100%;
+  }
+}
+
+
+
+
+
+
+/* General Navbar styles */
+nav {
+    background-color: #2c3e50;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.navbar-brand {
+    flex-grow: 1;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.brand-link {
+    color: #ff6347; /* Set a solid color without animation */
+    font-size: 28px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+ul {
+    display: flex;
+    list-style-type: none;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-links {
+    flex-grow: 2;
+    display: flex;
+    justify-content: center;
+    margin-right: 300px;
+}
+
+li {
+    display: inline-block;
+}
+
+a {
+    text-decoration: none;
+    color: #8eb3bc;
+    font-size: 18px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #e74c3c;
+}
+
+@media (max-width: 768px) {
+    ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navbar-brand {
+        text-align: left;
+        flex-grow: 0;
+    }
+
+    .navbar-links {
+        justify-content: center;
+    }
+}
+
+
     </style>
 
 </head>
+<nav>
+    <div class="navbar-brand">
+        <a class="navbara" href="/" style="color: #ffffff; margin-left: 30px;  font-size: 28px; font-weight: bold; text-decoration: none; 
+        background-image: linear-gradient(to right, #ff6347, #ffbd00); 
+        background-clip: text; -webkit-background-clip: text; color: transparent; 
+        transition: transform 0.3s ease, text-shadow 0.3s ease;">
+        LuxeFurnish
+    </a>    </div>
+    <ul class="navbar-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="cart">Cart</a></li>
+
+                <li><a href="/order">Orders</a></li>
+                <li><a href=""> wishlist</a></li>
+                <li><a href=""> Wallet</a></li>
+    </ul>
+</nav>
+
 
 <body>
     <!-- Search Wrapper Area Start -->
@@ -63,30 +291,29 @@
         </div>
 
         <!-- Header Area Start -->
-        <header class="header-area clearfix">
+        <!-- <header class="header-area clearfix"> -->
             <!-- Close Icon -->
-            <div class="nav-close">
+            <!-- <div class="nav-close">
                 <i class="fa fa-close" aria-hidden="true"></i>
-            </div>
+            </div> -->
             <!-- Logo -->
             <!-- <div class="logo">
                 <a href="index.html"><img src="img/core-img/logo.png" alt=""></a>
             </div> -->
             <!-- Amado Nav -->
-            <nav class="amado-nav">
+            <!-- <nav class="amado-nav">
                 <ul>
                     <li><a href="/">Home</a></li>
                     <li class="active"><a href="shop">Shop</a></li>
-                    <!-- <li><a href="productdetails">Product</a></li> -->
                     <li><a href="cart">Cart</a></li>
                     <li><a href="checkout">Checkout</a></li>
                 </ul>
-            </nav>
+            </nav> -->
             <!-- Button Group -->
-            <div class="amado-btn-group mt-30 mb-100">
-                <!-- <a href="#" class="btn amado-btn mb-15">%Discount%</a>
-                <a href="#" class="btn amado-btn active">New this week</a> -->
-            </div>
+            <!-- <div class="amado-btn-group mt-30 mb-100">
+                <a href="#" class="btn amado-btn mb-15">%Discount%</a>
+                <a href="#" class="btn amado-btn active">New this week</a>
+            </div> -->
             <!-- Cart Menu -->
             <!-- <div class="cart-fav-search mb-100"> -->
                 <!-- <a href="Cart" class="cart-nav"><img src="img/core-img/cart.png" alt=""> Cart <span>(0)</span></a> -->
@@ -94,30 +321,22 @@
                 <a href="#" class="search-nav"><img src="img/core-img/search.png" alt=""> Search</a> -->
             <!-- </div> -->
             <!-- Social Button -->
-            <div class="social-info d-flex justify-content-between">
+            <!-- <div class="social-info d-flex justify-content-between">
                 <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
                 <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
                 <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
                 <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-            </div>
-        </header>
+            </div> -->
+        <!-- </header> -->
         <!-- Header Area End -->
 
         <div class="shop_sidebar_area">
-
-            <!-- ##### Single Widget ##### -->
-         
-
             <div class="widget sort_by mb-50">
                 <!-- Widget Title -->
                 <h6 class="widget-title mb-30">Sort By</h6>
                 <div class="widget-desc">
                     <form id="sortForm" action="/shop" method="get">
-                        <!-- Popularity -->
-                        <!-- <div class="custom-control custom-radio mb-3">
-                            <input type="radio" id="sortPopularity" name="sort_by" class="custom-control-input" value="popularity">
-                            <label class="custom-control-label" for="sortPopularity">Popularity</label>
-                        </div> -->
+                       
                         <!-- Price Low to High -->
                         <div class="custom-control custom-radio mb-3">
                             <input type="radio" id="sortPriceLowToHigh" name="sort_by" class="custom-control-input" value="price_low_to_high">
@@ -128,17 +347,7 @@
                             <input type="radio" id="sortPriceHighToLow" name="sort_by" class="custom-control-input" value="price_high_to_low">
                             <label class="custom-control-label" for="sortPriceHighToLow">Price: High to Low</label>
                         </div>
-                        <!-- Average Ratings -->
-                        <!-- <div class="custom-control custom-radio mb-3">
-                            <input type="radio" id="sortAverageRatings" name="sort_by" class="custom-control-input" value="average_ratings">
-                            <label class="custom-control-label" for="sortAverageRatings">Average Ratings</label>
-                        </div> -->
-                        <!-- Featured -->
-                        <!-- <div class="custom-control custom-radio mb-3">
-                            <input type="radio" id="sortFeatured" name="sort_by" class="custom-control-input" value="featured">
-                            <label class="custom-control-label" for="sortFeatured">Featured</label>
-                        </div> -->
-                        <!-- New Arrivals -->
+                       
                         <div class="custom-control custom-radio mb-3">
                             <input type="radio" id="sortNewArrivals" name="sort_by" class="custom-control-input" value="new_arrivals">
                             <label class="custom-control-label" for="sortNewArrivals">New Arrivals</label>
@@ -160,11 +369,9 @@
                 
             </div>
 
-            <div class="widget catagory mb-50">
-                <!-- Widget Title -->
+            <!-- <div class="widget catagory mb-50">
                 <h6 class="widget-title mb-30">Catagories</h6>
 
-                <!--  Catagories  -->
                 <div class="catagories-menu">
                     <ul>
                         <li class="active"><a href="#">Chairs</a></li>
@@ -176,7 +383,7 @@
                         <li><a href="#">Tables</a></li>
                     </ul>
                 </div>
-            </div>
+            </div> -->
             
            
                         
@@ -217,27 +424,7 @@
                             </div>
                             <!-- Sorting -->
                             <div class="product-sorting d-flex">
-                                <!-- <div class="sort-by-date d-flex align-items-center mr-15">
-                                    <p>Sort by</p>
-                                    <form action="#" method="get">
-                                        <select name="select" id="sortBydate">
-                                            <option value="value">Date</option>
-                                            <option value="value">Newest</option>
-                                            <option value="value">Popular</option>
-                                        </select>
-                                    </form>
-                                </div> -->
-                                <!-- <div class="view-product d-flex align-items-center">
-                                    <p>View</p>
-                                    <form action="#" method="get">
-                                        <select name="select" id="viewProduct">
-                                            <option value="value">12</option>
-                                            <option value="value">24</option>
-                                            <option value="value">48</option>
-                                            <option value="value">96</option>
-                                        </select>
-                                    </form>
-                                </div> -->
+                               
                             </div>
                         </div>
                     </div>
@@ -246,29 +433,33 @@
                 <div class="row">
                     <!-- Single Product Area -->
                     <% products.forEach(product => { %>
-                      <div class="col-12 col-sm-6 col-md-12 col-xl-6">
+                      <div class="col-12 col-md-6 col-lg-6 col-xl-6">
                         <div class="single-product-wrapper">
                           <!-- Product Image -->
                           <a href="/productdetails/<%= product._id %>">
-                            <div class="product-img">
-                              <img src="<%= product.images[0] %>" alt="">
+                            <div class="product-img position-relative">
+                              <img src="<%= product.images[0] %>" alt="<%= product.productname %>" class="img-fluid">
                               <!-- Hover Thumb -->
                               <!-- <img class="hover-img" src="<%= product.images[1] %>" alt=""> -->
+                              <div class="product-hover-overlay">
+                                <span>Quick View</span>
+                              </div>
                             </div>
                           </a>
                   
                           <!-- Product Description -->
-                          <div class="product-description d-flex align-items-center justify-content-between">
+                          <div class="product-description d-flex flex-column justify-content-between p-4">
                             <!-- Product Meta Data -->
                             <div class="product-meta-data">
                               <div class="line"></div>
-                              <p class="product-price">$<%= product.price %></p>
+                              <p class="product-price text-primary">$<%= product.price %></p>
                               <a href="/productdetails/<%= product._id %>">
-                                <h6><%= product.productname %></h6>
+                                <h6 class="product-name text-truncate"><%= product.productname %></h6>
                               </a>
                             </div>
+                  
                             <!-- Ratings & Cart -->
-                            <div class="ratings-cart text-right">
+                            <div class="ratings-cart text-right d-flex justify-content-between align-items-center">
                               <div class="ratings">
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -278,8 +469,8 @@
                               </div>
                               <div class="cart">
                                 <form action="/addtocart/<%= product._id %>" method="POST">
-                                  <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="left" title="Add to Cart">
-                                    <img src="img/core-img/cart.png" alt="">
+                                  <button type="submit" class="btn btn-primary add-to-cart-btn" data-toggle="tooltip" data-placement="left" title="Add to Cart">
+                                    <img src="img/core-img/cart.png" alt="Add to Cart">
                                   </button>
                                 </form>
                               </div>
@@ -290,11 +481,11 @@
                     <% }) %>
                   </div>
                   
+                  
 
-                <div class="row">
                     <div class="col-12">
                         <!-- Pagination -->
-                        <nav aria-label="navigation">
+                        <nav aria-label="navigation" style="background-color: #fff; box-shadow: #fff;">
                             <ul class="pagination justify-content-end mt-50">
                                 <li class="page-item active"><a class="page-link" href="#">01.</a></li>
                                 <li class="page-item"><a class="page-link" href="#">02.</a></li>
@@ -303,7 +494,7 @@
                             </ul>
                         </nav>
                     </div>
-                </div>
+                
             </div>
         </div>
     </div>
