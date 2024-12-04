@@ -10,6 +10,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
+import crypto from 'crypto';
+
 
 // function generateOtp(){
 //   const digits="1234567890"
@@ -1337,6 +1339,111 @@ const cancelOrder = async (req, res) => {
 };
 
 
+const loadForgot = async (req,res)=>{
+  res.render('user/forgotPassword')
+}
+
+
+const post_ResetPage = async (req, res) => {
+  const { email } = req.body;
+  
+  const user = await User.findOne({ email });
+  if (!user) {
+      return res.status(404).json({ error: 'No user with that email found.' });
+  }
+
+  
+  const token = crypto.randomBytes(20).toString('hex');
+  
+
+ 
+  res.cookie('resetToken', token, {
+      httpOnly: true,
+      maxAge: 2 * 60 * 1000, 
+      secure: false 
+  });
+  res.cookie('resetEmail', email, {
+      httpOnly: true,
+      maxAge: 2 * 60 * 1000, 
+      secure: false 
+  });
+
+ 
+  const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+          user: process.env.NODEMAILER_EMAIL,
+          pass: process.env.NODEMAILER_PASSWORD
+      }
+  });
+
+  // Email options
+  const mailOptions = {
+      to: user.email,
+      from: process.env.NODEMAILER_EMAIL,
+      subject: 'Password Reset',
+      text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n
+      Please click on the following link, or paste this into your browser to complete the process:\n\n
+      http://localhost:3000/getRestPassword/${token}\n
+      If you did not request this, please ignore this email and your password will remain unchanged.\n`
+  };
+
+  
+  transporter.sendMail(mailOptions, (err) => {
+      if (err) {
+          console.error('Error sending email:', err);
+          return res.status(500).json({ error: 'There was an error sending the email. Please try again.' });
+      }
+      return res.status(200).json({ success: true, message: 'Password reset email sent.' });
+  });
+};
+
+
+const get_RestPassword = async (req, res) => {
+  try {
+      const { token } = req.params;
+      const resetToken = req.cookies.resetToken;
+
+      if (!resetToken) {
+          return res.status(400).send('Reset token cookie not found. It may have expired.');
+      }
+
+      if (resetToken !== token) {
+          return res.render('user/error'); 
+      }
+      
+      res.render('user/changepwd');
+  } catch (error) {
+      console.error('Error in get_RestPassword:', error);
+      res.status(500).send('An error occurred while processing your request.');
+  }
+};
+
+
+const postResetPassword = async (req, res) => {
+  try {
+      const { newPassword } = req.body;
+      const resetEmail = req.cookies.resetEmail;
+      
+      const user = await User.findOne({email:resetEmail});
+      if (!user) {
+          return res.json({success:false})
+      }
+  
+      const hashedPassword = await bcrypt.hash(newPassword, 12);
+      user.password = hashedPassword;
+  
+      
+      await user.save();
+  res.json({success:true})
+  } catch (error) {
+     console.log(error) 
+  }
+  
+};
+
+
+
 export {
   LoadHomepage,
   // pageNotFound, 
@@ -1367,5 +1474,9 @@ export {
   successpage,
   getOrder,
   placeorder,
-  cancelOrder
+  cancelOrder,
+  loadForgot,
+  post_ResetPage,
+  get_RestPassword,
+  postResetPassword
 };

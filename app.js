@@ -10,6 +10,8 @@ import adminRouter from './routes/adminRouter.js';
 import MongoStore from 'connect-mongo';
 import passport from "./config/passport.js";
 import methodOverride from 'method-override';
+import cookieParser from 'cookie-parser';
+
 // import connectMongo from 'connect-mongo';
 // import commonFunctions from './common_functions.js'; // ES Module
 
@@ -24,6 +26,7 @@ dotenv.config();
 
 const app = express();
 app.use(methodOverride('_method'));
+app.use(cookieParser());
 
 
 app.use((req, res, next) => {
