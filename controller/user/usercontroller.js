@@ -11,86 +11,11 @@ dotenv.config();
 import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import crypto from 'crypto';
-
-
-// function generateOtp(){
-//   const digits="1234567890"
-//   let otp="";
-//   for(let i=0;i<6;i++){
-//     otp+=digits[Math.floor(Math.random()*10)]
-//   }
-//   return otp;
-// }
-
-// const sendVerificationEmail=async(email,otp)=>{
-//   try {
-//     const transporter = nodemailer.createTransport({
-//       service: "gmail",
-//       port: 587,
-//       secure: false,
-//       requireTLS: true,
-//       auth: {
-//         user: process.env.NODEMAILER_EMAIL,
-//         pass: process.env.NODEMAILER_PASSWORD,
-//       }
-//     });
-//     const mailOptions={
-//       from:process.env.NODEMAILER_EMAIL,
-//       to:email,
-//       subject:"your OTP for password reset",
-//       text:`your OTP is{otp}`,
-//       html:`<b><h4> your OTP ${otp}</h4><br></b>`
-//     }
-//     const info=await transporter.sendMail(mailOptions);
-//     console.log(("Email send",info.messageId));
-//     return true
-
-
-//   } catch (error) {
-//     console.error("Error sending email")
-//     return false
-
-//   }
-// }
+import Razorpay from 'razorpay';
 
 
 
 
-// const getforgotpassword =async(res,req)=>{
-//   try {
-//     res.render("forgot-password")
-
-//   } catch (error) {
-//     res.redirect("/pagenotfound")
-
-//   }
-// }
-// const forgotEmailValid =async(req,res)=>{
-//   try {
-
-//     const {email}= req.body
-//     const findUser=await User.findOne({email:email});
-//     if(findUser){
-//       const otp=generateOtp();
-//       const emailSend=await sendVerificationEmail(email,otp);
-//       if(emailSend){
-//         req.session.passport.user=otp;
-//         req.session.passport.user=email;
-//         res.render("forgotpassword-otp")
-//         console.log("OTP:",otp);
-
-
-//       }else{
-//         res.json({success:false,message:"failed to send otp"});
-//       }
-//     }res.render("forgot-password",{
-//       message:"user with this email does not exist"
-//     })
-//   } catch (error) {
-//     res.redirect("/pagenotfound")
-
-//   }
-// }
 
 
 // Define the loadSignup function
@@ -854,9 +779,9 @@ const deleteAddress = async (req, res) => {
     const addressId = req.params.addressId;    // Retrieve addressId from params
 
     // Use $pull to remove the specific address from the user's address array
-    const updatedUser = await Address.findOneAndUpdate(
+    const updatedUser = await Address.findOneAndDelete(
       { userId },
-      { $pull: { address: { _id: addressId } } }, // Pull the address by its _id
+      { address: { _id: addressId } }, // Pull the address by its _id
       { new: true } // Return the updated document
     );
 
@@ -872,30 +797,6 @@ const deleteAddress = async (req, res) => {
 };
 
 
-
-
-
-// const cart = async (req, res) => {
-//   try {
-//     const userId = req.user?._id; 
-//     if (!userId) {
-//       return res.status(401).send("User not authenticated.");
-//     }
-
-//     const userCart = await Cart.findOne({ user: userId, isDelete: false })
-//                                .populate('items.product')
-//                                .exec();
-
-//     if (!userCart) {
-//       return res.render('user/Cart', { cart: null, message: 'Your cart is empty.' });
-//     }
-
-//     return res.render('user/Cart', { cart: userCart });
-//   } catch (error) {
-//     console.error("Error fetching cart items:", error);
-//     return res.status(500).send("Something went wrong. Please try again later.");
-//   }
-// };
 
 
 const cart = async (req, res) => {
@@ -1444,6 +1345,131 @@ const postResetPassword = async (req, res) => {
 
 
 
+const razorpayInstance = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET
+});
+
+const Razorpayorder = async (req, res) => {
+  try {
+      const { amount, currency, receipt } = req.body;
+
+      const options = {
+          amount: amount * 100, // Convert amount to smallest currency unit
+          currency: currency || "INR",
+          receipt: receipt || "receipt#1",
+          payment_capture: 1 // 1 for automatic capture, 0 for manual
+      };
+
+      const order = await razorpayInstance.orders.create(options);
+
+      if (!order) return res.status(500).send("Some error occurred");
+
+      res.json(order);
+  } catch (error) {
+      res.status(500).send(error);
+  }
+};
+
+
+const verifyPayment = (req, res) => {
+  try {
+      const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+
+      const hmac = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET);
+      hmac.update(`${razorpay_order_id}|${razorpay_payment_id}`);
+      const generatedSignature = hmac.digest('hex');
+
+      if (generatedSignature === razorpay_signature) {
+          res.json({ success: true, message: "Payment Verified Successfully" });
+      } else {
+          res.status(400).json({ success: false, message: "Invalid Signature" });
+      }
+  } catch (error) {
+      res.status(500).send(error);
+  }
+};
+
+const search = async (req, res) => {
+  try {
+    console.log('Query Parameters:', req.query);  // Log the query parameters
+    
+    const page = parseInt(req.query.page) || 1;
+    const limit = 6;
+    const skip = (page - 1) * limit;
+    const search = req.query.search || '';
+    const minPrice = req.query.min_price ? parseFloat(req.query.min_price) : 0;
+    const maxPrice = req.query.max_price ? parseFloat(req.query.max_price) : Infinity;
+    const sort = req.query.sort || 'newest';
+
+    let query = {
+      productname: { $regex: search, $options: 'i' },
+      price: { $gte: minPrice, $lte: maxPrice }
+    };
+    
+    console.log('Search Query:', query);  // Log the query object
+    
+    let sortObj = {};
+    switch (sort) {
+      case 'name_asc':
+        sortObj = { productname: 1 };
+        break;
+      case 'name_desc':
+        sortObj = { productname: -1 };
+        break;
+      case 'price_asc':
+        sortObj = { price: 1 };
+        break;
+      case 'price_desc':
+        sortObj = { price: -1 };
+        break;
+      case 'newest':
+      default:
+        sortObj = { createdAt: -1 };
+    }
+
+    const products = await product.find(query)
+      .populate('offer')
+      .sort(sortObj)
+      .skip(skip)
+      .limit(limit);
+
+    const totalProducts = await product.countDocuments(query);
+    const totalPages = Math.ceil(totalProducts / limit);
+    const Category = await category.find();
+    const user = await User.findById(req.session.userId);
+    const cart = await Cart.findOne({ user: user._id }).populate("items.product");
+    let cartCount = 0;
+    if (cart && cart.items) {
+      cartCount = cart.items.length;
+    }
+    const wishlist = await Wishlist.findOne({ user: req.session.userId }).populate('items.product');
+    let wishlistCount = 0;
+    if (wishlist) {
+      wishlistCount = wishlist.items.length;
+    }
+
+    res.render('user/shop', {
+      user: user,
+      products: products,
+      currentPage: page,
+      totalPages: totalPages,
+      Category: Category,
+      cartCount: cartCount,
+      wishlistCount: wishlistCount,
+      searchParams: { search, minPrice, maxPrice, sort }
+    });
+  } catch (error) {
+    console.error('Error occurred:', error);
+    res.status(500).send('An error occurred');
+  }
+};
+
+
+
+  
+
+
 export {
   LoadHomepage,
   // pageNotFound, 
@@ -1478,5 +1504,8 @@ export {
   loadForgot,
   post_ResetPage,
   get_RestPassword,
-  postResetPassword
+  postResetPassword,
+  Razorpayorder,
+  verifyPayment,
+  search
 };

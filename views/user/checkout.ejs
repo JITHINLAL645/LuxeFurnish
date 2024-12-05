@@ -339,12 +339,64 @@
 }
 
 
+.navbar-profile a {
+        display: flex;
+        align-items: center;
+        transition: transform 0.3s ease;
+    }
+
+    .navbar-profile a:hover {
+        transform: scale(1.1);
+    }
+
+    .navbar-profile img {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .navbar-profile img:hover {
+        transform: rotate(360deg);
+    }
     </style>
     <!-- SweetAlert2 CDN -->
 
     </head>
 
     <body>
+
+
+        <nav class="navbar" style="background-color: #3c3c3c; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <!-- Navbar Brand with a smooth hover effect -->
+            <div class="navbar-brand" style="flex-grow: 1;">
+                <a href="/" style="color: #ffffff; font-size: 28px; font-weight: bold; text-decoration: none; 
+                    background-image: linear-gradient(to right, #ff6347, #ffbd00); 
+                    background-clip: text; -webkit-background-clip: text; color: transparent; 
+                    transition: transform 0.3s ease, text-shadow 0.3s ease;">
+                    LuxeFurnish
+                </a>
+            </div>
+        
+            <!-- Profile and Log Out Button Section (aligned to the right) -->
+            <div style="display: flex; align-items: center; justify-content: flex-end;">
+                <!-- Profile Section -->
+                <div class="navbar-profile" style="display: flex; align-items: center; margin-right: 20px;">
+                    <a href="/profile" class="btn profile-btn" style="display: flex; align-items: center; transition: transform 0.3s ease;">
+                                    <img src="data:image/png;base64,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" alt="User Profile" style="border-radius: 50%; width: 50px; height: 50px; object-fit: cover; transition: transform 0.3s ease;">
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+
+
+
+
+
+
+
         <!-- Search Wrapper Area Start -->
         <div class="search-wrapper section-padding-100">
             <div class="search-close">
@@ -469,20 +521,20 @@
                             <h3 class="card-title">Select Payment Method</h3>
 
                             <!-- Payment Method Radio Buttons -->
-                            <!-- <div class="form-check">
+                            <div class="form-check">
                                 <input class="form-check-input" type="radio"
                                     name="paymentMethod" id="razorpay"
                                     value="razorpay" required>
                                 <label class="form-check-label"
                                     for="razorpay">Razorpay</label>
-                            </div> -->
-                            <!-- <div class="form-check">
+                            </div>
+                            <div class="form-check">
                                 <input class="form-check-input" type="radio"
                                     name="paymentMethod" id="wallet"
                                     value="wallet" required>
                                 <label class="form-check-label"
                                     for="wallet">Wallet</label>
-                            </div> -->
+                            </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio"
                                     name="paymentMethod" id="cashOnDelivery"
@@ -513,37 +565,98 @@
 
                         </div>
                     </div>
+                    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+                    <!-- razorpay -->
+                    <!-- <script>
+                        document.getElementById('rzp-button').onclick = async function (e) {
+                            e.preventDefault();
+                    
+                            const response = await fetch('/Razorpayorder', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    amount: 500, // 500 INR
+                                    currency: 'INR',
+                                    receipt: 'order_rcptid_11'
+                                })
+                            });
+                    
+                            const orderData = await response.json();
+                    
+                            const options = {
+                                "key": "<%= process.env.RAZORPAY_KEY_ID %>", // Enter the Key ID generated from the Dashboard
+                                "amount": orderData.amount, 
+                                "currency": orderData.currency,
+                                "name": "Your Store Name",
+                                "description": "Test Transaction",
+                                "order_id": orderData.id, 
+                                "handler": async function (response) {
+                                    const paymentDetails = {
+                                        razorpay_order_id: response.razorpay_order_id,
+                                        razorpay_payment_id: response.razorpay_payment_id,
+                                        razorpay_signature: response.razorpay_signature
+                                    };
+                    
+                                    const verifyResponse = await fetch('/verifyPayment', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify(paymentDetails)
+                                    });
+                    
+                                    const result = await verifyResponse.json();
+                                    if (result.success) {
+                                        alert("Payment Successful!");
+                                    } else {
+                                        alert("Payment Verification Failed");
+                                    }
+                                },
+                                "theme": {
+                                    "color": "#3399cc"
+                                }
+                            };
+                    
+                            const rzp = new Razorpay(options);
+                            rzp.open();
+                        };
+                    </script> -->
 
-                    <script>
-                document.getElementById('placeOrderBtn').addEventListener('click', function(event) {
-                  const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
-                  if (!selectedAddress) {
-                    alert("Please select a shipping address.");
-                    event.preventDefault(); // Prevent form submission
-                    return;
-                  }
-        
-                  const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
-                  if (!selectedPaymentMethod) {
-                    alert("Please select a payment method.");
-                    event.preventDefault(); // Prevent form submission
-                    return;
-                  }
-        
-                  const addressId = selectedAddress.value;
-                  const selectedAddressDetails = addresses.find(address => address._id === addressId);
-        
-                  if (selectedAddressDetails) {
-                    document.getElementById('deliveryAddress').value = JSON.stringify(selectedAddressDetails);
-                  }
-        
-                  const subtotal = parseFloat("<%= totalAmount %>");
-                  const deliveryFee = 50.00;
-                  const total = subtotal + deliveryFee;
-        
-                  document.getElementById('totalAmount').value = total.toFixed(2);
-                });
-              </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('placeOrderBtn').addEventListener('click', function(event) {
+        const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
+        if (!selectedAddress) {
+          alert("Please select a shipping address.");
+          event.preventDefault(); // Prevent form submission
+          return;
+        }
+  
+        const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+        if (!selectedPaymentMethod) {
+          alert("Please select a payment method.");
+          event.preventDefault(); // Prevent form submission
+          return;
+        }
+  
+        const addressId = selectedAddress.value;
+        const selectedAddressDetails = addresses.find(address => address._id === addressId);
+  
+        if (selectedAddressDetails) {
+          document.getElementById('deliveryAddress').value = JSON.stringify(selectedAddressDetails);
+        }
+  
+        const subtotal = parseFloat("<%= totalAmount %>");
+        const deliveryFee = 50.00;
+        const total = subtotal + deliveryFee;
+  
+        document.getElementById('totalAmount').value = total.toFixed(2);
+      });
+    });
+  </script>
 
                     <script>
                 document.addEventListener('DOMContentLoaded', function() {
@@ -697,38 +810,98 @@ document.getElementById("chekoutform").addEventListener("submit", async (event) 
     // Gather the other form data
     const data = {};
     const subtotalText = document.getElementById("checkout-subtotal").textContent;
-data.totalAmount = subtotalText.replace('$', '').trim();  // Removes the $ sign and trims any extra spaces
+    data.totalAmount = subtotalText.replace('$', '').trim();  // Removes the $ sign and trims any extra spaces
 
-    console.log("toddfdkjafklvadalfjdj:",data.totalAmount)
+    console.log("Total Amount:", data.totalAmount);
+
     data.deliveryAddress = selectedAddress.value;
     data.estimatedDelivery = document.querySelector('input[name="estimatedDelivery"]').value;
     data.cartItems = document.querySelector('input[name="cartItems"]').value;
-    
+
     // For additional details like email, phoneNumber, pincode (if required)
     data.email = selectedAddress.dataset.email || '';  // Assuming dataset stores extra info
     data.phoneNumber = selectedAddress.dataset.phoneNumber || '';
     data.pincode = selectedAddress.dataset.pincode || '';
 
     // Log the data for debugging
-    console.log("this is data", data);
+    console.log("Data for order:", data);
 
-    // Send the data as JSON to the server
-    const response = await fetch("/placeorder", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    });
+    // Check if Razorpay payment method is selected
+    const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+    if (selectedPaymentMethod === 'razorpay') {
+        // Proceed with Razorpay payment method
+        const response = await fetch('/Razorpayorder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                amount: (parseFloat(data.totalAmount) * 100), // Convert to paise (subunit of INR)
+                currency: 'INR',
+                receipt: 'order_rcptid_11'  // Example, this should be a unique ID for the order
+            })
+        });
 
-    if (response.ok) {
-        console.log("Order is placed successfully");
-        window.location = '/successpage';  // Redirect to success page
+        const orderData = await response.json();
+        if (orderData.id) {
+            const options = {
+                "key": "<%= process.env.RAZORPAY_KEY_ID %>", // Enter the Key ID generated from the Dashboard
+                "amount": orderData.amount,
+                "currency": orderData.currency,
+                "name": "Your Store Name",
+                "description": "Test Transaction",
+                "order_id": orderData.id,
+                "handler": async function (paymentResponse) {
+                    const paymentDetails = {
+                        razorpay_order_id: paymentResponse.razorpay_order_id,
+                        razorpay_payment_id: paymentResponse.razorpay_payment_id,
+                        razorpay_signature: paymentResponse.razorpay_signature
+                    };
+
+                    const verifyResponse = await fetch('/verifyPayment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(paymentDetails)
+                    });
+
+                    const result = await verifyResponse.json();
+                    if (result.success) {
+                        alert("Payment Successful!");
+                        window.location = '/successpage';  // Redirect to success page
+                    } else {
+                        alert("Payment Verification Failed");
+                    }
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+        } else {
+            alert("Error creating Razorpay order. Please try again.");
+        }
     } else {
-        console.log("Failed to place order");
+        // If payment method is not Razorpay, just submit the order data without payment
+        const response = await fetch("/placeorder", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            console.log("Order is placed successfully");
+            window.location = '/successpage';  // Redirect to success page
+        } else {
+            console.log("Failed to place order");
+        }
     }
 });
-
 
 
     </script>

@@ -15,7 +15,7 @@
         
             body {
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background-color: #f1f5f8;
+                background-color: #ffffff;
                 color: #333;
                 line-height: 1.6;
                 padding: 30px 0;
@@ -312,10 +312,9 @@
             }
         
             .profile-header {
-                background-color: #ecf0f1;
+                background-color: #ffffff;
                 padding: 20px;
                 border-radius: 8px;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             }
         
             .profile-header h2 {
@@ -568,8 +567,10 @@
         
        <section class="profile-section">
         <div class="container">
+            <h2>User Profile</h2>
+
             <div class="profile-header">
-                <h2>User Profile</h2>
+
                 <div class="profile-info">
                     <h3>General Information</h3>
                     <p><strong>Username:</strong> <%= user.name %></p>
@@ -667,8 +668,10 @@
         
         <!-- Manage Addresses Section -->
         <div class="container">
+            
             <div class="address-header">
                 <h2>Manage Addresses</h2>
+
                 <a href="/addAddresspage">
                     <button class="add-address-button" style="background-color: #28d16f;">Add New Address</button>
                 </a>

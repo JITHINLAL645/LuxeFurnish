@@ -24,7 +24,7 @@ import { LoadHomepage,
      checkout,
      checkoutupdateAddress,
      sortProducts,
-     successpage,getOrder,placeorder,cancelOrder,loadForgot,post_ResetPage,get_RestPassword,postResetPassword}from "../controller/user/usercontroller.js";  
+     successpage,getOrder,placeorder,cancelOrder,loadForgot,post_ResetPage,get_RestPassword,postResetPassword,Razorpayorder,verifyPayment,search}from "../controller/user/usercontroller.js";  
 import User from "../models/userschema.js";
 import Address from "../models/addressSchema.js";
 import passport from "passport";
@@ -53,6 +53,8 @@ router.get("/productDetails/:id",productDetails)
 router.get("/productDetails",productDetails)
 
 router.get("/shop",shop)
+router.get('/search',search);
+
 
 
 router.get('/profile',loadprofile)
@@ -88,6 +90,7 @@ router.get('/getRestPassword/:token',get_RestPassword)
 router.post('/reset-password', postResetPassword);
 
 
-
+router.post('/Razorpayorder', Razorpayorder);
+router.post('/verifyPayment', verifyPayment);
 
 export default router;
