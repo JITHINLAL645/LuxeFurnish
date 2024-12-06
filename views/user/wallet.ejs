@@ -1,4 +1,3 @@
-<%- include('../../views/partials/userHeader') %>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
@@ -8,11 +7,14 @@
             padding-top: 80px;
         }
         .wallet-card {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
+    background: linear-gradient(135deg, #c5b0d2 0%, #85d8ce 100%);
+    color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+
+
         .card {
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
@@ -149,107 +151,98 @@
         .breadcrumb-item.active {
             color: #6c757d; 
         }
+        .navbar {
+        background-color: #333333;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin-top: -80px;
+    }
+
+    .navbar-brand a {
+        font-size: 28px;
+        font-weight: bold;
+        text-decoration: none;
+        background-image: linear-gradient(to right, #ff6347, #ffbd00); 
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: transform 0.3s ease, background-color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+   
+
+
+    .navbar-profile a {
+        display: flex;
+        align-items: center;
+        transition: transform 0.3s ease;
+    }
+
+    .navbar-profile a:hover {
+        transform: scale(1.1);
+    }
+
+    .navbar-profile img {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .navbar-profile img:hover {
+        transform: rotate(360deg);
+    }
     </style>
 </head>
 <body>
-    <header class="header_section bg-dark fixed-header">
-        <div class="container">
-          <nav class="navbar navbar-expand-lg custom_nav-container">
-            <a class="navbar-brand" href="/userHomePage">
-              <span>
-                Footwear
-              </span>
+  <nav class="navbar" style="background-color: #3c3c3c; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+    <!-- Navbar Brand with a smooth hover effect -->
+    <div class="navbar-brand" style="flex-grow: 1;">
+        <a href="/" style="color: #ffffff; font-size: 28px; font-weight: bold; text-decoration: none; 
+            background-image: linear-gradient(to right, #ff6347, #ffbd00); 
+            background-clip: text; -webkit-background-clip: text; color: transparent; 
+            transition: transform 0.3s ease, text-shadow 0.3s ease;">
+            LuxeFurnish
+        </a>
+    </div>
+
+    <!-- Profile and Log Out Button Section (aligned to the right) -->
+    <div style="display: flex; align-items: center; justify-content: flex-end;">
+        <!-- Profile Section -->
+        <div class="navbar-profile" style="display: flex; align-items: center; margin-right: 20px;">
+            <a href="/profile" class="btn profile-btn" style="display: flex; align-items: center; transition: transform 0.3s ease;">
+                            <img src="data:image/png;base64,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" alt="User Profile" style="border-radius: 50%; width: 50px; height: 50px; object-fit: cover; transition: transform 0.3s ease;">
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-              <span class=""> </span>
-            </button>
-      
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mx-auto">
-                <li class="nav-item active">
-                  <a class="nav-link" href="/userHomePage">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">About us</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Contact us</a>
-                </li>
-              </ul>
-      
-              <!-- User Profile and Cart Section -->
-              <div class="user_option">
-                <a class="cart_link position-relative" href="/getCartPage">
-                  <!-- Cart Icon SVG -->
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 456.029 456.029" width="50" height="50">
-                    <path d="M345.6 338.862c-29.184 0-53.248 23.552-53.248 53.248s23.552 53.248 53.248 53.248 53.248-23.552 53.248-53.248-23.552-53.248-53.248-53.248zM439.296 84.91h-330.56l-5.12-34.304c-2.048-13.824-21.504-30.72-44.544-30.72H20.48C9.216 19.886 0 29.102 0 40.366S9.216 60.846 20.48 60.846h41.472c2.56 0 4.608 2.048 5.12 4.608l31.744 216.064c4.096 27.136 27.648 47.616 55.296 47.616h212.992c26.624 0 49.664-18.944 55.296-45.056l33.28-166.4c4.096-21.504-3.072-32.256-14.336-34.304zM215.04 389.55c-1.024-28.16-24.576-50.688-52.736-50.688-29.696 1.536-52.224 26.112-51.2 55.296 1.024 28.16 24.064 50.688 52.224 50.688 29.184 0 52.224-24.576 51.712-55.296z"/>
-                  </svg>
-                  <!-- Cart Count Badge -->
-                  <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    <%= cartCount %>
-                  </span>
-                </a>
-                <a class="cart_link position-relative" href="/wishlist">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="50" height="50" fill="red">
-                    <path d="M462.3 62.7C407 7.4 324.8 23.9 270.1 79.1L256 93.3l-14.1-14.2c-54.8-55.2-136.9-71.7-192.2-16.4S-7.4 199.9 48 255.2L239 445.5c7.4 7.5 19.6 7.5 27 0l205.4-205.4c55.2-54.8 71.7-136.9 16.4-192.2z"/>
-                  </svg>
-                  <span data-toggle="tooltip" data-placement="bottom" title="<%= wishlistCount %>" id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    <%= wishlistCount %>
-                  </span>
-                </a>
-                <p class="user_proname"><%= user.name %></p>
-      
-                <div class="dropdown">
-                  <button class="btn btn-secondary dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                  </button>
-      
-                  <div class="dropdown-menu">
-                    <a href="/profilePage" class="profile-link">
-                      <img src="/images/profile.png" class="profile-avatar"> Profile
-                    </a>
-                    <a href="/orderHistory" class="profile-link">
-                      <img src="/images/purchase-order.png" class="profile-avatar"> Orders
-                    </a>
-                    <a href="/getCartPage" class="profile-link">
-                      <img src="/images/shopping-cart (1).png" class="profile-avatar"> Cart
-                    </a>
-                    <a href="wishlist" class="profile-link">
-                      <img src="/images/wishlist.png" class="profile-avatar"> Wishlist
-                    </a>
-                    <a href="/loadWalletPage" class="profile-link">
-                      <img src="/images/wallet.png" class="profile-avatar"> Wallet
-                    </a>
-                    <a href="/logout"class="profile-link logout-link">
-                      <img src="/images/shutdown.png" class="profile-avatar"> Logout
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </nav>
         </div>
-      </header>
+    </div>
+</nav>
+
       <div class="container mt-5">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="/userHomePage">Home</a></li>
-              <li class="breadcrumb-item"><a href="/profilePage">Profile</a></li>
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
+              <li class="breadcrumb-item"><a href="/profile">Profile</a></li>
               <li class="breadcrumb-item active" aria-current="page">Wallet</li>
           </ol>
       </nav>
 
     <main class="container py-5">
-        <div class="row g-4 justify-content-center">
-            <div class="col-md-6">
-                <div class="card wallet-card h-100">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Current Balance</h5>
-                        <h2 class="card-text mb-4 display-4 fw-bold">₹<%= wallet.balanceAmount.toFixed(2) %></h2>
-                    </div>
+      <div class="row g-4 justify-content-center">
+        <div class="col-md-6">
+            <div class="card wallet-card h-100 border-0 rounded-3 shadow-lg">
+                <div class="card-body d-flex flex-column text-center p-5">
+                    <h5 class="card-title text-uppercase mb-3 text-muted">Current Balance</h5>
+                    <h2 class="card-text mb-4 display-4 fw-bold text-primary">₹<%= wallet.balanceAmount.toFixed(2) %></h2>
+                    <button class="btn btn-light btn-lg mt-4 rounded-pill">Add Funds</button>
                 </div>
             </div>
         </div>
+    </div>
+    
 
         <div class="card mt-4">
             <div class="card-body">
@@ -466,4 +459,3 @@
       }
     </script>
 
-    <%- include('../../views/partials/userFooter') %>

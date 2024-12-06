@@ -1095,7 +1095,7 @@ img {
   .single-product-wrapper .product-description {
     position: relative;
     z-index: 1;
-    margin-top: 25px; }
+    }
     .single-product-wrapper .product-description .product-meta-data .line {
       width: 80px;
       height: 3px;

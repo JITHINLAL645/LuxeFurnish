@@ -229,6 +229,7 @@
                 font-size: 16px;
                 transition: background-color 0.3s ease, transform 0.2s ease;
                 margin-left: 770px;
+                margin-right: 70px;
                
             }
         
@@ -537,6 +538,9 @@
 }
 
         </style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
         
     </head>
     <body>
@@ -551,41 +555,70 @@
                     LuxeFurnish
                 </a>
             </div>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/order">Orders</a></li>
-                <li><a href=""> wishlist</a></li>
-                <li><a href=""> Wallet</a></li>
-                <li>
-                    
-                </li>
-                <form action="/userlogout" method="post" style="display:inline;">
+            <a href="/">
+                <i class="fas fa-home" style="color: #ffbd00; font-size: larger; margin-right: 400px;"></i> <!-- Home icon -->
+            </a>
+            
+           
+            <form action="/userlogout" method="post" style="display:inline;">
                     <button type="submit" class="logout-button">Logout</button>
                 </form>
-            </ul>
         </nav>
         
-       <section class="profile-section">
-        <div class="container">
-            <h2>User Profile</h2>
+        <section class="profile-section">
+            <div class="container">
+                <h2>User Profile</h2>
+        
+                <div class="row">
+                    <!-- Left-side boxes for Profile, Orders, Wishlist, Wallet -->
+                    <div class="col-left">
+                        <div class="side-boxes">
+                            <div class="box">
+                                <a href="/profile">
 
-            <div class="profile-header">
-
-                <div class="profile-info">
-                    <h3>General Information</h3>
-                    <p><strong>Username:</strong> <%= user.name %></p>
-                    <p><strong>Email:</strong> <%= user.email %></p>
-                    <p><strong>Phone:</strong> <%= user.phoneNumber %></p>
+                                    <p>Profile</p>
+                                </a>
+                            </div>
+                            <div class="box">
+                                <a href="/order">
+                                    <p>Orders</p>
+                                </a>
+                            </div>
+                            <div class="box">
+                                <a href="/wishlish">
+                                    <p>Wishlist</p>
+                                </a>
+                            </div>
+                            <div class="box">
+                                <a href="/loadWalletPage">
+                                    <p>Wallet</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Right-side General Information -->
+                    <div class="col-right" id="generalInfo">
+                        <div class="profile-header">
+                            <div class="profile-info">
+                                <h3>General Information</h3>
+                                <p><strong>Username:</strong> <%= user.name %></p>
+                                <p><strong>Email:</strong> <%= user.email %></p>
+                                <p><strong>Phone:</strong> 
+                                    <%= user.address && user.address[0] && user.address[0].phoneNumber ? user.address[0].phoneNumber : 'Phone number not available' %>
+                                    
+ 
+                                </p>
+                                 
+                             </div>
+                        </div>
+                        <button class="btn btn-primary" id="openModalBtn">Change Password</button>
+                    </div>
                 </div>
             </div>
-            <button class="logout-buttonn" id="openModalBtn">Change Password</button>
-
-        </div>
-
-    </section>
+        </section>
         
         <!-- Change Password Modal -->
-        
         <div id="myModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -608,6 +641,161 @@
                 </form>
             </div>
         </div>
+        
+<style>
+    /* Layout for profile section */
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.row {
+    display: flex;
+}
+
+.col-left {
+    flex: 1;
+    max-width: 20%;
+}
+
+.col-right {
+    flex: 3;
+    padding: 20px;
+    background-color: #f9f9ff;
+    border-radius: 10px;
+    /* border: 1px solid #ddd; */
+}
+
+.side-boxes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.side-boxes .box {
+    background-color: transparent;
+    padding: 15px;
+    text-align: center;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.side-boxes .box p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* General Information section */
+.profile-info {
+    padding: 10px 20px;
+}
+
+.profile-info h3 {
+    color: #4CAF50;
+}
+
+.profile-info p {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 30%;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Button styling */
+.btn-primary {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.btn-primary:hover {
+    background-color: #45a049;
+}
+
+</style>        
+
+<script>
+    // Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("openModalBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+// Optional: JavaScript for handling side box navigation
+function showGeneralInfo() {
+    // Logic to show/hide sections if needed, currently displays general info
+    document.getElementById("generalInfo").style.display = 'block';
+}
+
+function showOrders() {
+    // Logic to show orders section
+}
+
+function showWishlist() {
+    // Logic to show wishlist section
+}
+
+function showWallet() {
+    // Logic to show wallet section
+}
+
+</script>
         
         <!-- JavaScript for Modal and Form Validation -->
         <script>

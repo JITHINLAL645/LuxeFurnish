@@ -5,6 +5,8 @@ import Address from "../../models/addressSchema.js"
 // routes/userRoutes.js
 import Cart from "../../models/cartSchema.js";
 import Order from "../../models/orderSchema.js";
+import wishlist from "../../models/wishlistSchema.js"
+import Wallet from '../../models/walletSchema.js'; 
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -12,6 +14,8 @@ import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import crypto from 'crypto';
 import Razorpay from 'razorpay';
+import Wishlist from "../../models/wishlistSchema.js";
+import { log } from "console";
 
 
 
@@ -114,11 +118,11 @@ const LoadHomepage = async (req, res) => {
 const singleProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const Product = await product.findById(id).populate('category_id').populate('offer')
-    const Category = await product.find({ category_id: Product.category_id._id }).populate('offer')
+    const Product = await Product.findById(id).populate('category_id').populate('offer')
+    const Category = await Product.find({ category_id: Product.category_id._id }).populate('offer')
     const user = await User.findById(req.session.userId).lean();
     const cart = await Cart.findOne({ user: user._id }).populate("items.product");
-    const wishlist = await Wishlist.findOne({ user: req.session.userId }).populate('items.product')
+    const wishlist = await wishlist.findOne({ user: req.session.userId }).populate('items.product')
 
     let cartCount = 0;
     if (cart && cart.items && cart.items.length > 0) {
@@ -131,7 +135,7 @@ const singleProduct = async (req, res) => {
     if (wishlist) {
       wishlistCount = wishlist.items.length
     }
-    console.log(product)
+    console.log(Product)
 
     res.render('user/single-product', { Product, Category, cartCount, wishlistCount, user });
   } catch (err) {
@@ -1183,7 +1187,7 @@ const placeorder = async (req, res) => {
 
     console.log('Order placed:', savedOrder);
 
-    res.status(200).json({
+    ({
       message: 'Order placed successfully!',
       order: savedOrder
     });
@@ -1390,84 +1394,166 @@ const verifyPayment = (req, res) => {
   }
 };
 
-const search = async (req, res) => {
+const loadWishlist = async (req, res) => {
   try {
-    console.log('Query Parameters:', req.query);  // Log the query parameters
-    
-    const page = parseInt(req.query.page) || 1;
-    const limit = 6;
-    const skip = (page - 1) * limit;
-    const search = req.query.search || '';
-    const minPrice = req.query.min_price ? parseFloat(req.query.min_price) : 0;
-    const maxPrice = req.query.max_price ? parseFloat(req.query.max_price) : Infinity;
-    const sort = req.query.sort || 'newest';
-
-    let query = {
-      productname: { $regex: search, $options: 'i' },
-      price: { $gte: minPrice, $lte: maxPrice }
-    };
-    
-    console.log('Search Query:', query);  // Log the query object
-    
-    let sortObj = {};
-    switch (sort) {
-      case 'name_asc':
-        sortObj = { productname: 1 };
-        break;
-      case 'name_desc':
-        sortObj = { productname: -1 };
-        break;
-      case 'price_asc':
-        sortObj = { price: 1 };
-        break;
-      case 'price_desc':
-        sortObj = { price: -1 };
-        break;
-      case 'newest':
-      default:
-        sortObj = { createdAt: -1 };
+    // Ensure the user is authenticated, using `req.user` from the session
+    if (!req.user) {
+      console.error('User not authenticated');
+      return res.status(401).send('Please login to access your wishlist');
     }
 
-    const products = await product.find(query)
-      .populate('offer')
-      .sort(sortObj)
-      .skip(skip)
-      .limit(limit);
+    const userId = req.user.id; // Get the user ID from the session
 
-    const totalProducts = await product.countDocuments(query);
-    const totalPages = Math.ceil(totalProducts / limit);
-    const Category = await category.find();
-    const user = await User.findById(req.session.userId);
-    const cart = await Cart.findOne({ user: user._id }).populate("items.product");
+    // Fetch user details from the database (you can skip this if user is already in session)
+    const user = await User.findById(userId).lean();
+    if (!user) {
+      console.error('User not found');
+      return res.status(404).send('User not found');
+    }
+
+    // Fetch the wishlist for the user
+    const result = await wishlist.findOne({ user: userId }).populate('items.product');
+    console.log("wishlist :",result);
+    let wishlistCount = 0;
+    if (result) wishlistCount = result.items.length;
+
+    // Fetch the cart for the user
+    const cart = await Cart.findOne({ user: userId }).populate('items.product');
     let cartCount = 0;
-    if (cart && cart.items) {
-      cartCount = cart.items.length;
+    if (cart) cartCount = cart.items.length;
+
+    // Render the wishlist page with the necessary data
+    res.render('user/wishlist', { wishlist:result, wishlistCount, cartCount, user });
+  } catch (error) {
+    console.error('Error fetching wishlist:', error);
+    res.status(500).send('Something went wrong!');
+  }
+};
+
+const add_Wishlist = async (req, res) => {
+  try {
+    const productId = req.params.productId; 
+    
+    const user = await User.findById(req.session.passport.user);
+    
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
     }
-    const wishlist = await Wishlist.findOne({ user: req.session.userId }).populate('items.product');
+
+    const product = await Product.findById(productId);
+    
+    if (!product) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
+    let wishlist = await Wishlist.findOne({ user: user._id });
+
+    if (!wishlist) {
+      wishlist = new Wishlist({ user: user._id, items: [] });
+    }
+
+    const existingItemIndex = wishlist.items.findIndex((item) => item.product.equals(productId));
+    
+    if (existingItemIndex > -1) {
+      return res.status(400).json({ success: false, message: "Product already in wishlist" });
+    }
+
+    wishlist.items.push({
+      product: productId,
+      quantity: 1
+    });
+
+    await wishlist.save();
+    return res.status(200).json({ success: true, message: "Product added to wishlist" });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Something went wrong!" });
+  }
+};
+
+
+const remove_WishlistItem = async (req, res) => {
+  try {
+    const { itemId } = req.params; // Get itemId from the URL params
+    const userId = req.session.userId; // Assuming userId is stored in session
+    const wishlist = await Wishlist.findOne({ user: userId });
+
+    if (!wishlist) {
+      return res.status(404).json({ success: false, message: "Wishlist not found" });
+    }
+
+    // Find the item index in the wishlist
+    const itemIndex = wishlist.items.findIndex(item => item._id.toString() === itemId);
+
+    if (itemIndex === -1) {
+      return res.status(404).json({ success: false, message: "Item not found in wishlist" });
+    }
+
+    // Remove the item from the wishlist
+    wishlist.items.splice(itemIndex, 1);
+
+    // Save the updated wishlist
+    await wishlist.save();
+
+    return res.status(200).json({ success: true, message: "Item removed from wishlist" });
+  } catch (error) {
+    console.error('Error removing item from wishlist:', error);
+    return res.status(500).json({ success: false, message: "Something went wrong!" });
+  }
+};
+
+const load_walletPage = async (req, res) => {
+  try {
+    // Ensure that the user is logged in by checking req.session.userId
+    if (!req.session.passport.user) {
+      return res.redirect('/login'); // or send an appropriate error message
+    }
+
+    const user = await User.findById(req.session.passport.user).lean();
+    
+    // Check if user exists
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    const cart = await Cart.findOne({ user: user._id }).populate("items.product");
+    const wishlist = await Wishlist.findOne({ user: req.session.passport.user }).populate('items.product');
+    
+    let cartCount = 0;
+    if (cart && cart.items && cart.items.length > 0) {
+      cart.items.forEach(item => {
+        cartCount += item.quantity;
+      });
+    }
+
     let wishlistCount = 0;
     if (wishlist) {
       wishlistCount = wishlist.items.length;
     }
 
-    res.render('user/shop', {
-      user: user,
-      products: products,
-      currentPage: page,
-      totalPages: totalPages,
-      Category: Category,
-      cartCount: cartCount,
-      wishlistCount: wishlistCount,
-      searchParams: { search, minPrice, maxPrice, sort }
-    });
+    let wallet = await Wallet.findOne({ user: user._id });
+    if (wallet && wallet.wallet_history) {
+      wallet.wallet_history.sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+
+    if (!wallet) {
+      wallet = new Wallet({
+        user: user._id,
+        balance: 0,
+        wallet_history: [],
+      });
+      await wallet.save();
+    }
+
+    res.render('user/wallet', { user, cartCount, wishlistCount, wallet });
+
   } catch (error) {
-    console.error('Error occurred:', error);
-    res.status(500).send('An error occurred');
+    console.error('Error loading user home page:', error);
+    res.status(500).send('An error occurred while loading the page');
   }
 };
 
-
-
-  
 
 
 export {
@@ -1507,5 +1593,8 @@ export {
   postResetPassword,
   Razorpayorder,
   verifyPayment,
-  search
+  loadWishlist,
+  add_Wishlist,
+  remove_WishlistItem,
+  load_walletPage
 };

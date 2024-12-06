@@ -1,6 +1,117 @@
-<%- include('../../views/partials/userHeader') %>
 <style>
-    .icon-hover-primary:hover {
+  
+</style>
+
+</head>
+<body>
+  <style>
+
+
+
+/* Newsletter Area Styling */
+.footer {
+    background-color: #282727;
+    padding: 50px 0;
+}
+
+.newsletter-text h2 {
+    font-size: 36px;
+    color: white;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 20px;
+}
+
+.newsletter-text h2 span {
+    color: #fbb710; /* Highlight color */
+}
+
+.newsletter-text p {
+    font-size: 16px;
+    color: #aaa;
+    margin-bottom: 0;
+}
+
+.newsletter-form {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.newsletter-form form {
+    display: flex;
+    width: 50%;
+}
+
+.newsletter-form input.nl-email {
+    width: 70%;
+    padding: 15px 20px;
+    border: 2px solid #ddd;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    font-size: 16px;
+    color: #333;
+}
+
+.newsletter-form input.nl-email::placeholder {
+    color: #aaa;
+}
+
+.newsletter-form input[type="submit"] {
+    width: 30%;
+    padding: 15px 20px;
+    background-color: #fbb710;
+    color: white;
+    border: 2px solid #f1e949;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    transition: background-color 0.3s ease;
+}
+
+.newsletter-form input[type="submit"]:hover {
+    background-color: #e55e5e;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .footer {
+        padding: 50px 0;
+    }
+    
+    .newsletter-text h2 {
+        font-size: 28px;
+    }
+
+    .newsletter-form {
+        justify-content: center;
+    }
+
+    .newsletter-form form {
+        flex-direction: column;
+    }
+
+    .newsletter-form input.nl-email,
+    .newsletter-form input[type="submit"] {
+        width: 100%;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .newsletter-form input[type="submit"] {
+        border-radius: 5px;
+    }
+}
+
+
+
+
+
+
+
+
+.icon-hover-primary:hover {
   border-color: #3b71ca !important;
   background-color: white !important;
 }
@@ -16,348 +127,525 @@
 .icon-hover-danger:hover i {
   color: #dc4c64 !important;
 }
-</style>
 
-</head>
-<body>
-  <style>
-    body {
-      background-color: #f8f9fa;
-      padding-top: 80px;
-     
-    }
-    .sidebar {
-      height: 100vh;
-      background-color: #2c3e50;
-      position: fixed;
-      padding-top: 5rem;
-    }
-    .sidebar a {
-      color: white;
-      transition: background-color 0.3s ease;
-    }
-    .sidebar a:hover {
-      background-color: #34495e;
-    }
-    .profile-header {
-      background-color: #00bcd4; 
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-    .profile-pic {
-      width: 150px;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 5px solid white;
-      transition: transform 0.3s;
-    }
-    .profile-pic:hover {
-      transform: scale(1.1);
-    }
-    .profile-card {
-      margin-top: 20px;
-      z-index: 1;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .address-card {
-      background: #f1f1f1;
-      border-radius: 5px;
-      padding: 15px;
-      margin-bottom: 10px;
-      position: relative;
-      transition: background 0.3s;
-    }
-    .address-card:hover {
-      background: #e1e1e1;
-    }
+.container {
+                width: 90%;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+            
 
-    .dropdown-menu {
-  padding: 0;
-  margin: 0;
+
+
+
+
+
+
+
+
+
+
+
+    
+   /* Wishlist Item Hover Effects */
+.icon-hover-primary:hover {
+  border-color: #3b71ca !important;
+  background-color: white !important;
 }
 
-.profile-link {
+.icon-hover-primary:hover i {
+  color: #3b71ca !important;
+}
+
+.icon-hover-danger:hover {
+  border-color: #dc4c64 !important;
+  background-color: white !important;
+}
+
+.icon-hover-danger:hover i {
+  color: #dc4c64 !important;
+}
+
+/* Breadcrumb Styling */
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+.text-blue-50 {
+  color: #3b71ca !important;
+}
+
+.text-black-50 {
+  color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.text-black {
+  color: #000 !important;
+}
+
+.nav-link {
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+/* Wishlist Card Layout */
+.card {
+  border: none;
+  box-shadow: none;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.m-4 {
+  margin: 1.5rem;
+}
+
+.cart-item {
+  margin-bottom: 1rem;
+}
+
+.cart-item .row {
   display: flex;
   align-items: center;
+}
+
+.cart-item img {
+  width: 96px;
+  height: 96px;
+  border-radius: 8px;
+}
+
+.cart-item .col-lg-5 {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.cart-item .col-lg-2,
+.cart-item .col-lg {
+  display: flex;
+  justify-content: center;
+}
+
+.float-md-end {
+  float: right;
+}
+
+.remove-item-btn,
+.btn-outline-dark {
+  padding: 8px 12px;
+  margin-right: 8px;
+}
+
+.remove-item-btn {
+  border-color: #dc4c64;
+  color: #dc4c64;
+}
+
+.remove-item-btn:hover {
+  background-color: #dc4c64;
+  color: white;
+}
+
+.btn-outline-dark {
+  border-color: #000;
+  color: #000;
+}
+
+.btn-outline-dark:hover {
+  background-color: #000;
+  color: white;
+}
+
+.text-nowrap {
+  white-space: nowrap;
+}
+
+/* Empty Wishlist Message */
+p {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Navbar Styling */
+.navbar {
+  background-color: #3c3c3c;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Navbar Brand */
+.navbar-brand {
+  flex-grow: 1;
+}
+
+.navbar-brand a {
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: bold;
   text-decoration: none;
-  color: inherit;
-  padding: 8px 16px;
-  transition: background-color 0.2s ease; 
+  background-image: linear-gradient(to right, #ff6347, #ffbd00);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
 }
 
-.profile-link:hover {
-  background-color: #f0f0f0; 
+/* Profile Section */
+.navbar-profile {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
 }
 
-.profile-avatar {
-  width: 24px; 
-  height: 24px;
-  border-radius: 50%; 
-  margin-right: 8px; 
+.navbar-profile .profile-btn {
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
 }
 
-.logout-link {
-  margin-bottom: 8px; 
+.navbar-profile img {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
-.fixed-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000; 
+.navbar {
+        background-color: #333333;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar-brand a {
+        font-size: 28px;
+        font-weight: bold;
+        text-decoration: none;
+        background-image: linear-gradient(to right, #ff6347, #ffbd00); 
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: transform 0.3s ease, background-color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+   
+
+
+    .navbar-profile a {
+        display: flex;
+        align-items: center;
+        transition: transform 0.3s ease;
+    }
+
+    .navbar-profile a:hover {
+        transform: scale(1.1);
+    }
+
+    .navbar-profile img {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .navbar-profile img:hover {
+        transform: rotate(360deg);
+    }
+
+    .wishlist-title {
+    font-size: 5rem; /* Make the font large */
+    font-weight: bold; /* Bold text */
+    text-transform: uppercase; /* Make the text uppercase */
+    color: #430f05; /* Change text color to a reddish tone */
+    text-align: center; /* Center the title */
+    letter-spacing: 2px; /* Increase spacing between letters */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Add subtle shadow */
+    position: relative; /* Required for the after pseudo-element */
+  }
+
+  /* Add an underline effect */
+  .wishlist-title::after {
+    content: "";
+    width: 100px; /* Width of the underline */
+    height: 4px; /* Thickness of the underline */
+    display: block;
+    margin: 10px auto 0; /* Center underline and add space from text */
+    border-radius: 2px; /* Smooth out the corners of the underline */
+  }
+
+
+
+  .product-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    margin: auto; /* Center the card */
 }
 
-.content-section {
-  margin-top: 20px; 
+.product-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.breadcrumb {
-            background-color: #f8f9fa; 
-            border-radius: 0.375rem;
-            padding: 0.75rem 1rem;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); 
-        }
+.product-image img {
+    width: 100%;
+    height: 250px; /* Smaller image height */
+    object-fit: cover;
+}
 
-        .breadcrumb-item + .breadcrumb-item::before {
-            content: ">";
-            color: #6c757d;
-        }
+.card-body {
+    padding: 15px; /* Reduce padding */
+}
 
-        .breadcrumb-item a {
-            text-decoration: none;
-            color: #007bff;
-        }
+.card-title {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
 
-        .breadcrumb-item a:hover {
-            text-decoration: underline;
-        }
+.card-text {
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+}
 
-        .breadcrumb-item.active {
-            color: #6c757d; 
-        }
+.btn-outline-dark, .btn-outline-danger {
+    width: 100%;
+    margin-bottom: 5px; /* Reduce button spacing */
+}
+
+@media (min-width: 992px) {
+    .col-lg-4 {
+        flex: 0 0 auto;
+        width: 33.3333%; /* Show 3 cards per row on large screens */
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .col-md-6 {
+        flex: 0 0 auto;
+        width: 50%; /* Show 2 cards per row on medium screens */
+    }
+}
+
+@media (max-width: 767px) {
+    .col-sm-12 {
+        flex: 0 0 auto;
+        width: 100%; /* Show 1 card per row on small screens */
+    }
+}
+
+
   </style>
-  <header class="header_section bg-dark fixed-header">
-    <div class="container">
-      <nav class="navbar navbar-expand-lg custom_nav-container">
-        <a class="navbar-brand" href="/userHomePage">
-          <span>
-            Footwear
-          </span>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-          <span class=""> </span>
-        </button>
-  
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mx-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/userHomePage">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">About us</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Contact us</a>
-            </li>
-          </ul>
-  
-          <!-- User Profile and Cart Section -->
-          <div class="user_option">
-            <a class="cart_link position-relative" href="/getCartPage">
-              <!-- Cart Icon SVG -->
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 456.029 456.029" width="50" height="50">
-                <path d="M345.6 338.862c-29.184 0-53.248 23.552-53.248 53.248s23.552 53.248 53.248 53.248 53.248-23.552 53.248-53.248-23.552-53.248-53.248-53.248zM439.296 84.91h-330.56l-5.12-34.304c-2.048-13.824-21.504-30.72-44.544-30.72H20.48C9.216 19.886 0 29.102 0 40.366S9.216 60.846 20.48 60.846h41.472c2.56 0 4.608 2.048 5.12 4.608l31.744 216.064c4.096 27.136 27.648 47.616 55.296 47.616h212.992c26.624 0 49.664-18.944 55.296-45.056l33.28-166.4c4.096-21.504-3.072-32.256-14.336-34.304zM215.04 389.55c-1.024-28.16-24.576-50.688-52.736-50.688-29.696 1.536-52.224 26.112-51.2 55.296 1.024 28.16 24.064 50.688 52.224 50.688 29.184 0 52.224-24.576 51.712-55.296z"/>
-              </svg>
-              <!-- Cart Count Badge -->
-              <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                <%= cartCount %>
-              </span>
-            </a>
-            <a class="cart_link position-relative" href="/wishlist">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="50" height="50" fill="red">
-                <path d="M462.3 62.7C407 7.4 324.8 23.9 270.1 79.1L256 93.3l-14.1-14.2c-54.8-55.2-136.9-71.7-192.2-16.4S-7.4 199.9 48 255.2L239 445.5c7.4 7.5 19.6 7.5 27 0l205.4-205.4c55.2-54.8 71.7-136.9 16.4-192.2z"/>
-              </svg>
-              <span data-toggle="tooltip" data-placement="bottom" title="<%= wishlistCount %>" id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                <%= wishlistCount %>
-              </span>
-            </a>
-            <p class="user_proname"><%= user.name %></p>
-  
-            <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown">
-                <i class="fa fa-user" aria-hidden="true"></i>
-              </button>
-  
-              <div class="dropdown-menu">
-                <a href="/profilePage" class="profile-link">
-                  <img src="/images/profile.png" class="profile-avatar"> Profile
-                </a>
-                <a href="/orderHistory" class="profile-link">
-                  <img src="/images/purchase-order.png" class="profile-avatar"> Orders
-                </a>
-                <a href="/getCartPage" class="profile-link">
-                  <img src="/images/shopping-cart (1).png" class="profile-avatar"> Cart
-                </a>
-                <a href="wishlist" class="profile-link">
-                  <img src="/images/wishlist.png" class="profile-avatar"> Wishlist
-                </a>
-                <a href="/loadWalletPage" class="profile-link">
-                  <img src="/images/wallet.png" class="profile-avatar"> Wallet
-                </a>
-                <a href="/logout" class="profile-link logout-link">
-                  <img src="/images/shutdown.png" class="profile-avatar"> Logout
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </header>
+ 
+ <header style="background-color: #3c3c3c;">
+
+ <nav class="navbar" style="background-color: #3c3c3c; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);"> 
+  <div class="navbar-brand" style="flex-grow: 1;">
+      <a href="/" style="color: #ffffff; font-size: 28px; font-weight: bold; text-decoration: none; 
+          background-image: linear-gradient(to right, #ff6347, #ffbd00); 
+          background-clip: text; -webkit-background-clip: text; color: transparent; 
+          transition: transform 0.3s ease, text-shadow 0.3s ease;">
+          LuxeFurnish
+      </a>
+  </div>
+
+  <!-- Profile and Log Out Button Section (aligned to the right) -->
+  <div style="display: flex; align-items: center; justify-content: flex-end;">
+      <!-- Profile Section -->
+      <div class="navbar-profile" style="display: flex; align-items: center; margin-right: 20px;">
+          <a href="/profile" class="btn profile-btn" style="display: flex; align-items: center; transition: transform 0.3s ease;">
+                          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAABOFBMVEX/////rQD/dQD/rwD/swD/qQD/tgD/cgD/pwD/ngD/bgD/qwD/ogD/pAD/mQD/lgD/vAD/kAD/igD/wgD/kgD/fgD/ZQT/xQD/YAj/ugD/jAD/hAD/eQD/Xwn/ygD/fwD/WA7/+vb/TRT/+u3/RBj/3NH/UBL/SgD/PQD/TQD/9NX/zJH/++n/x3T/3dH/VQD/5M7/nmH/ORX/89L/68L/1o//wkf/xx//1F7/5qL/xGH/4IX/1Jj/rSP/1VD/8MD/79f/qjT/4Hb/tGD/pED/55f/6Z7/plT/xJL/kzn/1Lf/lFD/16r/pUf/qoD/h0P/dCP/7uP/iCP/uo7/p2//uIL/nXP/vqH/0qr/yZb/kGX/mir/z7j/3rz/lnX/wK7/d2f/Wi3/o5j/Y0//kyb/g2H/s57/pIpivZQ0AAAE5klEQVR4nO3ZeVPbRhzGcWPiW7It4wvJxigOYHPEDrg5KSUpLUdKGpcbQlISWt7/O6hu70prEtMQ8WOez0z/cTSd/c5qJe0SiQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA051dWVuYX9bDHcSv03k9P4w8exOPxyXz+2fMX82EP6PvSey8zybFxM3DSCMxPGKZe3Z/I5urPUiwzNm4UMomVSmXtl7CH9n2syik5aRRaiXEusbK2Evbo/r/119mUJA8SuVmcmpp6Q/2xs1DMplKSJCeHJk6RXo76r0rWKEzZsxgbkvgi7GHeXHNDyWWtRG4W4/7E38Ie6E01z9RizkkcshYrtBM3CkqxWLx+Fp3E38Me641saqpiJPKzaK3F8eBapPhm3GoUVC7x+rW4GPZ4R9ZtaAUjUQ3M4pCXxlrYAx7ZtqZZid8wi/ZapPbO2KppTqIaSBzyXqR1n+qNRoNNLH5D4puwBz2SvWjpukThWqyQmsRareRLtG7UbM564sjCxMqrsEc9gp00n2g/bpTUwrqxk2j2lmQ5JnrchD3sEbyN1gKzqOT+8P69uSQL1uIEnde+no4GEtXdJntJLxaYxYnK87AGPLKdctSfWNj17XTXk8HEZ03x/+/ueZdOJPyJga18T8pk/IlkNsN/pv2JpfPgVUtyxnc8lafyXaO/T/sTtwWXLRovDT4xT+Wl3y9bhUxi6Vh03ctAIpVHTb/qT6z1RdetSskYvxafEjl4e1wv+xI14cjPrXNUdhapPEzNQjNxsBb/Ehaup6xvVDaRSmGn7EscVijxiXFahWxiTXyXZiU2kVDhTKfqJjprMdEVXbeQTUn8LE7SKazys5g4EF33Ouud3TiJdArrVf8sCm7TbpHZEjs3KpXCdt2fmN4LXraRY0/gzMRxSoWBxMBKPFH5gw1rFskUTk+zifZa9H3WHBe8sxtvFsfIFM6ZhdwsGvvF6A57zYkWPJ4yZpFQoWAW0/veNHZ3RX/TyGSoFfoTE9G3ezvd7s7BdkMTnobH6BTOTgtnsRa1TjdKggN/axaTY1QKW7Oz4lmsiQ4ZmVnMECpkE6tVc8OYCCQa/6lcohyjVOgl1quHR0fv3lf9iY3NreOTTfPPxF6ilCRT+PChkzhd75zaT9CjMnejNjT7E6B7pjDvRUqFbmLn1P31A5tYarhvjuYlkygTK7QSB5/ch0wi8/o/N25Udy3SKXzkJrY/Dn5+XB48UdlNf1HxEiU6hW7i3KfBzzrzXnzCXL6peomUCp1ErjDtJfKFhUEipUI7kZ9D79Wf8BW6ibQKrcSWr9BJ5As1NzFHrNBMDBTaiWm2cN/9gsvlzogU9peX3cTWzOBnffCNyhVuNQruR+ruDx/rDf3tJV4wv+rMZzhb2K9pZqKiKKrwDzh3Ub/lJLJTGNGZnQZbGDko2YkqmSk0VuIjo3G5xa5Cu9BJLHOFZqK51fD/IfxO0z9/ufjymT980gf7RV9hpLt/eblJ5hYdSme2xE++fjlBOrPrv7eF3tnN6dcvp+ii485i9TDssdyOf9ruLHaOwh7L7ZhpecdTlN4Lo/jYss9u2h/CHsmtuZqba7fb9fsbaHzP/Xt19em+3qIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcHf8B9fO4e0ri3FhAAAAAElFTkSuQmCC" alt="User Profile" style="border-radius: 50%; width: 50px; height: 50px; object-fit: cover; transition: transform 0.3s ease;">
+          </a>
+      </div>
+  </div>
+</nav>
+</header>
+
   <div class="bg-light">
     <div class="container py-4">
       <!-- Breadcrumb -->
       <nav class="d-flex">
-        <h6 class="mb-0 mt-5">
-          <a href="/userHomePage" class="text-blue-50">Home</a>
+        <h4 class="mb-0 mt-5">
+          <a href="/" class="text-blue-50">Home</a>
           <span class="text-black-50 mx-2"> > </span>
           <a href="" class="text-black"><u>Wishlist</u></a>
-        </h6>
+        </h4>
       </nav>
       <!-- Breadcrumb -->
     </div>
+    
   </div>
+  <h1 class="wishlist-title card-title mb-4">Wishlist</h1>
+
       
       <!-- cart + summary -->
       <section class="bg-light my-5">
-        <div class="container">
-          <div class="row">
-            <!-- cart -->
-            <div class="col-lg-9">
-              <div class="card border shadow-0">
-                <div class="m-4">
-                  <h4 class="card-title mb-4">Wishlist</h4>
-                  <% if (wishlist && wishlist.items.length > 0) { %>
-                    <% wishlist.items.forEach(item => { %>
-                      <div class="cart-item" data-item-id="<%= item._id %>">
-                        <div class="row gy-3 mb-4">
-                          <div class="col-lg-5">
-                            <div class="me-lg-5">
-                              <div class="d-flex">
-                                <img src="<%= item.product.images[0] %>" class="border rounded me-3" style="width: 96px; height: 96px;" />
-                                <div class="">
-                                    <a href="/user/singleProductView/<%= item.product._id %>" class="nav-link"><%= item.product.productname %></a>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
-                          </div>
-                          <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
-                            <div class="float-md-end">
-                              <button class="remove-item-btn btn btn-outline-danger" data-item-id="<%= item._id %>">Remove</button>
-                              <button class="btn btn-outline-dark" onclick="addToCart('<%= item.product._id %>')">Add To Cart</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    <% }) %>
-                  <% } else { %>
-                    <p>Your Wishlist is empty.</p>
-                  <% } %>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <!-- footer section -->
-      <footer id="colorlib-footer" role="contentinfo">
-        <div class="container">
-            <div class="row row-pb-md">
-                <div class="col footer-col colorlib-widget">
-                    <h4>About Footwear</h4>
-                    <p>Even the all-powerful Pointing has no control about the blind texts it is an almost
-                        unorthographic life</p>
-                    <p>
-                    <ul class="colorlib-social-icons">
-                        <li><a href="#"><i class="icon-twitter"></i></a></li>
-                        <li><a href="#"><i class="icon-facebook"></i></a></li>
-                        <li><a href="#"><i class="icon-linkedin"></i></a></li>
-                        <li><a href="#"><i class="icon-dribbble"></i></a></li>
-                    </ul>
-                    </p>
-                </div>
-                <div class="col footer-col colorlib-widget">
-                    <h4>Customer Care</h4>
-                    <p>
-                    <ul class="colorlib-footer-links">
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Returns/Exchange</a></li>
-                        <li><a href="#">Gift Voucher</a></li>
-                        <li><a href="#">Wishlist</a></li>
-                        <li><a href="#">Special</a></li>
-                        <li><a href="#">Customer Services</a></li>
-                        <li><a href="#">Site maps</a></li>
-                    </ul>
-                    </p>
-                </div>
-                <div class="col footer-col colorlib-widget">
-                    <h4>Information</h4>
-                    <p>
-                    <ul class="colorlib-footer-links">
-                        <li><a href="#">About us</a></li>
-                        <li><a href="#">Delivery Information</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Support</a></li>
-                        <li><a href="#">Order Tracking</a></li>
-                    </ul>
-                    </p>
-                </div>
-    
-                <div class="col footer-col">
-                    <h4>News</h4>
-                    <ul class="colorlib-footer-links">
-                        <li><a href="blog.html">Blog</a></li>
-                        <li><a href="#">Press</a></li>
-                        <li><a href="#">Exhibitions</a></li>
-                    </ul>
-                </div>
-    
-                <div class="col footer-col">
-                    <h4>Contact Information</h4>
-                    <ul class="colorlib-footer-links">
-                        <li>291 South 21th Street, <br> Suite 721 New York NY 10016</li>
-                        <li><a href="tel://1234567920">+ 1235 2355 98</a></li>
-                        <li><a href="mailto:info@yoursite.com">info@yoursite.com</a></li>
-                        <li><a href="#">yoursite.com</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="copy">
+        <div class="container-fluid">
+            <!-- Wishlist Section -->
             <div class="row">
-                <div class="col-sm-12 text-center">
-                    <p>
-                        <span><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                            Copyright &copy;
-                            <script>document.write(new Date().getFullYear());</script> All rights reserved | This
-                            template is made with <i class="icon-heart" aria-hidden="true"></i> by <a
-                                href="https://colorlib.com" target="_blank">Colorlib</a>
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        </span>
-                        <span class="block">Demo Images: <a href="http://unsplash.co/" target="_blank">Unsplash</a>
-                            , <a href="http://pexels.com/" target="_blank">Pexels.com</a></span>
-                    </p>
+                <div class="col-12">
+                    <div class="card border shadow-0">
+                        <div class="m-4">
+                            <% if (wishlist && wishlist.items && wishlist.items.length > 0) { %>
+                                <table class="table table-striped">
+                                    <!-- <thead>
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Product Name</th>
+                                            <th>Price</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead> -->
+                                    <tbody>
+                                        <% wishlist.items.forEach(item => { %>
+                                            <tr>
+                                                <td>
+                                                    <!-- Display product image -->
+                                                    <% if (item.product && item.product.images && item.product.images.length > 0) { %>
+                                                        <img src="<%= item.product.images[0] %>" class="img-fluid" style="max-width: 150px; height: auto;" />
+                              <hr>
+                              <% } else { %>
+                                                        <img src="/path/to/default-image.jpg" class="img-fluid" style="max-width: 150px; height: auto;" />
+                                                    <% } %>
+                                                </td>
+                                                <td>
+                                                    <!-- Display product name -->
+                                                    <% if (item.product) { %>
+                                                        <a href="/user/singleProductView/<%= item.product._id %>" class="text-dark text-decoration-none">
+                                                            <%= item.product.productname %>
+                                                        </a>
+                                                    <% } else { %>
+                                                        <p>Product not available</p>
+                                                    <% } %>
+                                                </td>
+                                                <td>
+                                                    <!-- Product price -->
+                                                    <p class="card-text text-muted">$<%= item.product.price %></p>
+                                                </td>
+                                                <td>
+                                                    <!-- Add to Cart button -->
+                                                    <form action="/addtocart/<%= item.product._id %>" method="POST" class="d-inline-block">
+                                                      
+                                                        <button type="submit" class="btn btn-outline-dark btn-sm">Add To Cart</button>
+                                                    </form>
+                                                    
+                                                    <!-- Remove button -->
+                                                    
+                                                  <button class="btn btn-outline-danger remove-item-btn btn-sm" data-item-id="<%= item._id %>">Remove</button>
+                                                
+                                                </td>
+                                            </tr>
+                                        <% }) %>
+                                    </tbody>
+                                </table>
+                                
+                            <% } else { %>
+                              
+                                <p>Your Wishlist is empty.</p>
+                             
+                            <% } %>
+                          
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </footer>
-  <!-- footer section -->
+    </section>
+    
+    <script>
+        // Remove item from wishlist
+        document.querySelectorAll('.remove-item-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const itemId = this.getAttribute('data-item-id');
+                fetch(`/remove-Wishlist-Item/${itemId}`, {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload(); // Reload page to reflect changes
+                    } else {
+                        alert('Failed to remove item from wishlist.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    </script>
+    
+    <style>
+        /* Full-width layout */
+        .container-fluid {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    
+        /* Add spacing around the table */
+        table {
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-spacing: 10px;
+            padding: 150px;
+        }
+    
+        table th, table td {
+            padding: 15px;
+            text-align: left;
+        }
+    
+        /* Add spacing between the card elements */
+        .card-body {
+            padding: 25px;
+        }
+    
+        /* Add some margins to the buttons for spacing */
+        .btn {
+            margin-right: 10px;
+        }
+    
+        /* Style the table cells to improve spacing */
+        td {
+            vertical-align: middle;
+        }
+    
+        /* Adjusting image size */
+        .img-fluid {
+            max-width: 150px;
+            height: auto;
+        }
+    
+        /* Responsive styling for smaller screens */
+        @media (max-width: 768px) {
+            .img-fluid {
+                max-width: 120px;
+            }
+    
+            table th, table td {
+                padding: 10px;
+            }
+        }
+    </style>
+    
+      
+   
+      
+      
+
 
 
 
@@ -420,58 +708,88 @@ async function addToCart(productId, quantity) {
       }
     }
 
-  document.querySelectorAll('.remove-item-btn').forEach(button => {
-  button.addEventListener('click', function() {
-    const itemId = this.getAttribute('data-item-id');
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "Do you want to remove this item from your Wishlist?",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, remove it!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        fetch('/remove-Wishlist-Item', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ itemId: itemId }),
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            Swal.fire(
-              'Removed!',
-              'Item has been removed from your Wishlist.',
-              'success'
-            ).then(() => {
-              
-              window.location.reload();
-            });
-          } else {
-            Swal.fire(
-              'Error!',
-              data.message,
-              'error'
-            );
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          Swal.fire(
-            'Oops!',
-            'An error occurred while removing the item.',
-            'error'
-          );
+    document.querySelectorAll('.remove-item-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const itemId = this.getAttribute('data-item-id'); // Get itemId from button attribute
+        
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to remove this item from your Wishlist?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, remove it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('/remove-Wishlist-Item', { // Send request to delete item
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ itemId: itemId }), // Send itemId in the request body
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire(
+                            'Removed!',
+                            'Item has been removed from your Wishlist.',
+                            'success'
+                        ).then(() => {
+                            window.location.reload(); // Reload page to update UI
+                        });
+                    } else {
+                        Swal.fire(
+                            'Error!',
+                            data.message,
+                            'error'
+                        );
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire(
+                        'Oops!',
+                        'An error occurred while removing the item.',
+                        'error'
+                    );
+                });
+            }
         });
-      }
     });
-  });
 });
+
+
 </script>
+
+
+
+<footer class="footer" style="background-color: rgb(40, 39, 39);">
+  <div class="container">
+      <div class="row align-items-center">
+          <!-- Newsletter Text -->
+          <div class="col-12 col-lg-6 col-xl-7">
+              <div class="newsletter-text mb-100">
+                  <h2>Subscribe for a <span>25% Discount</span></h2>
+                  <p>Discover quality furniture that fits your style and budget. Transform your space with timeless designs and exceptional craftsmanship.</p>
+              </div>
+              <p></p>
+          </div>
+          <!-- Newsletter Form -->
+          <div class="col-12 col-lg-6 col-xl-5">
+              <div class="newsletter-form mb-100">
+                  <form action="#" method="post">
+                      <input type="email" name="email" class="nl-email" placeholder="Your E-mail">
+                      <input type="submit" value="Subscribe">
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</footer>
+
+
 
 </body>
 </html>

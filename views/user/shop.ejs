@@ -7,7 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title  -->
     <title> LuxeFurnish | Shop</title>
@@ -192,22 +191,18 @@ a:hover {
 
 /* Product Card Styling */
 .single-product-wrapper {
-    position: relative;
-    border: 1px solid #ddd;
     border-radius: 10px;
     overflow: hidden;
-    background-color: #fff;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     margin-top: 15px;
    
 }
 
-.single-product-wrapper:hover {
+/* .single-product-wrapper:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
+} */
 
 .product-img {
     position: relative;
@@ -389,7 +384,46 @@ a:hover {
 .wishlist-btn-red:hover {
   color: darkred; /* Darker red on hover */
 }
+.custom-alert {
+    display: none;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid #f5c6cb;
+    z-index: 1000;
+    font-size: 16px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
 
+  .close-alert {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #721c24;
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+  }
+
+  .custom-alert.success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+  }
+
+  .custom-alert.error {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+  }
 
     </style>
 
@@ -402,14 +436,30 @@ a:hover {
         background-clip: text; -webkit-background-clip: text; color: transparent; 
         transition: transform 0.3s ease, text-shadow 0.3s ease;">
         LuxeFurnish
+        
       </a> </div>
+      
+      
     <ul class="navbar-links">
       <li><a href="/">Home</a></li>
       <li><a href="cart">Cart</a></li>
       <li><a href="/order">Orders</a></li>
-      <li><a href> wishlist</a></li>
-      <li><a href> Wallet</a></li>
+      <li><a href="/wishlish"> wishlist</a></li>
+      <li><a href="/loadWalletPage"> Wallet</a></li>
     </ul>
+
+    <div class="navbar-wishlist" style="margin-right: 20px;">
+      <a href="/wishlish" style="color: #dd3535; font-size: 24px; display: flex; align-items: center; transition: transform 0.3s ease;">
+          <i class="fa fa-heart" aria-hidden="true"></i>
+      </a>
+  </div>
+
+  <!-- Cart Icon -->
+  <div class="navbar-cart" style="margin-right: 20px;">
+      <a href="/cart" style="color: #fff; font-size: 24px; display: flex; align-items: center; transition: transform 0.3s ease;">
+          <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+      </a>
+  </div>
   </nav>
 
   <body>
@@ -639,11 +689,80 @@ a:hover {
                     </div>
                     <div class="cart-wishlist d-flex">
                       <!-- Wishlist Icon -->
-                      <form action="/addtowishlist/<%= product._id %>" method="POST" class="mr-3">
-                        <button type="submit" class="btn wishlist-btn-red" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
-                          <i class="fa fa-heart" aria-hidden="true"></i> <!-- Heart icon -->
-                        </button>
-                      </form>
+                     <!-- Wishlist Button -->
+<form id="wishlistForm_<%= product._id %>" action="/addWishlist/<%= product._id %>" method="POST">
+  <button type="submit" class="btn wishlist-btn-red" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
+    <i class="fa fa-heart" aria-hidden="true"></i> <!-- Heart icon -->
+  </button>
+</form>
+
+<!-- Custom Alert Box -->
+<div id="customAlert_<%= product._id %>" class="custom-alert">
+  <span id="alertMessage_<%= product._id %>"></span>
+  <button id="closeAlert_<%= product._id %>" class="close-alert">×</button>
+</div>
+
+<!-- Custom Alert Styles -->
+
+
+<script>
+  // Modify the form submission event listener to use the dynamic product ID
+  document.getElementById('wishlistForm_<%= product._id %>').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the default form submission
+
+    const productId = '<%= product._id %>';
+    const formData = new FormData();
+    formData.append('productId', productId);
+
+    fetch(`/addWishlist/${productId}`, {
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+      const customAlert = document.getElementById('customAlert_' + productId);
+      const alertMessage = document.getElementById('alertMessage_' + productId);
+
+      // Show the custom alert with the response message
+      if (data.success) {
+        customAlert.classList.add('success');
+        customAlert.classList.remove('error');
+        alertMessage.textContent = data.message; // Show success message
+      } else {
+        customAlert.classList.add('error');
+        customAlert.classList.remove('success');
+        alertMessage.textContent = data.message; // Show error message
+      }
+
+      customAlert.style.display = 'block'; // Show the alert
+
+      // Close alert when the '×' button is clicked
+      document.getElementById('closeAlert_' + productId).addEventListener('click', function() {
+        customAlert.style.display = 'none'; // Hide the alert
+      });
+
+      // Optionally, redirect to the wishlist page after success
+      if (data.success) {
+        setTimeout(() => {
+          window.location.href = "/wishlist"; // Redirect to wishlist
+        }, 2000); // Redirect after 2 seconds
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      const customAlert = document.getElementById('customAlert_' + productId);
+      customAlert.classList.add('error');
+      customAlert.classList.remove('success');
+      document.getElementById('alertMessage_' + productId).textContent = 'Something went wrong!';
+      customAlert.style.display = 'block';
+    });
+  });
+</script>
+
+
+
+                      
+                      
                       
                       
                       </form>

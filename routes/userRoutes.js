@@ -24,7 +24,8 @@ import { LoadHomepage,
      checkout,
      checkoutupdateAddress,
      sortProducts,
-     successpage,getOrder,placeorder,cancelOrder,loadForgot,post_ResetPage,get_RestPassword,postResetPassword,Razorpayorder,verifyPayment,search}from "../controller/user/usercontroller.js";  
+     successpage,getOrder,placeorder,cancelOrder,loadForgot,post_ResetPage,get_RestPassword,postResetPassword,Razorpayorder,verifyPayment,
+     loadWishlist,add_Wishlist,remove_WishlistItem,load_walletPage}from "../controller/user/usercontroller.js";  
 import User from "../models/userschema.js";
 import Address from "../models/addressSchema.js";
 import passport from "passport";
@@ -43,7 +44,6 @@ router.get('/auth/google',passport.authenticate('google',{scope:['profile','emai
 router.get('/auth/google/callback',passport.authenticate('google',{failureRedirect:'/signup'}),(req,res)=>{
   res.redirect('/')
 })
-// router.get('/forgot-password',getforgotpassword)
 
 
 router.get('/login',loadLogin)
@@ -53,7 +53,6 @@ router.get("/productDetails/:id",productDetails)
 router.get("/productDetails",productDetails)
 
 router.get("/shop",shop)
-router.get('/search',search);
 
 
 
@@ -92,5 +91,13 @@ router.post('/reset-password', postResetPassword);
 
 router.post('/Razorpayorder', Razorpayorder);
 router.post('/verifyPayment', verifyPayment);
+
+
+router.get ('/wishlish',loadWishlist)
+router.post('/addWishlist/:productId', add_Wishlist); 
+router.post('/remove-Wishlist-Item/:itemId', remove_WishlistItem); // Use URL parameter for itemId
+
+router.get('/loadWalletPage',load_walletPage)
+
 
 export default router;
