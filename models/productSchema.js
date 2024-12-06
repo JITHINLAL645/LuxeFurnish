@@ -37,9 +37,9 @@ const productSchema = mongoose.Schema({
     type: [String],
      required: true 
   },
-  offer:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:'Offer'
+  offer: {
+    type: Schema.Types.ObjectId,
+    ref: 'Offer'  // Reference to the Offer model
 },
 discount_price:{
   type:Number,

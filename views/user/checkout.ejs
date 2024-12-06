@@ -197,9 +197,9 @@
             border: 1px solid #ddd;
             padding: 20px;
             margin: 20px;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            width: 350px; /* Adjust the box size */
+            /* border-radius: 8px; */
+            /* background-color: #f9f9f9; */
+            width: 450px; /* Adjust the box size */
         }
 
         .coupon-box h3 {
@@ -510,6 +510,15 @@
                     <!-- Payment and Price Details Section (Second Box) -->
                     <div class="col-md-6">
                         <div class="card p-4">
+                            <div class="coupon-box p-4 rounded shadow-lg bg-light">
+                                <h3 class="text-center mb-4">Coupon</h3>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="couponCode" placeholder="Enter coupon code" required>
+                                    <button type="button" class="btn btn-primary mt-3 w-100" style="background-color: #fbb710; border-color: rgb(213, 213, 207) ;">
+                                        Apply Coupon
+                                      </button>
+                                                                      </div>
+                            </div>
                             <div class="price-details mt-4">
                                 <h5 class="cart-title">Price Details</h5>
                                 <ul class="summary-table">

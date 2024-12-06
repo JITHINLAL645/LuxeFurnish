@@ -1,42 +1,11 @@
 <%- include("../../views/partials/admin/header") %>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <style>
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        background-color: #ffbe33;
-        color: #fff;
-        padding-top: 5rem;
-        width: 16.666667%;
-        overflow-y: auto;
-        z-index: 100;
-    }
+  
 
-    .sidebar a {
-        color: #fff;
-        text-decoration: none;
-    }
+    
 
-    .sidebar a:hover {
-        background-color: #071553;
-    }
-
-    .content {
-        margin-left: 16.666667%;
-        padding: 2rem;
-        margin-top: 3.5rem;
-        width: calc(100% - 16.666667%);
-    }
-
-    .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 200; 
-  }
+   
 
     #couponDetails {
         display: none;
@@ -119,76 +88,54 @@
         }
     }
 
-    .sidebar .nav-link {
-        padding: 0.8rem 1rem;
-        transition: all 0.3s ease;
-        border-radius: 5px;
-        margin: 0.2rem 0.5rem;
-    }
-
-    .sidebar .nav-link:hover {
-        background-color: #071553;
-        transform: translateX(5px);
-    }
-
-    .sidebar .nav-link i {
-        margin-right: 10px;
-        width: 20px;
-        text-align: center;
-    }
-
-    .sidebar .nav-link.active {
-        font-weight: bold;
-    }
+  
+  
 </style>
 <!-- Navbar for mobile -->
 <div class="row">
-    <div class="col-md-2">
-        
-
-        <!-- Main Layout -->
-       
-    </div>
+   
 
     <div class="col-md-10">
         <main class="container py-5">
             <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                  <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Offers</button>
-                  <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Products</button>
-                  <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Categories</button>
+                <div class="nav nav-tabs bg-light border-0" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Offers</button>
+                    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Products</button>
+                    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Categories</button>
                 </div>
-              </nav>
-              <div class="tab-content" id="nav-tabContent">
-
+            </nav>
+    
+            <div class="tab-content" id="nav-tabContent">
+    
                 <!-- Add Offer Card Start--1 -->
                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                    <div class="bg-white rounded shadow-sm p-4">
-                        <h1 class="h2 mb-4">Offer Product Management</h1>
-                        <div class="bg-white rounded shadow-sm p-4 mb-4">
+                    <div class="bg-white rounded shadow-sm p-4 mb-4 border border-primary">
+                        <h1 class="h2 mb-4 text-primary">Offer Product Management</h1>
+                        <div class="bg-light rounded shadow-sm p-4 mb-4">
                             <form id="addForm">
                                 <div class="row g-3">
                                     <div class="col-md-6">
-                                        <label for="">Offer Name</label>
+                                        <label for="offerName" class="form-label">Offer Name</label>
                                         <input type="text" class="form-control" id="offerName" placeholder="Offer Name" name="offerName" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="">Discount</label>
+                                        <label for="offerPercentage" class="form-label">Discount</label>
                                         <input type="number" class="form-control" id="offerPercentage" placeholder="Offer Percentage" name="offerPercentage" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="startDate" class="form-label">Start Date</label>
+                                        <label for="offerStartDate" class="form-label">Start Date</label>
                                         <input type="date" class="form-control" id="offerStartDate" name="offerStartDate" required>
                                     </div>
                                     <div class="col-12">
-                                        <button type="button" class="btn btn-primary" onclick="AddOffer()">Add Item</button>
+                                        <button type="button" class="btn btn-success" onclick="AddOffer()">Add Item</button>
                                     </div>
                                 </div>
                             </form>
                         </div>
+    
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">
-                                <thead>
+                                <thead class="table-primary">
                                     <tr>
                                         <th>Offer Name</th>
                                         <th>Disc%</th>
@@ -202,26 +149,27 @@
                                             <td><%= Offer.offerName %></td>
                                             <td><%= Offer.offerPercentage %>%</td>
                                             <td><%= new Date(Offer.offerStartDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) %></td>
-                                        <td>
-                                            <% if (Offer.isDelete) { %>
-                                                <button class="btn btn-primary btn-sm" onclick="restoreOffer('<%= Offer._id %>')">
-                                                    <i class="fas fa-recycle"></i> Restore
-                                                </button>
+                                            <td>
+                                                <% if (Offer.isDelete) { %>
+                                                    <button class="btn btn-warning btn-sm" onclick="restoreOffer('<%= Offer._id %>')">
+                                                        <i class="fas fa-recycle"></i> Restore
+                                                    </button>
                                                 <% } else { %>
-                                                <button type="button" class="btn btn-sm btn-primary editOfferBtn"
-                                                        data-bs-toggle="modal" 
-                                                        data-bs-target="#editOfferModal"
-                                                        data-offer-id="<%= Offer._id %>"
-                                                        data-offer-name="<%= Offer.offerName %>"
-                                                        data-offer-percentage="<%= Offer.offerPercentage %>"
-                                                        data-offer-sdate="<%= Offer.offerStartDate.toISOString().split('T')[0] %>">
-                                                    <i class="fas fa-edit"></i> Edit
-                                                </button>
-                                                    <button class="btn btn-sm btn-danger" onclick="deleteItem('<%= Offer.id %>')"><i class="fas fa-trash"></i> Delete</button>
-                                                    <% } %>
+                                                    <button type="button" class="btn btn-primary btn-sm editOfferBtn"
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#editOfferModal"
+                                                            data-offer-id="<%= Offer._id %>"
+                                                            data-offer-name="<%= Offer.offerName %>"
+                                                            data-offer-percentage="<%= Offer.offerPercentage %>"
+                                                            data-offer-sdate="<%= Offer.offerStartDate.toISOString().split('T')[0] %>">
+                                                        <i class="fas fa-edit"></i> Edit
+                                                    </button>
+                                                    <button class="btn btn-danger btn-sm" onclick="deleteItem('<%= Offer._id %>')">
+                                                        <i class="fas fa-trash"></i> Delete
+                                                    </button>
+                                                <% } %>
                                             </td>
                                         </tr>
-        
                                     <% }) %>
                                 </tbody>
                             </table>
@@ -229,85 +177,81 @@
                     </div>
                 </div>
                 <!-- Add Offer Card End--1 -->
-
+    
                 <!-- Products Card Start--2 -->
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                     <div class="row row-cols-1 row-cols-md-3 g-4">
                         <% product.forEach(Product => { %>
-                        <div class="col">
-                            <div class="card h-100">
-                            <div class="d-flex justify-content-center mt-3">
-                                <img src="/public/<%= Product.images[0] %>" alt="" style="width: 100px; height: auto;">
+                            <div class="col">
+                                <div class="card h-100 shadow-sm border border-light">
+                                    <div class="d-flex justify-content-center mt-3">
+                                        <!-- <img src="/Public/ Product.images[0] %>" alt="Product Image" class="img-fluid rounded"> -->
+                                        <img src="<%= Product.images[0] %>" alt="Product Image" class="img-fluid rounded">
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center text-info"><%= Product.productname %></h5>
+                                        <select class="form-select" id="editType" onchange="updateProductOffer('<%= Product._id %>', this.value)" required>
+                                            <option value="<%= Product._id %>">Select Offers</option>
+                                            <% selectoffer.forEach(Offer => { %>
+                                                <option value="<%= Offer._id %>" <% if (Product.offer && Product.offer._id.toString() === Offer._id.toString()) { %> selected <% } %>>
+                                                    <%= Offer.offerName %> - <%= Offer.offerPercentage %>%
+                                                </option>
+                                            <% }) %>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="card-body">
-                              <div class="mb-3">
-                                  <p class="card-title text-center"><%= Product.productname %></p>
-                                <select class="form-select" id="editType" onchange="updateProductOffer('<%= Product._id %>',this.value)" required>
-                                    <option value="<%= Product._id %>">Select Offers</option>
-                                    <% selectoffer.forEach(Offer => { %>
-                                        <option value="<%= Offer._id %>" <% if (Product.offer && Product.offer._id.toString() === Offer._id.toString()) { %> selected  <% } %>>
-                                            <%= Offer.offerName %> - <%= Offer.offerPercentage %>%
-                                        </option>
-                                    <% }) %>
-                                </select>
-                            </div>
-                            </div>
-                          </div>
-                        </div>
                         <% }) %>
-                      </div>
+                    </div>
                 </div>
                 <!-- Products Card End--2 -->
-
+    
                 <!-- Categories Card Start--3 -->
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
                         <div class="col">
-                            <h5>Category Offer Management</h5>
+                            <h5 class="text-info">Category Offer Management</h5>
                         </div>
-                      </div>
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th scope="col">SL</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Offer</th>
-                          </tr>
+                    </div>
+    
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-info">
+                            <tr>
+                                <th scope="col">SL</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Offer</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <% category.forEach((Category,index) => { %>
-                        <tr>
-                            <th scope="row"><%= index+1 %></th>
-                            <td>
-                               <%= Category.category_name%>
-                            </td>      
-                           
-                                <td>
-                                 <select class="form-select" id="editType" onchange="updateCategoryOffer('<%= Category._id %>',this.value)" required>
-                                 <option value="<%= Category._id %>">Select Offers</option>
-                                 <% selectoffer.forEach((Offer) => { %>
-                                 <option value="<%= Offer._id %>"<% if (Category.offer && Category.offer._id.toString() === Offer._id.toString()) { %> selected  <% } %>>
-                                    <%= Offer.offerName %> - <%= Offer.offerPercentage %>%
-                                </option>
-                                 <% }) %>  
-                                </select>    
-                                </td>
-                                   
+                            <% category.forEach((Category, index) => { %>
+                                <tr>
+                                    <th scope="row"><%= index+1 %></th>
+                                    <td><%= Category.category_name %></td>
+                                    <td>
+                                        <select class="form-select" id="editType" onchange="updateCategoryOffer('<%= Category._id %>', this.value)" required>
+                                            <option value="<%= Category._id %>">Select Offers</option>
+                                            <% selectoffer.forEach(Offer => { %>
+                                                <option value="<%= Offer._id %>" <% if (Category.offer && Category.offer._id.toString() === Offer._id.toString()) { %> selected <% } %>>
+                                                    <%= Offer.offerName %> - <%= Offer.offerPercentage %>%
+                                                </option>
+                                            <% }) %>
+                                        </select>
+                                    </td>
+                                </tr>
                             <% }) %>
-                           
-                        </tr>
                         </tbody>
-                      </table>
+                    </table>
                 </div>
                 <!-- Categories Card End--3 -->
-              </div>
+    
+            </div>
         </main>
     
         <!-- Edit Modal -->
         <div class="modal fade" id="editOfferModal" tabindex="-1" aria-labelledby="editOfferModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-info text-white">
                         <h5 class="modal-title" id="editOfferModalLabel">Edit Item</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -324,18 +268,19 @@
                             </div>
                             <div class="mb-3">
                                 <label for="Start-Date" class="col-form-label">Start Date:</label>
-                                <input type="date" class="form-control" id="editOffertDate"></input>
-                              </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" onclick="EditOffer()" id="saveEdit">Save changes</button>
+                                <input type="date" class="form-control" id="editOffertDate">
                             </div>
                         </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="EditOffer()">Save changes</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
