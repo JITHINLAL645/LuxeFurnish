@@ -190,7 +190,7 @@ export const cancel_Coupon = async (req, res) => {
             return res.json({ success: false, error: 'Coupon ID is required' });
         }
 
-        const updatedCoupon = await Coupon.findByIdAndUpdate(coupon_Id, { isDeleted: true }, { new: true });
+        const updatedCoupon = await Coupon.findByIdAndDelete(coupon_Id);
 
         if (!updatedCoupon) {
             return res.json({ success: false, error: 'Coupon not found' });

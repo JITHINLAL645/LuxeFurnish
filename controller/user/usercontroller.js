@@ -1476,15 +1476,24 @@ const add_Wishlist = async (req, res) => {
 const remove_WishlistItem = async (req, res) => {
   try {
     const { itemId } = req.params; // Get itemId from the URL params
-    const userId = req.session.userId; // Assuming userId is stored in session
+    const userId = req.session.passport.user; // Assuming userId is stored in session
+
+    console.log('User ID:', userId); // Debugging step
+    console.log('Item ID:', itemId); // Debugging step
+
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "User not logged in" });
+    }
+
     const wishlist = await Wishlist.findOne({ user: userId });
 
     if (!wishlist) {
+      console.log('Wishlist not found for user:', userId); // Debugging step
       return res.status(404).json({ success: false, message: "Wishlist not found" });
     }
 
-    // Find the item index in the wishlist
-    const itemIndex = wishlist.items.findIndex(item => item._id.toString() === itemId);
+    // Find the product in the wishlist
+    const itemIndex = wishlist.items.findIndex(item => item.product.toString() === itemId);
 
     if (itemIndex === -1) {
       return res.status(404).json({ success: false, message: "Item not found in wishlist" });
@@ -1502,6 +1511,9 @@ const remove_WishlistItem = async (req, res) => {
     return res.status(500).json({ success: false, message: "Something went wrong!" });
   }
 };
+
+
+
 
 const load_walletPage = async (req, res) => {
   try {

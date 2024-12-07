@@ -244,7 +244,7 @@
 }
 
 .remove-item-btn {
-  border-color: #dc4c64;
+  border-color: #130205;
   color: #dc4c64;
 }
 
@@ -523,9 +523,9 @@ p {
                                                 <td>
                                                     <!-- Display product name -->
                                                     <% if (item.product) { %>
-                                                        <a href="/user/singleProductView/<%= item.product._id %>" class="text-dark text-decoration-none">
+                                                        <p href="/user/singleProductView/<%= item.product._id %>" class="text-dark text-decoration-none" style="color: #000;">
                                                             <%= item.product.productname %>
-                                                        </a>
+                                                        </p>
                                                     <% } else { %>
                                                         <p>Product not available</p>
                                                     <% } %>
@@ -543,7 +543,7 @@ p {
                                                     
                                                     <!-- Remove button -->
                                                     
-                                                  <button class="btn btn-outline-danger remove-item-btn btn-sm" data-item-id="<%= item._id %>">Remove</button>
+                                                    <button class="btn btn-outline-danger remove-item-btn btn-sm" data-item-id="<%= item.product._id %>">Remove</button>
                                                 
                                                 </td>
                                             </tr>
@@ -565,27 +565,58 @@ p {
     </section>
     
     <script>
-        // Remove item from wishlist
-        document.querySelectorAll('.remove-item-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const itemId = this.getAttribute('data-item-id');
-                fetch(`/remove-Wishlist-Item/${itemId}`, {
-                    method: 'POST'
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        location.reload(); // Reload page to reflect changes
-                    } else {
-                        alert('Failed to remove item from wishlist.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            });
-        });
-    </script>
+      // Attach event listeners to all remove buttons
+      document.querySelectorAll('.remove-item-btn').forEach(button => {
+          button.addEventListener('click', function() {
+              const itemId = this.getAttribute('data-item-id'); // Get itemId from button attribute
+              
+              // Show confirmation popup using SweetAlert2
+              Swal.fire({
+                  title: 'Are you sure?',
+                  text: "Do you want to remove this item from your Wishlist?",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Yes, remove it!'
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                      // Send fetch request to backend with itemId in URL
+                      fetch(`/remove-Wishlist-Item/${itemId}`, { 
+                          method: 'POST'
+                      })
+                      .then(response => response.json())
+                      .then(data => {
+                          if (data.success) {
+                              Swal.fire(
+                                  'Removed!',
+                                  'Item has been removed from your Wishlist.',
+                                  'success'
+                              ).then(() => {
+                                  window.location.reload(); // Reload the page to reflect changes
+                              });
+                          } else {
+                              Swal.fire(
+                                  'Error!',
+                                  data.message,
+                                  'error'
+                              );
+                          }
+                      })
+                      .catch(error => {
+                          console.error('Error:', error);
+                          Swal.fire(
+                              'Oops!',
+                              'An error occurred while removing the item.',
+                              'error'
+                          );
+                      });
+                  }
+              });
+          });
+      });
+      </script>
+      
     
     <style>
         /* Full-width layout */
@@ -708,57 +739,57 @@ async function addToCart(productId, quantity) {
       }
     }
 
-    document.querySelectorAll('.remove-item-btn').forEach(button => {
-    button.addEventListener('click', function() {
-        const itemId = this.getAttribute('data-item-id'); // Get itemId from button attribute
+//     document.querySelectorAll('.remove-item-btn').forEach(button => {
+//     button.addEventListener('click', function() {
+//         const itemId = this.getAttribute('data-item-id'); // Get itemId from button attribute
         
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "Do you want to remove this item from your Wishlist?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, remove it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                fetch('/remove-Wishlist-Item', { // Send request to delete item
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ itemId: itemId }), // Send itemId in the request body
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        Swal.fire(
-                            'Removed!',
-                            'Item has been removed from your Wishlist.',
-                            'success'
-                        ).then(() => {
-                            window.location.reload(); // Reload page to update UI
-                        });
-                    } else {
-                        Swal.fire(
-                            'Error!',
-                            data.message,
-                            'error'
-                        );
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Swal.fire(
-                        'Oops!',
-                        'An error occurred while removing the item.',
-                        'error'
-                    );
-                });
-            }
-        });
-    });
-});
+//         Swal.fire({
+//             title: 'Are you sure?',
+//             text: "Do you want to remove this item from your Wishlist?",
+//             icon: 'warning',
+//             showCancelButton: true,
+//             confirmButtonColor: '#3085d6',
+//             cancelButtonColor: '#d33',
+//             confirmButtonText: 'Yes, remove it!'
+//         }).then((result) => {
+//             if (result.isConfirmed) {
+//                 fetch('/remove-Wishlist-Item', { // Send request to delete item
+//                     method: 'POST',
+//                     headers: {
+//                         'Content-Type': 'application/json',
+//                     },
+//                     body: JSON.stringify({ itemId: itemId }), // Send itemId in the request body
+//                 })
+//                 .then(response => response.json())
+//                 .then(data => {
+//                     if (data.success) {
+//                         Swal.fire(
+//                             'Removed!',
+//                             'Item has been removed from your Wishlist.',
+//                             'success'
+//                         ).then(() => {
+//                             window.location.reload(); // Reload page to update UI
+//                         });
+//                     } else {
+//                         Swal.fire(
+//                             'Error!',
+//                             data.message,
+//                             'error'
+//                         );
+//                     }
+//                 })
+//                 .catch(error => {
+//                     console.error('Error:', error);
+//                     Swal.fire(
+//                         'Oops!',
+//                         'An error occurred while removing the item.',
+//                         'error'
+//                     );
+//                 });
+//             }
+//         });
+//     });
+// });
 
 
 </script>
