@@ -658,128 +658,64 @@ a:hover {
 
           <div class="row" id="product-card">
             <% products.forEach(product => { %>
-            <div class="col-12 col-md-6 col-lg-6 col-xl-6 single-product-wrapper">  <!-- Class for each product card -->
-              <div class="single-product-wrapper">
-                <a href="/productdetails/<%= product._id %>">
-                  <div class="product-img position-relative">
-                    <img src="<%= product.images[0] %>" alt="<%= product.productname %>" class="img-fluid">
-                    <div class="product-hover-overlay">
-                      <span>Quick View</span>
+              <div class="col-12 col-md-6 col-lg-6 col-xl-6 single-product-wrapper">
+                <div class="single-product-wrapper">
+                  <a href="/productdetails/<%= product._id %>">
+                    <div class="product-img position-relative">
+                      <img src="<%= product.images[0] %>" alt="<%= product.productname %>" class="img-fluid">
+                      <div class="product-hover-overlay">
+                        <span>Quick View</span>
+                      </div>
                     </div>
-                  </div>
-                </a>
-                <!-- Product Description -->
-                <div class="product-description d-flex flex-column justify-content-between p-4">
-                  <!-- Product Meta Data -->
-                  <div class="product-meta-data">
-                    <div class="line"></div>
-                    <p class="product-price text-primary">$<%= product.price %></p>  <!-- Product price -->
-                    <a href="/productdetails/<%= product._id %>">
-                      <h6 class="product-name text-truncate"><%= product.productname %></h6> <!-- Product name -->
-                    </a>
-                  </div>
-                  <!-- Ratings, Cart & Wishlist -->
-                  <div class="ratings-cart-wishlist text-right d-flex justify-content-between align-items-center">
-                    <div class="ratings">
-                      <i class="fa fa-star" aria-hidden="true"></i>
-                      <i class="fa fa-star" aria-hidden="true"></i>
-                      <i class="fa fa-star" aria-hidden="true"></i>
-                      <i class="fa fa-star" aria-hidden="true"></i>
-                      <i class="fa fa-star" aria-hidden="true"></i>
+                  </a>
+                  <!-- Product Description -->
+                  <div class="product-description d-flex flex-column justify-content-between p-4">
+                    <div class="product-meta-data">
+                      <div class="line"></div>
+                      <a href="/productdetails/<%= product._id %>">
+                        <h6 class="product-name text-truncate"><%= product.productname %></h6>
+                      </a><hr>
+                      <p></p>
+                      <!-- Show both the original price and the offer price -->
+                      <% if (product.offerPrice < product.price) { %>
+                        <p class="product-price" style="color: black; font-size: large;" >
+                          <del>$<%= product.price %></del> $<%= product.offerPrice %> <!-- Show discounted price -->
+                        </p>
+                        
+                      <% } else { %>
+                        <p class="product-price" style="color: black;">$<%= product.price %></p>
+                        <% } %>
+                      <!-- <a href="/productdetails/<%= product._id %>">
+                        <h6 class="product-name text-truncate"><%= product.productname %></h6>
+                      </a> -->
                     </div>
-                    <div class="cart-wishlist d-flex">
-                      <!-- Wishlist Icon -->
-                     <!-- Wishlist Button -->
-<form id="wishlistForm_<%= product._id %>" action="/addWishlist/<%= product._id %>" method="POST">
-  <button type="submit" class="btn wishlist-btn-red" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
-    <i class="fa fa-heart" aria-hidden="true"></i> <!-- Heart icon -->
-  </button>
-</form>
-
-<!-- Custom Alert Box -->
-<div id="customAlert_<%= product._id %>" class="custom-alert">
-  <span id="alertMessage_<%= product._id %>"></span>
-  <button id="closeAlert_<%= product._id %>" class="close-alert">×</button>
-</div>
-
-<!-- Custom Alert Styles -->
-
-
-<script>
-  // Modify the form submission event listener to use the dynamic product ID
-  document.getElementById('wishlistForm_<%= product._id %>').addEventListener('submit', function(event) {
-    event.preventDefault();  // Prevent the default form submission
-
-    const productId = '<%= product._id %>';
-    const formData = new FormData();
-    formData.append('productId', productId);
-
-    fetch(`/addWishlist/${productId}`, {
-      method: 'POST',
-      body: formData,
-    })
-    .then(response => response.json())
-    .then(data => {
-      const customAlert = document.getElementById('customAlert_' + productId);
-      const alertMessage = document.getElementById('alertMessage_' + productId);
-
-      // Show the custom alert with the response message
-      if (data.success) {
-        customAlert.classList.add('success');
-        customAlert.classList.remove('error');
-        alertMessage.textContent = data.message; // Show success message
-      } else {
-        customAlert.classList.add('error');
-        customAlert.classList.remove('success');
-        alertMessage.textContent = data.message; // Show error message
-      }
-
-      customAlert.style.display = 'block'; // Show the alert
-
-      // Close alert when the '×' button is clicked
-      document.getElementById('closeAlert_' + productId).addEventListener('click', function() {
-        customAlert.style.display = 'none'; // Hide the alert
-      });
-
-      // Optionally, redirect to the wishlist page after success
-      if (data.success) {
-        setTimeout(() => {
-          window.location.href = "/wishlist"; // Redirect to wishlist
-        }, 2000); // Redirect after 2 seconds
-      }
-    })
-    .catch(error => {
-      console.error(error);
-      const customAlert = document.getElementById('customAlert_' + productId);
-      customAlert.classList.add('error');
-      customAlert.classList.remove('success');
-      document.getElementById('alertMessage_' + productId).textContent = 'Something went wrong!';
-      customAlert.style.display = 'block';
-    });
-  });
-</script>
-
-
-
-                      
-                      
-                      
-                      
-                      </form>
-                      <!-- Cart Button -->
-                      <form action="/addtocart/<%= product._id %>" method="POST">
-                        <button type="submit" class="btn btn-primary add-to-cart-btn" data-toggle="tooltip" data-placement="left" title="Add to Cart">
-                          <img src="img/core-img/cart.png" alt="Add to Cart">
-                        </button>
-                      </form>
+                    <!-- Ratings, Cart & Wishlist -->
+                    <div class="ratings-cart-wishlist text-right d-flex justify-content-between align-items-center">
+                      <div class="ratings">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                      </div>
+                      <div class="cart-wishlist d-flex">
+                        <form id="wishlistForm_<%= product._id %>" action="/addWishlist/<%= product._id %>" method="POST">
+                          <button type="submit" class="btn wishlist-btn-red" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                          </button>
+                        </form>
+                        <form action="/addtocart/<%= product._id %>" method="POST">
+                          <button type="submit" class="btn btn-primary add-to-cart-btn" data-toggle="tooltip" data-placement="left" title="Add to Cart">
+                            <img src="img/core-img/cart.png" alt="Add to Cart">
+                          </button>
+                        </form>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
             <% }) %>
           </div>
-          
           
 
           <div class="col-12">

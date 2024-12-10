@@ -25,7 +25,7 @@ import { LoadHomepage,
      checkoutupdateAddress,
      sortProducts,
      successpage,getOrder,placeorder,cancelOrder,loadForgot,post_ResetPage,get_RestPassword,postResetPassword,Razorpayorder,verifyPayment,
-     loadWishlist,add_Wishlist,remove_WishlistItem,load_walletPage}from "../controller/user/usercontroller.js";  
+     loadWishlist,add_Wishlist,remove_WishlistItem,load_walletPage,addFund,applyCoupon,removeCoupon}from "../controller/user/usercontroller.js";  
 import User from "../models/userschema.js";
 import Address from "../models/addressSchema.js";
 import passport from "passport";
@@ -98,6 +98,10 @@ router.post('/addWishlist/:productId', add_Wishlist);
 router.post('/remove-Wishlist-Item/:itemId', remove_WishlistItem); // Use URL parameter for itemId
 
 router.get('/loadWalletPage',load_walletPage)
+router.post('/addFund',addFund)
+
+router.post('/apply-coupon', applyCoupon);
+router.post('/remove-coupon', removeCoupon);
 
 
 export default router;

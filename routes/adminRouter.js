@@ -6,6 +6,7 @@ import { loadProductPage, addProductPage, loadAdminDash, add_Product, loadEditPr
 import { loard_OrderMng,getOrderDetails} from "../controller/admin/ordercontroller.js"
 import { load_CouponPage, add_Coupon,edit_Coupon, cancel_Coupon} from "../controller/admin/couponcontroller.js"
 import {loadoffer,addOffer_Product,edit_Offer,delete_Offer,restore_Offer,update_ProductOffer,update_CategoryOffer} from "../controller/admin/offerController.js"
+import {load_SalesReport,generateSalesReport,sales_Chart} from "../controller/admin/salescontroller.js"
 
 import { adminAuth } from "../middlewares/auth.js";
 
@@ -63,6 +64,12 @@ router.put('/deleteOffer/:id',adminAuth,delete_Offer);
 router.put('/restoreOffer/:id',adminAuth,restore_Offer);
 router.post('/updateProductOffer',adminAuth,update_ProductOffer)
 router.post('/updateCategoryOffer',adminAuth,update_CategoryOffer)
+
+
+router.get('/salesReport',load_SalesReport);
+router.post('/generateSalesReport',adminAuth,generateSalesReport)
+router.get('/salesChart',adminAuth,sales_Chart)
+
 
 
 

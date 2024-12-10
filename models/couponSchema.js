@@ -4,9 +4,15 @@ const CouponSchema = new mongoose.Schema({
   code: {
     type: String,
     required: true,
-    unique: true, // Ensures that each coupon code is unique
+    unique: true, 
   },
-  // offerPrice: {  // Changed 'discount' to 'offerPrice' for clarity
+  users: [{
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+          }
+}],
+  // offerPrice: {  
   //   type: Number,
   //   required: true,
   // },
@@ -16,15 +22,15 @@ const CouponSchema = new mongoose.Schema({
   },
   isActive: {
     type: Boolean,
-    default: true,  // Defaults to true (active coupon)
+    default: true, 
   },
   usageCount: {
     type: Number,
-    default: 0,  // Defaults to 0 when the coupon is first created
+    default: 0, 
   },
   maxAmount: {
     type: Number,
-    required: true, // Ensures maxUses is always provided
+    required: true, 
   },
   discount:{
 type:Number,
@@ -39,7 +45,7 @@ require:true,
     required:true,
   }
 }, {
-  timestamps: true, // Adds 'createdAt' and 'updatedAt' fields automatically
+  timestamps: true, 
 });
 
 const Coupon = mongoose.model('Coupon', CouponSchema);

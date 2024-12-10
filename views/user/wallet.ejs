@@ -244,64 +244,77 @@
     </div>
     
 
-        <div class="card mt-4">
-            <div class="card-body">
-                <h5 class="card-title mb-4">Recent Transactions</h5>
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Amount</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                          <% if (wallet.wallet_history.length>0) { %>
-                            <% wallet.wallet_history.forEach(element => { %>
-                              <% if (element.transactionType == 'credited') { %>
-                                <tr class="transaction-item">
-                                  <td><i class="fas fa-arrow-up text-success"></i></td>
-                                  <td><%= element.description %></td>
-                                  <td class="text-success">+₹<%= element.amount %></td>
-                                  <td>
-                                    <%= ("0" + element.date.getDate()).slice(-2) %>/
-                                    <%= ("0" + (element.date.getMonth() + 1)).slice(-2) %>/
-                                    <%= element.date.getFullYear() %> 
-                                    <%= ("0" + element.date.getHours()).slice(-2) %>:
-                                    <%= ("0" + element.date.getMinutes()).slice(-2) %>:
-                                    <%= ("0" + element.date.getSeconds()).slice(-2) %>
-                                  </td>                                  
-                              </tr>
-                              <% }else{ %>
-                                <tr class="transaction-item">
-                                  <td><i class="fas fa-arrow-down text-danger"></i></td>
-                                  <td><%= element.description %></td>
-                                  <td class="text-danger">-₹<%= element.amount %></td>
-                                  <td>
-                                    <%= ("0" + element.date.getDate()).slice(-2) %>/
-                                    <%= ("0" + (element.date.getMonth() + 1)).slice(-2) %>/
-                                    <%= element.date.getFullYear() %> 
-                                    <%= ("0" + element.date.getHours()).slice(-2) %>:
-                                    <%= ("0" + element.date.getMinutes()).slice(-2) %>:
-                                    <%= ("0" + element.date.getSeconds()).slice(-2) %>
-                                  </td>
-                                  
-                              </tr>
-                              <% } %>
-                              <% }) %>
-                          <% } else{ %>
-                            <tr class="transaction-item">
-                              <td colspan="5" class="text-center text-danger">No transaction found</td>
-                          </tr>
-                            <% } %>
-                         
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    <div class="card mt-4">
+      <div class="card-body">
+        <h5 class="card-title mb-4">Recent Transactions</h5>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (wallet.wallet_history.length > 0) { %>
+                <% wallet.wallet_history.forEach(element => { %>
+                  <% if (element.transactionType === 'credited') { %>
+                    <tr class="transaction-item">
+                      <td><i class="fas fa-arrow-up text-success"></i></td>
+                      <td><%= element.description %></td>
+                      <td class="text-success">+₹<%= element.amount %></td>
+                      <td>
+                        <%= ("0" + element.date.getDate()).slice(-2) %>/
+                        <%= ("0" + (element.date.getMonth() + 1)).slice(-2) %>/
+                        <%= element.date.getFullYear() %>
+                        <%= ("0" + element.date.getHours()).slice(-2) %>:
+                        <%= ("0" + element.date.getMinutes()).slice(-2) %>:
+                        <%= ("0" + element.date.getSeconds()).slice(-2) %>
+                      </td>                                  
+                    </tr>
+                  <% } else if (element.transactionType === 'refunded') { %>
+                    <tr class="transaction-item">
+                      <td><i class="fas fa-arrow-up text-warning"></i></td>
+                      <td><%= element.description %></td>
+                      <td class="text-warning">+₹<%= element.amount %></td>
+                      <td>
+                        <%= ("0" + element.date.getDate()).slice(-2) %>/
+                        <%= ("0" + (element.date.getMonth() + 1)).slice(-2) %>/
+                        <%= element.date.getFullYear() %>
+                        <%= ("0" + element.date.getHours()).slice(-2) %>:
+                        <%= ("0" + element.date.getMinutes()).slice(-2) %>:
+                        <%= ("0" + element.date.getSeconds()).slice(-2) %>
+                      </td>
+                    </tr>
+                  <% } else { %>
+                    <tr class="transaction-item">
+                      <td><i class="fas fa-arrow-down text-danger"></i></td>
+                      <td><%= element.description %></td>
+                      <td class="text-danger">-₹<%= element.amount %></td>
+                      <td>
+                        <%= ("0" + element.date.getDate()).slice(-2) %>/
+                        <%= ("0" + (element.date.getMonth() + 1)).slice(-2) %>/
+                        <%= element.date.getFullYear() %>
+                        <%= ("0" + element.date.getHours()).slice(-2) %>:
+                        <%= ("0" + element.date.getMinutes()).slice(-2) %>:
+                        <%= ("0" + element.date.getSeconds()).slice(-2) %>
+                      </td>
+                    </tr>
+                  <% } %>
+                <% }) %>
+              <% } else { %>
+                <tr class="transaction-item">
+                  <td colspan="4" class="text-center text-danger">No transactions found</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
         </div>
+      </div>
+    </div>
+    
     </main>
     <!-- Add Funds Modal -->
     <div class="modal fade" id="addFundsModal" tabindex="-1" aria-labelledby="addFundsModalLabel" aria-hidden="true">

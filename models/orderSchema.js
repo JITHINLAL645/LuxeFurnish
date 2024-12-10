@@ -1,7 +1,12 @@
 import mongoose, { Schema, model } from "mongoose";
 import { v4 as uuidv4 } from 'uuid'; 
 
-const orderSchema = new mongoose.Schema({
+const orderSchema = new mongoose.Schema({ 
+    user: { 
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true 
+      },
     orderId: {
         type: String,
         default: () => uuidv4(),
