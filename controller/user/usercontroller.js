@@ -1346,56 +1346,56 @@ const getOrder = async (req, res) => {
 
 
 
-const cancelOrder = async (req, res) => {
-  try {
-    const { orderId } = req.body;
-    const userId = req.session.passport?.user; 
+// const cancelOrder = async (req, res) => {
+//   try {
+//     const { orderId } = req.body;
+//     const userId = req.session.passport?.user; 
 
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
+//     if (!userId) {
+//       return res.status(401).json({ message: "Unauthorized" });
+//     }
 
-    let order;
-    if (mongoose.Types.ObjectId.isValid(orderId)) {
-      order = await Order.findOne({ _id: orderId, user: userId });
-    } else {
-      order = await Order.findOne({ orderId: orderId, user: userId });
-    }
+//     let order;
+//     if (mongoose.Types.ObjectId.isValid(orderId)) {
+//       order = await Order.findOne({ _id: orderId, user: userId });
+//     } else {
+//       order = await Order.findOne({ orderId: orderId, user: userId });
+//     }
 
-    if (!order) {
-      return res.status(404).json({ message: "Order not found" });
-    }
+//     if (!order) {
+//       return res.status(404).json({ message: "Order not found" });
+//     }
 
-    if (order.status === 'Cancelled') {
-      return res.status(400).json({ message: "Order is already cancelled" });
-    }
+//     if (order.status === 'Cancelled') {
+//       return res.status(400).json({ message: "Order is already cancelled" });
+//     }
 
-    if (['Shipped', 'Delivered'].includes(order.status)) {
-      return res.status(400).json({ message: "Cannot cancel order at this stage" });
-    }
+//     if (['Shipped', 'Delivered'].includes(order.status)) {
+//       return res.status(400).json({ message: "Cannot cancel order at this stage" });
+//     }
 
-    // Update the order status to "Cancelled"
-    order.status = 'Cancelled';
-    order.orderStatusTimestamps = order.orderStatusTimestamps || {};
-    order.orderStatusTimestamps.cancelled = new Date();
+//     // Update the order status to "Cancelled"
+//     order.status = 'Cancelled';
+//     order.orderStatusTimestamps = order.orderStatusTimestamps || {};
+//     order.orderStatusTimestamps.cancelled = new Date();
 
-    // Update the product stock for each item in the order
-    for (const item of order.orderItems) {
-      await Product.findByIdAndUpdate(item.product, {
-        $inc: { stock: item.quantity } // Restore product stock
-      });
-    }
+//     // Update the product stock for each item in the order
+//     for (const item of order.orderItems) {
+//       await Product.findByIdAndUpdate(item.product, {
+//         $inc: { stock: item.quantity } // Restore product stock
+//       });
+//     }
 
-    await order.save(); // Save the order after making changes
+//     await order.save(); // Save the order after making changes
 
-    // Respond to the frontend with success message
-    res.status(200).json({ message: "Order cancelled successfully", redirect: "/order" });
+//     // Respond to the frontend with success message
+//     res.status(200).json({ message: "Order cancelled successfully", redirect: "/order" });
 
-  } catch (error) {
-    console.error("Error cancelling order:", error);
-    res.status(500).json({ message: "Internal Server Error", error: error.message });
-  }
-};
+//   } catch (error) {
+//     console.error("Error cancelling order:", error);
+//     res.status(500).json({ message: "Internal Server Error", error: error.message });
+//   }
+// };
 
 
 
@@ -1489,6 +1489,90 @@ const cancelOrder = async (req, res) => {
 //   }
 // };
 
+const cancelOrder = async (req, res) => {
+  try {
+    const { orderId } = req.body;
+    const userId = req.session.passport?.user;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    let order;
+    if (mongoose.Types.ObjectId.isValid(orderId)) {
+      order = await Order.findOne({ _id: orderId, user: userId });
+    } else {
+      order = await Order.findOne({ orderId: orderId, user: userId });
+    }
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    if (order.status === 'Cancelled') {
+      return res.status(400).json({ message: "Order is already cancelled" });
+    }
+
+    if (['Shipped', 'Delivered'].includes(order.status)) {
+      return res.status(400).json({ message: "Cannot cancel order at this stage" });
+    }
+
+    // Update the order status to "Cancelled"
+    order.status = 'Cancelled';
+    order.orderStatusTimestamps = order.orderStatusTimestamps || {};
+    order.orderStatusTimestamps.cancelled = new Date();
+
+    // Update the product stock for each item in the order
+    for (const item of order.orderItems) {
+      await Product.findByIdAndUpdate(item.product, {
+        $inc: { stock: item.quantity } // Restore product stock
+      });
+    }
+console.log("KFJFW",order.status);
+
+    // Check if the payment was done online (Razorpay/other payment gateway)
+    if (order.status === "Cancelled") {
+      const refundAmount = Number(order.totalPrice);
+      console.log(refundAmount);
+      
+
+      // Find or create a wallet for the user
+      let wallet = await Wallet.findOne({ user: userId });
+      console.log("iiiii",wallet);
+      
+      if (!wallet) {
+        wallet = new Wallet({
+          user: userId,
+          balanceAmount: 0,
+          walletHistory: [],
+        });
+      }
+
+      // Add the refunded amount to the user's wallet
+      wallet.balanceAmount += refundAmount;
+      wallet.wallet_history.push({
+        date: new Date(),
+        amount: refundAmount,
+        description: `Refund for cancelled order (Order ID: ${order.orderId})`,
+        transactionType: "credited",
+      });          
+      
+
+      // Save the updated wallet
+      await wallet.save();
+    }
+
+    // Save the order after making changes
+    await order.save();
+
+    // Respond to the frontend with success message
+    res.status(200).json({ message: "Order cancelled successfully", redirect: "/order" });
+
+  } catch (error) {
+    console.error("Error cancelling order:", error);
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+};
 
 
 const loadForgot = async (req,res)=>{
