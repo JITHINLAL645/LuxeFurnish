@@ -375,7 +375,7 @@ body {
                                                         <tr>
                                                             <th>Order ID</th>
                                                             <th>Order Date</th>
-                                                            <th>Products</th>
+                                                            <th>Quantity</th>
                                                             <th>Total Price</th>
                                                             <th>Final Amount</th>
                                                             <th>Coupon Applied</th>
@@ -390,7 +390,7 @@ body {
                                                                 <td><%= new Date(order.orderDate).toLocaleDateString() %></td>
                                                                 <td>
                                                                     <% order.orderItems.forEach(item => { %>
-                                                                        <p><%= item.product %> (Qty: <%= item.quantity %>)</p>
+                                                                        <p><%= item.product %>  <%= item.quantity %>    </p>
                                                                     <% }) %>
                                                                 </td>
                                                                 <td>₹<%= order.totalAmount.toFixed(2) %></td>

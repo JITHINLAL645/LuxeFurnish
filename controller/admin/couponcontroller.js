@@ -43,7 +43,7 @@ export const add_Coupon = async (req, res) => {
             return res.json({ success: false, error: 'Discount percentage must be a whole number.' });
         }
 
-        const currentDate = new Date(); // Get the current date
+        const currentDate = new Date(); 
 
         // Validate Start Date
         if (!start_date) {
