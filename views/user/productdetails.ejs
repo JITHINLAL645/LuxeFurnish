@@ -18,6 +18,37 @@
         <!-- Core Style CSS -->
         <link rel="stylesheet" href="/css/core-style.css">
 
+        <style>
+             .zoom-container {
+                                    width: 100%;
+                                    height: 100%;
+                                    position: relative;
+                                    overflow: hidden;
+                                    --zoom-x: 50%;
+                                    --zoom-y: 50%;
+                                    --display: none;
+                                }
+                            
+                                .zoom-container::after {
+                                    content: "";
+                                    display: var(--display);
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                    background-image: var(--url);
+                                    background-size: 200%;
+                                    background-position: var(--zoom-x) var(--zoom-y);
+                                    z-index: 2;
+                                }
+                            
+                                .zoom-image {
+                                    width: 100%;
+                                    height: auto;
+                                }
+        </style>
+
     </head>
 
     <body>
@@ -158,70 +189,10 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            <style>
-                                .zoom-container {
-                                    width: 100%;
-                                    height: 100%;
-                                    position: relative;
-                                    overflow: hidden;
-                                    --zoom-x: 50%;
-                                    --zoom-y: 50%;
-                                    --display: none;
-                                }
-                            
-                                .zoom-container::after {
-                                    content: "";
-                                    display: var(--display);
-                                    position: absolute;
-                                    top: 0;
-                                    left: 0;
-                                    width: 100%;
-                                    height: 100%;
-                                    background-image: var(--url);
-                                    background-size: 200%;
-                                    background-position: var(--zoom-x) var(--zoom-y);
-                                    z-index: 2;
-                                }
-                            
-                                .zoom-image {
-                                    width: 100%;
-                                    height: auto;
-                                }
-                            </style>
-                            
-                            <script>
-                                document.querySelectorAll('.zoom-container').forEach((container) => {
-                                    const img = container.querySelector('.zoom-image');
-                                    container.addEventListener('mousemove', (event) => {
-                                        const rect = container.getBoundingClientRect();
-                                        const x = ((event.clientX - rect.left) / rect.width) * 100;
-                                        const y = ((event.clientY - rect.top) / rect.height) * 100;
-                            
-                                        container.style.setProperty('--zoom-x', `${x}%`);
-                                        container.style.setProperty('--zoom-y', `${y}%`);
-                                        container.style.setProperty('--display', 'block');
-                                    });
-                            
-                                    container.addEventListener('mouseout', () => {
-                                        container.style.setProperty('--display', 'none');
-                                    });
-                                });
-                            </script>
-                            
-
                         </div>
                         <div class="col-12 col-lg-5">
                             <div class="single_product_desc">
                                 <!-- Product Meta Data -->
-
-
-
-
-
-
-
-                                
                                 <div class="product-meta-data">
                                     <div class="line"></div>
                                     <p class="product-price">$<%= product.price %></p>
@@ -240,27 +211,7 @@
                                         <div class="review">
                                             
                                           <p>Review</p>
-                                        </div>
-                                        <!-- <style>
-                                            .review {
-                                            
-     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-textarea {
-    margin-bottom: 10px; /* Space between textarea and button */
-}
-
-button {
-    align-self: flex-start; /* Align the button to the left (under the textarea) */
-}
-
-                                        </style> -->
-                                        
-                                        
-                                        
+                                        </div> 
                                     </div>
                                     <p class="avaibility"><i class="fa fa-circle"></i> <%= product.stock > 0 ? 'In Stock' : 'Out of Stock' %></p>
                                 </div>
@@ -274,17 +225,6 @@ button {
                                         <% }); %>
                                     </ul>
                                 </div>
-                                
-                                
-                                
-                                
-                    
-
-
-
-
-
-
                                 <div class="short_overview my-5">
                                     <p><%= product.description %></p>
                                 </div>
@@ -333,6 +273,26 @@ button {
                         }
                         
                     </script>
+
+
+<script>
+    document.querySelectorAll('.zoom-container').forEach((container) => {
+        const img = container.querySelector('.zoom-image');
+        container.addEventListener('mousemove', (event) => {
+            const rect = container.getBoundingClientRect();
+            const x = ((event.clientX - rect.left) / rect.width) * 100;
+            const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+            container.style.setProperty('--zoom-x', `${x}%`);
+            container.style.setProperty('--zoom-y', `${y}%`);
+            container.style.setProperty('--display', 'block');
+        });
+
+        container.addEventListener('mouseout', () => {
+            container.style.setProperty('--display', 'none');
+        });
+    });
+</script>
                     
 
                 

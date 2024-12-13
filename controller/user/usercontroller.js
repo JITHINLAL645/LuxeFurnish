@@ -451,14 +451,6 @@ const shop = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
-
-
 const sortProducts = async (req, res) => {
   const sortBy = req.query.sort_by || 'popularity'; // Default to 'popularity' if no sort option is provided
 
@@ -493,6 +485,10 @@ const sortProducts = async (req, res) => {
   // Render the products page with the sorted products
   res.render('user/shop', { products: sortedProducts });
 };
+
+
+
+
 
 
 const loadprofile = async (req, res) => {

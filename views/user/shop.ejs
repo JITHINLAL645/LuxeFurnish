@@ -424,6 +424,31 @@ a:hover {
     border-color: #f5c6cb;
     color: #721c24;
   }
+  .catagories-menu ul {
+  list-style-type: none; /* Removes bullet points */
+  padding: 0;
+  margin: 0;
+}
+
+.catagories-menu ul li {
+  display: block; /* Ensures each category item stacks vertically */
+  margin-bottom: 10px; /* Adds some spacing between items */
+}
+
+.catagories-menu ul li a {
+  text-decoration: none;
+  color: #333; /* Adjust color as per your design */
+  padding: 5px;
+  display: block; /* Ensures the clickable area spans across the width */
+}
+
+.catagories-menu ul li.active a {
+  font-weight: bold; /* Highlights the active category */
+}
+.catagories-menu ul {
+  display: block; /* Resets from any potential flexbox layout */
+}
+
 
     </style>
 
@@ -587,21 +612,21 @@ a:hover {
 
         </div>
 
-        <!-- <div class="widget catagory mb-50">
-                <h6 class="widget-title mb-30">Catagories</h6>
-
-                <div class="catagories-menu">
-                    <ul>
-                        <li class="active"><a href="#">Chairs</a></li>
-                        <li><a href="#">Beds</a></li>
-                        <li><a href="#">Accesories</a></li>
-                        <li><a href="#">Furniture</a></li>
-                        <li><a href="#">Home Deco</a></li>
-                        <li><a href="#">Dressings</a></li>
-                        <li><a href="#">Tables</a></li>
-                    </ul>
-                </div>
-            </div> -->
+        <div class="widget catagory mb-50">
+          <h6 class="widget-title mb-30">Categories</h6>
+      
+          <div class="catagories-menu">
+              <ul>
+                  <li class="{{ category === 'furnitures' ? 'active' : '' }}"><a href="/shop?category=furnitures">Furnitures</a></li>
+                  <li class="{{ category === 'beds' ? 'active' : '' }}"><a href="/shop?category=beds">Beds</a></li>
+                  <li class="{{ category === 'sofa' ? 'active' : '' }}"><a href="/shop?category=sofa">Sofa</a></li>
+                  <li class="{{ category === 'chairs' ? 'active' : '' }}"><a href="/shop?category=chairs">Chairs</a></li>
+                  <li class="{{ category === 'stools' ? 'active' : '' }}"><a href="/shop?category=stools">Stools</a></li>
+                  <li class="{{ category === 'tables' ? 'active' : '' }}"><a href="/shop?category=tables">Tables</a></li>
+              </ul>
+          </div>
+      </div>
+      
 
         <!-- ##### Single Widget ##### -->
         <div class="widget price mb-50">
@@ -620,7 +645,7 @@ a:hover {
                 <span class="ui-slider-handle ui-state-default ui-corner-all"
                   tabindex="0"></span>
               </div>
-              <div class="range-price">$10 - $1000</div>
+              <!-- <div class="range-price">$10 - $1000</div> -->
             </div>
           </div>
         </div>

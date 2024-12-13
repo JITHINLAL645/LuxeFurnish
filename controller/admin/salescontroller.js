@@ -102,6 +102,7 @@ const formatAddress = (address) => {
 
 
 
+
 const generatePDFReport = (orders) => {
   const tableBody = [
     ['DATE', 'PRODUCT NAME', 'QUANTITY', 'TOTAL SALES', 'DISCOUNT', 'NET SALES'] // Adjusted header
@@ -139,7 +140,7 @@ const generatePDFReport = (orders) => {
   const docDefinition = {
     content: [
       {
-        text: 'Order Report', 
+        text: 'Sales Report', 
         style: 'header',
         alignment: 'left',
       },
@@ -147,6 +148,7 @@ const generatePDFReport = (orders) => {
         text: 'LuxeFurnish',
         style: 'header',
         alignment: 'right',
+        decoration: 'underline',
       },
       table
     ],
