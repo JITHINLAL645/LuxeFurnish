@@ -25,7 +25,7 @@ import { LoadHomepage,
      checkoutupdateAddress,
      sortProducts,
      successpage,getOrder,placeorder,cancelOrder,loadForgot,post_ResetPage,get_RestPassword,postResetPassword,Razorpayorder,verifyPayment,
-     loadWishlist,add_Wishlist,remove_WishlistItem,load_walletPage,addFund,applyCoupon,removeCoupon}from "../controller/user/usercontroller.js";  
+     loadWishlist,add_Wishlist,remove_WishlistItem,load_walletPage,addFund,applyCoupon,removeCoupon,downloadInvoice}from "../controller/user/usercontroller.js";  
 import User from "../models/userschema.js";
 import Address from "../models/addressSchema.js";
 import passport from "passport";
@@ -81,6 +81,8 @@ router.get('/successpage',successpage)
 
 router.get('/order',getOrder);
 router.post('/cancelOrder',cancelOrder);
+router.get('/download-invoice/:orderId', downloadInvoice);
+
 
 
 router.get('/forgotPassword',loadForgot)

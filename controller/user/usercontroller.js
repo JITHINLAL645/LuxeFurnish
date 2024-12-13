@@ -1139,6 +1139,10 @@ const successpage = (req, res) => {
   }
 };
 
+
+import PDFDocument from 'pdfkit';
+import fs from 'fs';
+
 const getOrder = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 6;
@@ -1192,6 +1196,109 @@ const getOrder = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
+const downloadInvoice = async (req, res) => {
+  const orderId = req.params.orderId;
+
+  try {
+    // Fetch the order details based on orderId
+    const order = await Order.findById(orderId).populate('orderItems.product').lean();
+
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    // Create a new PDF document
+    const doc = new PDFDocument({
+      size: 'A4',
+      margin: 50
+    });
+
+    // Set the response header to download the file as PDF
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=invoice-${order._id}.pdf`);
+
+    // Pipe the document to the response
+    doc.pipe(res);
+
+    // Add Invoice Title aligned to the right
+    doc.fontSize(24).font('Helvetica-Bold').text('INVOICE', { align: 'right' });
+    doc.moveDown(1);
+
+    // Add Invoice Date and Order ID
+    doc.fontSize(12).fillColor('#333').text(`Invoice ID: ${order._id}`, { align: 'left' });
+    doc.text(`Order Date: ${new Date(order.createdOn).toLocaleDateString()}`, { align: 'left' });
+    doc.text(`Total Amount: ₹${order.finalAmount}`, { align: 'left' });
+    doc.moveDown();
+
+    // Add Company Header
+    doc.fontSize(14).fillColor('#000').text('LuxeFurnish', { bold: true });
+    doc.fontSize(12).fillColor('#333').text('Phone: +1234567890');
+    doc.text('Email: contact@company.com');
+    doc.moveDown();
+
+    // Add Customer Information (Shipping Address)
+    doc.fillColor('#333').text('Bill To:', { bold: true });
+    doc.text(`${order.address.firstName} ${order.address.lastName}`);
+    doc.text(`${order.address.addressLine}`);
+    doc.text(`${order.address.city}, ${order.address.district}`);
+    doc.text(`${order.address.state}, ${order.address.country}`);
+    doc.text(`Pincode: ${order.address.pincode}`);
+    doc.text(`Phone: ${order.address.phoneNumber}`);
+    doc.text(`Email: ${order.address.email}`);
+    doc.moveDown();
+
+    // Line separator with black color
+    doc.moveDown().lineWidth(1).strokeColor('#000').lineCap('round').moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+    doc.moveDown(10); // Move down after the line separator
+
+    // Add Table Header for Ordered Items
+    doc.fontSize(12).fillColor('#000').text('Item', { continued: true, width: 200, align: 'left' });
+    doc.text('Quantity', { continued: true, width: 100, align: 'center' });
+    doc.text('Price', { align: 'right' });
+    doc.moveDown();
+
+    // Border for the Header Row (black color)
+    doc.lineWidth(0.5).strokeColor('#000').moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+    doc.moveDown(5);
+
+    // Add Ordered Items in Table Format
+    order.orderItems.forEach(item => {
+      if (item.product) {
+        const totalPrice = item.quantity * item.product.price;
+
+        // Product details row
+        doc.text(item.product.productname, { continued: true, width: 200, align: 'left' });
+        doc.text(item.quantity.toString(), { continued: true, width: 100, align: 'center' });
+        doc.text(`₹${item.product.price}`, { align: 'right' });
+        doc.moveDown();
+        
+        // Add Total Price for each product row
+        doc.moveDown();
+      }
+    });
+
+    // Line separator below items list
+    doc.moveDown().lineWidth(1).strokeColor('#000').lineCap('round').moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+    doc.moveDown(10); // Move down after separator
+
+    // Add Final Total Amount with bold emphasis
+    doc.fontSize(14).fillColor('#000').text('Total Amount:', { bold: true });
+    doc.text(`₹${order.finalAmount}`, { align: 'right', font: 'Helvetica-Bold' });
+    doc.moveDown();
+
+    // Finalize the PDF
+    doc.end();
+
+  } catch (error) {
+    console.error('Error generating PDF invoice:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+
+
+
 
 
 
@@ -1852,6 +1959,7 @@ export {
   load_walletPage,
   addFund,
   removeCoupon,
-  applyCoupon
+  applyCoupon,
+  downloadInvoice
   
 };

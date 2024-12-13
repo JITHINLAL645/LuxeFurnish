@@ -533,18 +533,54 @@
                           <div class="me-4 mb-3 d-flex flex-wrap">
                             <!-- Add more product details here -->
                           </div>
-                          <div class="flex-grow-1 d-flex align-items-start">
-                            <img src="<%= order.userImage %>" alt="User Image" class="rounded-circle me-3" style="width: 80px; height: 80px; object-fit: cover;">
-                            <ul class="list-unstyled">
-                              <li class="mb-2"><strong>User Name:</strong> <span class="text-muted"><%= order.address.firstName %> <%= order.address.lastName %></span></li>
-                              <li class="mb-2"><strong>Order Date:</strong> <span class="text-muted"><%= order.createdOn.toLocaleDateString() %></span></li>
-                              <li class="mb-2"><strong>Order Status:</strong> <span class="text-muted"><%= order.status %></span></li>
-                              <li class="mb-2"><strong>Total Amount:</strong> <span class="text-muted"><%= order.finalAmount %></span></li>
-                            </ul>
-                          </div>
-                          
-                          
-                          
+
+
+                          <div class="order-card" style="border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+                            <h5>Order ID: <%= order._id %></h5>
+                            <p>Order Date: <%= new Date(order.createdOn).toLocaleDateString() %></p>
+                            <p>Total Amount: ₹<%= order.finalAmount %></p>
+                        
+                            <!-- Shipping Address -->
+                            <div style="margin-top: 20px;">
+                                <h4>Shipping Address</h4>
+                                <p><strong>Name:</strong> <%= order.address.firstName %> <%= order.address.lastName %></p>
+                                <% if (order.address.altPhoneNumber) { %>
+                                    <p><strong>Phone:</strong> <%= order.address.phoneNumber %></p>
+                                <% } %>
+                                <p><strong>Email:</strong> <%= order.address.email %></p>
+                                <p><strong>Address:</strong> <%= order.address.addressLine %></p>
+                                <p><strong>City:</strong> <%= order.address.city %></p>
+                                <p><strong>District:</strong> <%= order.address.district %></p>
+                                <p><strong>State:</strong> <%= order.address.state %></p>
+                                <p><strong>Country:</strong> <%= order.address.country %></p>
+                                <p><strong>Pincode:</strong> <%= order.address.pincode %></p>
+                                <p><strong>Alternate Phone:</strong> <%= order.address.altPhoneNumber %></p>
+                            </div>
+                        
+                            <!-- Ordered Items -->
+                            <ul style="padding-left: 0; margin-top: 20px;">
+                                <% order.orderItems.forEach(item => { %>
+                                    <% if(item.product && item.product.images.length > 0) { %>
+                                        <li style="list-style: none; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+                                            <!-- Product Details (on one side) -->
+                                            <div style="flex: 1; margin-right: 20px;">
+                                                <h5 style="margin: 0;"><%= item.product.productname %></h5>
+                                                <p style="margin: 5px 0;">Quantity: <%= item.quantity %></p>
+                                                <p style="margin: 5px 0;">Price: ₹<%= item.product.price %></p>
+                                            </div>
+                        
+                                            <!-- Product Image (on the opposite side) -->
+                                            <div style="flex: 0 0 120px;">
+                                                <img src="<%= item.product.images[0] || '/path/to/default-image.jpg' %>" alt="Product Image" style="width: 100%; height: auto; object-fit: cover; border-radius: 8px;">
+                                            </div>
+                                        </li>
+                                    <% } %>
+                                <% }) %>
+                            </ul>   
+                            <a href="/download-invoice/<%= order._id %>" class="btn btn-primary">Download Invoice</a>
+                        
+                        </div>
+                        
                           
                         </div>
                       </div>
