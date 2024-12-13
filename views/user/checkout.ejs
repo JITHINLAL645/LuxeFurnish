@@ -541,19 +541,7 @@
                             <% } %>
                         </div>
 
-                        <script>
-                            function copyCouponCode(code) {
-                              navigator.clipboard.writeText(code).then(() => {
-                                Swal.fire({
-                                  title: 'Copied!',
-                                  text: 'Coupon code copied to clipboard successfully',
-                                  icon: 'success'
-                                });
-                              }).catch(err => {
-                                console.error('Error copying coupon code:', err);
-                              });
-                            }
-                          </script>
+                    
                         <div class="card p-4">
                             <div
                                 class="coupon-box p-4 rounded shadow-lg bg-light">
@@ -595,90 +583,7 @@
                                             %></span></li>
                                 </ul>
                             </div>
-                            <script>
-    document.getElementById('coupon-form').addEventListener('submit', function(event) {
-        event.preventDefault();  // Prevent the default form submission (page reload)
 
-        const couponCode = document.getElementById('couponCode').value;
-        console.log("couponcode:", couponCode);  // Log to verify the coupon code
-
-        const data = {
-    couponCode: couponCode
-};
-
-// Send the JSON data to the backend
-fetch('/apply-coupon', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'  // Set the Content-Type to JSON
-    },
-    body: JSON.stringify(data)  // Send the data as JSON
-})
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Update the UI with the discount and total amount
-                document.getElementById('couponDiscount').textContent = `$${data.discountAmount.toFixed(2)}`;
-                document.getElementById('checkout-total').textContent = `$${data.finalAmount.toFixed(2)}`;
-            } else {
-                alert(data.message);  // Show an error if coupon is invalid
-            }
-        })
-        .catch(error => {
-            console.error('Error applying coupon:', error);
-            alert('An error occurred while applying the coupon.');
-        });
-    });
-</script>
-
-
-
-        
-
-                            <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('placeOrderBtn').addEventListener('click', function(event) {
-        const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
-        if (!selectedAddress) {
-          alert("Please select a shipping address.");
-          event.preventDefault(); // Prevent form submission
-          return;
-        }
-  
-        const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
-        if (!selectedPaymentMethod) {
-          alert("Please select a payment method.");
-          event.preventDefault(); // Prevent form submission
-          return;
-        }
-  
-        const addressId = selectedAddress.value;
-        const selectedAddressDetails = addresses.find(address => address._id === addressId);
-  
-        if (selectedAddressDetails) {
-          document.getElementById('deliveryAddress').value = JSON.stringify(selectedAddressDetails);
-        }
-  
-        // Subtotal (without tax)
-        const subtotal = parseFloat("<%= totalAmount %>");
-        const deliveryFee = 50.00;
-        
-        // Apply discount (for example, a 10% discount)
-        const discountPercentage = 10; // You can change this value
-        const discountAmount = (subtotal * discountPercentage) / 100;
-  
-        // Calculate the total without tax and with discount
-        const totalBeforeDiscount = subtotal + deliveryFee;
-        const totalAfterDiscount = totalBeforeDiscount - discountAmount;
-  
-        // Update the display
-        document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
-        document.getElementById('deliveryFee').textContent = `₹${deliveryFee.toFixed(2)}`;
-        document.getElementById('discountAmount').textContent = `-₹${discountAmount.toFixed(2)}`;
-        document.getElementById('totalAmount').textContent = `₹${totalAfterDiscount.toFixed(2)}`;
-      });
-    });
-</script>
 
                             <p></p>
 
@@ -726,85 +631,13 @@ fetch('/apply-coupon', {
 
                         </div>
                     </div>
-                    <script
-                        src="https://checkout.razorpay.com/v1/checkout.js"></script>
-                     <script>
-                        document.getElementById('rzp-button').onclick = async function (e) {
-                            e.preventDefault();
-                    
-                            const response = await fetch('/Razorpayorder', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    amount: 500, // 500 INR
-                                    currency: 'INR',
-                                    receipt: 'order_rcptid_11'
-                                })
-                            });
-                    
-                            const orderData = await response.json();
-
-                            console.log(orderData)
-                    
-                            const options = {
-                                "key": "<%= process.env.RAZORPAY_KEY_ID %>", // Enter the Key ID generated from the Dashboard
-                                "amount": orderData.amount, 
-                                "currency": orderData.currency,
-                                "name": "Your Store Name",
-                                "description": "Test Transaction",
-                                "order_id": orderData.id, 
-                                "handler": async function (response) {
-                                    const paymentDetails = {
-                                        razorpay_order_id: response.razorpay_order_id,
-                                        razorpay_payment_id: response.razorpay_payment_id,
-                                        razorpay_signature: response.razorpay_signature
-                                    };
-                    
-                                    const verifyResponse = await fetch('/verifyPayment', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json'
-                                        },
-                                        body: JSON.stringify(paymentDetails)
-                                    });
-                    
-                                    const result = await verifyResponse.json();
-                                    if (result.success) {
-                                        alert("Payment Successful!");
-                                    } else {
-                                        alert("Payment Verification Failed");
-                                    }
-                                },
-                                "theme": {
-                                    "color": "#3399cc"
-                                }
-                            };
-                    
-                            const rzp = new Razorpay(options);
-                            rzp.open();
-                        };
-                    </script>
-
-                    <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                  const subtotal = localStorage.getItem('subtotal');
-                  const total = localStorage.getItem('total');
-        
-                  if (subtotal && total) {
-                    document.getElementById('checkout-subtotal').innerText = subtotal;
-                    document.getElementById('checkout-total').innerText = total;
-                  }
-                });
-              </script>
+                   
 
                 </div>
             </div>
 
         </div>
 
-        <!-- Edit Address Modal -->
         <div class="modal fade" id="editAddressModal" tabindex="-1"
             aria-labelledby="editAddressModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -900,6 +733,175 @@ fetch('/apply-coupon', {
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
         <script
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <script
+                        src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+                        <script>
+                            function copyCouponCode(code) {
+                              navigator.clipboard.writeText(code).then(() => {
+                                Swal.fire({
+                                  title: 'Copied!',
+                                  text: 'Coupon code copied to clipboard successfully',
+                                  icon: 'success'
+                                });
+                              }).catch(err => {
+                                console.error('Error copying coupon code:', err);
+                              });
+                            }
+                          </script>
+
+
+                        <script>
+    document.getElementById('coupon-form').addEventListener('submit', function(event) {
+        event.preventDefault();  // Prevent the default form submission (page reload)
+
+        const couponCode = document.getElementById('couponCode').value;
+        console.log("couponcode:", couponCode);  // Log to verify the coupon code
+
+        const data = {
+    couponCode: couponCode
+};
+
+// Send the JSON data to the backend
+fetch('/apply-coupon', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'  // Set the Content-Type to JSON
+    },
+    body: JSON.stringify(data)  // Send the data as JSON
+})
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update the UI with the discount and total amount
+                document.getElementById('couponDiscount').textContent = `$${data.discountAmount.toFixed(2)}`;
+                document.getElementById('checkout-total').textContent = `$${data.finalAmount.toFixed(2)}`;
+            } else {
+                alert(data.message);  // Show an error if coupon is invalid
+            }
+        })
+        .catch(error => {
+            console.error('Error applying coupon:', error);
+            alert('An error occurred while applying the coupon.');
+        });
+    });
+</script>
+
+
+                            <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('placeOrderBtn').addEventListener('click', function(event) {
+        const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
+        if (!selectedAddress) {
+          alert("Please select a shipping address.");
+          event.preventDefault(); // Prevent form submission
+          return;
+        }
+  
+        const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+        if (!selectedPaymentMethod) {
+          alert("Please select a payment method.");
+          event.preventDefault(); // Prevent form submission
+          return;
+        }
+  
+        const addressId = selectedAddress.value;
+        const selectedAddressDetails = addresses.find(address => address._id === addressId);
+  
+        if (selectedAddressDetails) {
+          document.getElementById('deliveryAddress').value = JSON.stringify(selectedAddressDetails);
+        }
+  
+        // Subtotal (without tax)
+        const subtotal = parseFloat("<%= totalAmount %>");
+        const deliveryFee = 50.00;
+        
+        // Apply discount (for example, a 10% discount)
+        const discountPercentage = 10; // You can change this value
+        const discountAmount = (subtotal * discountPercentage) / 100;
+  
+        // Calculate the total without tax and with discount
+        const totalBeforeDiscount = subtotal + deliveryFee;
+        const totalAfterDiscount = totalBeforeDiscount - discountAmount;
+  
+        // Update the display
+        document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
+        document.getElementById('deliveryFee').textContent = `₹${deliveryFee.toFixed(2)}`;
+        document.getElementById('discountAmount').textContent = `-₹${discountAmount.toFixed(2)}`;
+        document.getElementById('totalAmount').textContent = `₹${totalAfterDiscount.toFixed(2)}`;
+      });
+    });
+</script>
+                     <script>
+                        document.getElementById('rzp-button').onclick = async function (e) {
+                            e.preventDefault();
+                    
+                            const response = await fetch('/Razorpayorder', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    amount: 500, // 500 INR
+                                    currency: 'INR',
+                                    receipt: 'order_rcptid_11'
+                                })
+                            });
+                    
+                            const orderData = await response.json();
+
+                            console.log(orderData)
+                    
+                            const options = {
+                                "key": "<%= process.env.RAZORPAY_KEY_ID %>", // Enter the Key ID generated from the Dashboard
+                                "amount": orderData.amount, 
+                                "currency": orderData.currency,
+                                "name": "Your Store Name",
+                                "description": "Test Transaction",
+                                "order_id": orderData.id, 
+                                "handler": async function (response) {
+                                    const paymentDetails = {
+                                        razorpay_order_id: response.razorpay_order_id,
+                                        razorpay_payment_id: response.razorpay_payment_id,
+                                        razorpay_signature: response.razorpay_signature
+                                    };
+                    
+                                    const verifyResponse = await fetch('/verifyPayment', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify(paymentDetails)
+                                    });
+                    
+                                    const result = await verifyResponse.json();
+                                    if (result.success) {
+                                        alert("Payment Successful!");
+                                    } else {
+                                        alert("Payment Verification Failed");
+                                    }
+                                },
+                                "theme": {
+                                    "color": "#3399cc"
+                                }
+                            };
+                    
+                            const rzp = new Razorpay(options);
+                            rzp.open();
+                        };
+                    </script>
+
+                    <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                  const subtotal = localStorage.getItem('subtotal');
+                  const total = localStorage.getItem('total');
+        
+                  if (subtotal && total) {
+                    document.getElementById('checkout-subtotal').innerText = subtotal;
+                    document.getElementById('checkout-total').innerText = total;
+                  }
+                });
+              </script>
 
         <script>
         // Open edit modal with pre-filled data

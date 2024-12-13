@@ -446,7 +446,57 @@ p {
     }
 }
 
-
+ /* Full-width layout */
+ .container-fluid {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    
+        /* Add spacing around the table */
+        table {
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-spacing: 10px;
+            padding: 150px;
+        }
+    
+        table th, table td {
+            padding: 15px;
+            text-align: left;
+        }
+    
+        /* Add spacing between the card elements */
+        .card-body {
+            padding: 25px;
+        }
+    
+        /* Add some margins to the buttons for spacing */
+        .btn {
+            margin-right: 10px;
+        }
+    
+        /* Style the table cells to improve spacing */
+        td {
+            vertical-align: middle;
+        }
+    
+        /* Adjusting image size */
+        .img-fluid {
+            max-width: 150px;
+            height: auto;
+        }
+    
+        /* Responsive styling for smaller screens */
+        @media (max-width: 768px) {
+            .img-fluid {
+                max-width: 120px;
+            }
+    
+            table th, table td {
+                padding: 10px;
+            }
+        }
   </style>
  
  <header style="background-color: #3c3c3c;">
@@ -618,59 +668,7 @@ p {
       </script>
       
     
-    <style>
-        /* Full-width layout */
-        .container-fluid {
-            padding-left: 0;
-            padding-right: 0;
-        }
-    
-        /* Add spacing around the table */
-        table {
-            width: 100%;
-            margin-top: 20px;
-            margin-bottom: 20px;
-            border-spacing: 10px;
-            padding: 150px;
-        }
-    
-        table th, table td {
-            padding: 15px;
-            text-align: left;
-        }
-    
-        /* Add spacing between the card elements */
-        .card-body {
-            padding: 25px;
-        }
-    
-        /* Add some margins to the buttons for spacing */
-        .btn {
-            margin-right: 10px;
-        }
-    
-        /* Style the table cells to improve spacing */
-        td {
-            vertical-align: middle;
-        }
-    
-        /* Adjusting image size */
-        .img-fluid {
-            max-width: 150px;
-            height: auto;
-        }
-    
-        /* Responsive styling for smaller screens */
-        @media (max-width: 768px) {
-            .img-fluid {
-                max-width: 120px;
-            }
-    
-            table th, table td {
-                padding: 10px;
-            }
-        }
-    </style>
+   
     
       
    

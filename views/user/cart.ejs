@@ -213,78 +213,7 @@
               </div>
             </td>
             
-            <script>
-              function increaseQuantity(productId, price) {
-                const qtyInput = document.getElementById('qty' + productId);
-                let currentQty = parseInt(qtyInput.value);
-            
-                if (currentQty < 5) {
-                  updateQuantity(productId, 1, price);
-                } else {
-                  alert('Maximum quantity is 5.');
-                }
-              }
-            
-              function updateQuantity(productId, change, price) {
-                const qtyInput = document.getElementById('qty' + productId);
-                let currentQty = parseInt(qtyInput.value);
-            
-                if (change === 1 && currentQty < 5) {
-                  qtyInput.value = currentQty + 1;
-                } else if (change === -1 && currentQty > 1) {
-                  qtyInput.value = currentQty - 1;
-                }
-            
-                // Logic for updating total price, etc.
-              }
-            </script>
-            
-            <script>
-                function updateQuantity(productId, change, newValue, pricePerItem) {
-                  const qtyInput = document.getElementById('qty' + productId);
-                  let currentQty = parseInt(qtyInput.value);
-                
-                  if (change !== 0) {
-                    currentQty += change;
-                  } else {
-                    currentQty = parseInt(newValue);
-                  }
-                
-                  if (isNaN(currentQty) || currentQty < 1) {
-                    currentQty = 1; // Set minimum quantity to 1
-                  }
-                
-                  qtyInput.value = currentQty;
-                
-                  fetch('/cart/update-quantity', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                      productId: productId,
-                      quantity: currentQty
-                    })
-                  })
-                  .then(response => response.json())
-                  .then(data => {
-                    if (data.success) {
-                      const priceElement = document.getElementById('price' + productId);
-                      priceElement.innerText = '$' + data.updatedItem.totalItemPrice.toFixed(2);
-                
-                      updateCartTotal(data.totalCartPrice);
-                    } else {
-                      alert('Failed to update quantity.');
-                    }
-                  })
-                  .catch(error => console.error('Error updating quantity:', error));
-                }
-                
-                function updateCartTotal(totalCartPrice) {
-                  document.getElementById('subtotal').innerText = '$' + totalCartPrice.toFixed(2);
-                  document.getElementById('total').innerText = '$' + totalCartPrice.toFixed(2); // Assuming no delivery charge
-                }
-                </script>
+           
                 
           </tr>
           
@@ -322,36 +251,7 @@
     </ul>
   </div>
   
-  <script>
-    // Function to update the Cart Total (subtotal and total)
-    function updateCartTotal() {
-  let subtotal = 0;
-
-  // Sum the prices of all items in the cart
-  document.querySelectorAll('.item-price').forEach(priceElement => {
-    const price = parseFloat(priceElement.innerText.replace('$', ''));
-    if (!isNaN(price)) {
-      subtotal += price;
-    }
-  });
-
-  // Calculate the total price (Assuming delivery charge is $50)
-  const deliveryCharge = 50;
-  const total = subtotal + deliveryCharge;
-
-  // Update the subtotal and total fields in the Cart page
-  document.getElementById('subtotal').innerText = '$' + subtotal.toFixed(2);
-  document.getElementById('total').innerText = '$' + total.toFixed(2);
-
-  // Store these values in localStorage for use in the checkout page
-  localStorage.setItem('subtotal', '$' + subtotal.toFixed(2));
-  localStorage.setItem('total', '$' + total.toFixed(2));
-}
-
-// Call updateCartTotal when the page loads or when a quantity is changed
-updateCartTotal();
-
-  </script>
+ 
  
                         <div class="container mt-5">
                             <!-- <div class="coupon-box p-4 rounded shadow-lg bg-light">
@@ -422,6 +322,108 @@ updateCartTotal();
 <script src="js/plugins.js"></script>
 <!-- Active js -->
 <script src="js/active.js"></script>
+<script>
+  // Function to update the Cart Total (subtotal and total)
+  function updateCartTotal() {
+let subtotal = 0;
+
+// Sum the prices of all items in the cart
+document.querySelectorAll('.item-price').forEach(priceElement => {
+  const price = parseFloat(priceElement.innerText.replace('$', ''));
+  if (!isNaN(price)) {
+    subtotal += price;
+  }
+});
+
+// Calculate the total price (Assuming delivery charge is $50)
+const deliveryCharge = 50;
+const total = subtotal + deliveryCharge;
+
+// Update the subtotal and total fields in the Cart page
+document.getElementById('subtotal').innerText = '$' + subtotal.toFixed(2);
+document.getElementById('total').innerText = '$' + total.toFixed(2);
+
+// Store these values in localStorage for use in the checkout page
+localStorage.setItem('subtotal', '$' + subtotal.toFixed(2));
+localStorage.setItem('total', '$' + total.toFixed(2));
+}
+
+// Call updateCartTotal when the page loads or when a quantity is changed
+updateCartTotal();
+
+</script>
+<script>
+  function increaseQuantity(productId, price) {
+    const qtyInput = document.getElementById('qty' + productId);
+    let currentQty = parseInt(qtyInput.value);
+
+    if (currentQty < 5) {
+      updateQuantity(productId, 1, price);
+    } else {
+      alert('Maximum quantity is 5.');
+    }
+  }
+
+  function updateQuantity(productId, change, price) {
+    const qtyInput = document.getElementById('qty' + productId);
+    let currentQty = parseInt(qtyInput.value);
+
+    if (change === 1 && currentQty < 5) {
+      qtyInput.value = currentQty + 1;
+    } else if (change === -1 && currentQty > 1) {
+      qtyInput.value = currentQty - 1;
+    }
+
+    // Logic for updating total price, etc.
+  }
+</script>
+
+<script>
+    function updateQuantity(productId, change, newValue, pricePerItem) {
+      const qtyInput = document.getElementById('qty' + productId);
+      let currentQty = parseInt(qtyInput.value);
+    
+      if (change !== 0) {
+        currentQty += change;
+      } else {
+        currentQty = parseInt(newValue);
+      }
+    
+      if (isNaN(currentQty) || currentQty < 1) {
+        currentQty = 1; // Set minimum quantity to 1
+      }
+    
+      qtyInput.value = currentQty;
+    
+      fetch('/cart/update-quantity', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          productId: productId,
+          quantity: currentQty
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          const priceElement = document.getElementById('price' + productId);
+          priceElement.innerText = '$' + data.updatedItem.totalItemPrice.toFixed(2);
+    
+          updateCartTotal(data.totalCartPrice);
+        } else {
+          alert('Failed to update quantity.');
+        }
+      })
+      .catch(error => console.error('Error updating quantity:', error));
+    }
+    
+    function updateCartTotal(totalCartPrice) {
+      document.getElementById('subtotal').innerText = '$' + totalCartPrice.toFixed(2);
+      document.getElementById('total').innerText = '$' + totalCartPrice.toFixed(2); // Assuming no delivery charge
+    }
+    </script>
 
 </body>
 </html>
