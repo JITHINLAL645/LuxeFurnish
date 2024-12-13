@@ -236,7 +236,7 @@
             <div class="card wallet-card h-100 border-0 rounded-3 shadow-lg">
                 <div class="card-body d-flex flex-column text-center p-5">
                     <h5 class="card-title text-uppercase mb-3 text-muted">Current Balance</h5>
-                    <h2 class="card-text mb-4 display-4 fw-bold text-primary">₹<%= wallet.balanceAmount.toFixed(2) %></h2>
+                    <h2 class="card-text mb-4 display-4 fw-bold text-primary">$<%= wallet.balanceAmount.toFixed(2) %></h2>
                     <!-- <button class="btn btn-light btn-lg mt-4 rounded-pill">Add Funds</button> -->
                 </div>
             </div>
@@ -264,7 +264,7 @@
                     <tr class="transaction-item">
                       <td><i class="fas fa-arrow-up text-success"></i></td>
                       <td><%= element.description %></td>
-                      <td class="text-success">+₹<%= element.amount %></td>
+                      <td class="text-success">+$<%= element.amount %></td>
                       <td>
                         <%= ("0" + element.date.getDate()).slice(-2) %>/
                         <%= ("0" + (element.date.getMonth() + 1)).slice(-2) %>/
@@ -278,7 +278,7 @@
                     <tr class="transaction-item">
                       <td><i class="fas fa-arrow-up text-warning"></i></td>
                       <td><%= element.description %></td>
-                      <td class="text-warning">+₹<%= element.amount %></td>
+                      <td class="text-warning">+$<%= element.amount %></td>
                       <td>
                         <%= ("0" + element.date.getDate()).slice(-2) %>/
                         <%= ("0" + (element.date.getMonth() + 1)).slice(-2) %>/
@@ -292,7 +292,7 @@
                     <tr class="transaction-item">
                       <td><i class="fas fa-arrow-down text-danger"></i></td>
                       <td><%= element.description %></td>
-                      <td class="text-danger">-₹<%= element.amount %></td>
+                      <td class="text-danger">-$<%= element.amount %></td>
                       <td>
                         <%= ("0" + element.date.getDate()).slice(-2) %>/
                         <%= ("0" + (element.date.getMonth() + 1)).slice(-2) %>/
@@ -329,7 +329,7 @@
                         <div class="mb-3">
                             <label for="addAmount" class="form-label">Amount</label>
                             <div class="input-group">
-                                <span class="input-group-text">₹</span>
+                                <span class="input-group-text">$</span>
                                 <input type="number" class="form-control" id="amount" required>
                             </div>
                         </div>

@@ -1,109 +1,435 @@
 <%- include("../../views/partials/admin/header") %>
-<div class="content-header">
-    <h1 class="content-title">Welcome to the Admin Dashboard</h1>
+
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link rel="shortcut icon" href="/images/iconshoe.jpg" type="">
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+                <style>
+                   
+                    #couponDetails {
+                        display: none;
+                    }
+
+                    .date-range {
+                        display: none;
+                    }
+
+                    .chart-container {
+                        width: 100%;
+                        height: 400px;
+                        margin-top: 20px;
+                    }
+
+                    .card {
+                        border-radius: 15px;
+                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                        transition: transform 0.3s ease;
+                    }
+
+                    .card:hover {
+                        transform: translateY(-5px);
+                    }
+
+                    .card-header {
+                        border-top-left-radius: 15px !important;
+                        border-top-right-radius: 15px !important;
+                        background: linear-gradient(45deg, #3a7bd5, #00d2ff) !important;
+                        border: none;
+                    }
+
+                    #salesChart {
+                        min-height: 400px;
+                        padding: 20px;
+                    }
+
+                    .card-body {
+                        padding: 1.5rem;
+                    }
+
+                    form-group {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+  padding: 15px;
+  background: linear-gradient(135deg, rgba(58, 123, 213, 0.2), rgba(0, 210, 255, 0.2));
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.custom-select {
+  font-size: 1.1rem;
+  padding: 0.8rem;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 2px solid #3a7bd5;
+}
+
+.custom-select:focus {
+  border-color: #f76c7e;
+  box-shadow: 0 0 5px rgba(58, 123, 213, 0.5);
+}
+
+
+.custom-select:hover {
+  background-color: #e3f2fd;
+}
+
+
+label {
+  color: #333333;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+
+                    #loadingIndicator {
+                        position: relative;
+                        padding: 20px;
+                        background: rgba(255, 255, 255, 0.9);
+                        border-radius: 8px;
+                        margin-top: 15px;
+                    }
+
+                    .alert {
+                        animation: slideIn 0.5s ease-out;
+                    }
+
+                    @keyframes slideIn {
+                        from {
+                            transform: translateY(-20px);
+                            opacity: 0;
+                        }
+                        to {
+                            transform: translateY(0);
+                            opacity: 1;
+                        }
+                    }
+
+                    .alert-dismissible .close {
+                        padding: 0.5rem 1rem;
+                    }
+
+                    @media (max-width: 768px) {
+                        .sidebar {
+                            position: static;
+                            height: auto;
+                            width: 100%;
+                            padding-top: 1rem;
+                        }
+                        
+                        .content {
+                            margin-left: 0;
+                            width: 100%;
+                        }
+                    }
+
+                </style>
+      </head>
+       <body>
+                <!-- Navbar -->
+            
+
+                 <div class="container-fluid">
+                    <div class="row">
+                        <!-- Sidebar -->
+                        
+                        <!-- Main Content -->
+                        <main role="main" class="col-md-10 content">
+                           <div class="container mt-5">
+                           <h1 class="text-center">Admin Dashboard</h1>
+                            <div class="row">
+                            
+
+                            <!-- Sales Overview Chart -->
+                            <div class="col-md-12">
+                             <div class="card">
+                                <div class="card-header card-header bg-secondary text-white text-center">
+                                    Sales Overview
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="chartType">Select View</label>
+                                        <select id="chartType" class="form-control" onchange="fetchOrderData()">
+                                          <option value="monthly">Monthly</option>
+                                          <option value="yearly">Yearly</option>
+                                        </select>
+                                      </div>
+                                    <div class="chart-container">
+                                        <canvas id="salesChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                           </div>
+
+                               <!-- Recent Orders Start -->
+                               <div class="col-md-12 mt-5">
+                                <div class="card">
+                                    <div class="card-header bg-secondary text-white text-center">
+                                        Recent Orders
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Order ID</th>
+                                                    <th>Date</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% if (orders.length != 0) { %>
+                                                    <% orders.forEach((order, index) => { %>
+                                                        <tr>
+                                                            <td><%= index + 1 %></td>
+                                                            <td><%= order.orderId %></td>
+                                                            <td><%= new Date(order.createdOn).toLocaleDateString() %></td> <!-- Format date -->
+                                                            <td><%= order.status %></td>
+                                                        </tr>
+                                                    <% }) %>
+                                                <% } else { %>
+                                                    <tr>
+                                                        <td colspan="4" class="text-center">No orders found</td>
+                                                    </tr>
+                                                <% } %>
+                                            </tbody>
+                                        </table>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="container mt-5">
+                                <div class="row">
+                                    <!-- Best Selling Products -->
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-secondary text-white text-center">
+                                                Best Selling Product
+                                            </div>
+                                            <div class="card-body">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Product Name</th>
+                                                            <th>Sales Qty</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% if (products.length != 0) { %>
+                                                            <% products.forEach((Product, index) => { %>
+                                                                <tr>
+                                                                    <td><%= index + 1 %></td>
+                                                                    <td><%= Product.productname %></td>
+                                                                    <td><%= Product.saleCount %></td>
+                                                                </tr>
+                                                            <% }) %>
+                                                        <% } else { %>
+                                                            <tr>
+                                                                <td colspan="3" class="text-center">No recent orders found</td>
+                                                            </tr>
+                                                        <% } %>
+                                                    </tbody>
+                                                    
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                            
+                                    <!-- Best Selling Categories -->
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-secondary text-white text-center">
+                                                Best Selling Category
+                                            </div>
+                                            <div class="card-body">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Category Name</th>
+                                                            <th>Sales Qty</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% if (category.length != 0) { %>
+                                                            <% category.forEach((Category, index) => { %>
+                                                                <tr>
+                                                                    <td><%= index + 1 %></td>
+                                                                    <td><%= Category.category_name %></td>
+                                                                    <td><%= Category.saleCount %></td>
+                                                                </tr>
+                                                            <% }) %>
+                                                        <% } else { %>
+                                                            <tr>
+                                                                <td colspan="3" class="text-center">No categories found</td>
+                                                            </tr>
+                                                        <% } %>
+                                                    </tbody>
+                                                    
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            
+        </main>
+    </div>
 </div>
-<p></p>
 
-<section class="content-main">
-    <div class="content-header">
-        <h2 class="content-title card-title">Dashboard Overview</h2>
-    </div>
-
-    <!-- Dashboard Statistics with Colorful Cards -->
-    <div class="row">
-        <div class="col-md-6 col-lg-3">
-            <div class="card" style="background: linear-gradient(135deg, #74ebd5 0%, #acb6e5 100%);">
-                <div class="card-body">
-                    <h5 class="card-title">Total Sales</h5>
-                    <p class="card-text"><i class="fas fa-dollar-sign"></i> $20,000</p>
-                    <div class="progress">
-                        <div class="progress-bar bg-success" style="width: 75%;">75%</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-3">
-            <div class="card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                <div class="card-body">
-                    <h5 class="card-title">Orders</h5>
-                    <p class="card-text"><i class="fas fa-shopping-cart"></i> 150</p>
-                    <div class="progress">
-                        <div class="progress-bar bg-warning" style="width: 60%;">60%</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-3">
-            <div class="card" style="background: linear-gradient(135deg, #feac5e 0%, #c779d0 100%);">
-                <div class="card-body">
-                    <h5 class="card-title">Customers</h5>
-                    <p class="card-text"><i class="fas fa-users"></i> 120</p>
-                    <div class="progress">
-                        <div class="progress-bar bg-info" style="width: 80%;">80%</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-3">
-            <div class="card" style="background: linear-gradient(135deg, #96fbc4 0%, #f9f586 100%);">
-                <div class="card-body">
-                    <h5 class="card-title">Revenue</h5>
-                    <p class="card-text"><i class="fas fa-chart-line"></i> $10,000</p>
-                    <div class="progress">
-                        <div class="progress-bar bg-primary" style="width: 50%;">50%</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Charts Section -->
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="card">
-                <div class="card-header">
-                    <h3>Sales Overview</h3>
-                </div>
-                <div class="card-body">
-                    <canvas id="salesChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    var ctx = document.getElementById('salesChart').getContext('2d');
-    var salesChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-            datasets: [{
-                label: 'Sales',
-                data: [3000, 4000, 3200, 5000, 7000, 6000],
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: { beginAtZero: true }
-            }
-        }
-    });
+    let orderChart;
+    const allMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    
+    function initChart() {
+        var ctx = document.getElementById('salesChart').getContext('2d');
+        
+        let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(58, 123, 213, 0.6)');
+        gradient.addColorStop(1, 'rgba(0, 210, 255, 0.1)');
 
-    document.querySelector('.logout-btn').addEventListener('click', function(e) {
-        e.preventDefault(); 
-        fetch('/admin/logout', { method: 'GET' })
-            .then(response => {
-                if (response.ok) {
-                    window.location.href = '/admin/login';
-                } else {
-                    console.log('Logout failed');
+        orderChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: allMonths,
+                datasets: [{
+                    label: 'Order Count',
+                    data: Array(12).fill(0), // Initialize with empty data
+                    backgroundColor: gradient,
+                    borderColor: '#3a7bd5',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#3a7bd5',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 3,
+                            precision: 0,
+                            font: {
+                                size: 12,
+                                weight: 'bold'
+                            },
+                            color: '#666',
+                            callback: function(value) {
+                                return value.toFixed(0);
+                            }
+                        },
+                        suggestedMax: function(context) {
+                            const values = context.chart.data.datasets[0].data;
+                            const max = Math.max(...values);
+                            return Math.ceil(max / 3) * 3;
+                        },
+                        grid: {
+                            display: true,
+                            color: 'rgba(200, 200, 200, 0.2)',
+                            drawBorder: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Number of Orders',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            color: '#666'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                size: 12,
+                                weight: 'bold'
+                            },
+                            color: '#666'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Monthly Sales Overview',
+                        font: {
+                            size: 20,
+                            weight: 'bold'
+                        },
+                        padding: {
+                            top: 20,
+                            bottom: 20
+                        },
+                        color: '#333'
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleFont: {
+                            size: 14,
+                            weight: 'bold'
+                        },
+                        bodyFont: {
+                            size: 12
+                        }
+                    }
                 }
-            });
+            }
+        });
+    }
+
+    // Call this function to fetch order data and update the chart
+    function fetchOrderData() {
+        // Mock data for now. Replace this with a call to your backend API.
+        const selectedView = document.getElementById('chartType').value;
+        
+        let data = selectedView === 'monthly' ? Array(12).fill(5) : Array(1).fill(100);  // Example data
+        
+        updateChart(data);
+    }
+
+    function updateChart(data) {
+        // Update chart with new data
+        orderChart.data.datasets[0].data = data;
+        orderChart.update();
+    }
+
+    // Initialize chart when page is loaded
+    document.addEventListener("DOMContentLoaded", function() {
+        initChart();
+        fetchOrderData(); // Fetch initial data
     });
 </script>
+
+      
+</body>
+
+</html>
+<%- include("../../views/partials/admin/footer") %>
