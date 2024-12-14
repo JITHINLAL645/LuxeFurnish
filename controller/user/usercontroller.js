@@ -390,9 +390,73 @@ const productDetails = async (req, res) => {
 
 
 
+// const shop = async (req, res) => {
+//   try {
+//     const { sort_by } = req.query;
+//     let products;
+
+//     console.log(req.query);
+
+//     let sortOptions = { popularity: -1 };
+
+//     switch (sort_by) {
+//       case 'price_low_to_high':
+//         sortOptions = { price: 1 };
+//         break;
+//       case 'price_high_to_low':
+//         sortOptions = { price: -1 };
+//         break;
+//       case 'average_ratings':
+//         sortOptions = { ratings: -1 };
+//         break;
+//       case 'featured':
+//         products = await Product.find({ isDelete: false, isFeatured: true }).lean();
+//         break;
+//       case 'new_arrivals':
+//         sortOptions = { createdAt: -1 };
+//         break;
+//       case 'a_z':
+//         sortOptions = { productname: 1 };
+//         break;
+//       case 'z_a':
+//         sortOptions = { productname: -1 };
+//         break;
+//       default:
+//         sortOptions = { popularity: -1 };
+//     }
+
+//     if (!products) {
+//       products = await Product.find({ isDelete: false })
+//         .populate('offer') // Populate the offer field with the associated offer data
+//         .sort(sortOptions)
+//         .collation({ locale: 'en', strength: 2 })
+//         .lean();
+//     }
+
+//     // Add offer price calculation to the products
+//     products = products.map(product => {
+//       if (product.offer) {
+//         const discount = product.offer.offerPercentage / 100;
+//         product.offerPrice = (product.price * (1 - discount)).toFixed(2); // Calculating the discounted price
+//       } else {
+//         product.offerPrice = product.price; // No offer, the original price remains
+//       }
+//       return product;
+//     });
+
+//     return res.render('user/shop', { products });
+//   } catch (error) {
+//     console.error('Error loading shop page:', error);
+//     return res.status(500).send("Something went wrong. Please try again later.");
+//   }
+// };
+
+
+import Category from '../../models/categorySchema.js';  // Import the Category model
+
 const shop = async (req, res) => {
   try {
-    const { sort_by } = req.query;
+    const { sort_by, category } = req.query; // Get category from the query
     let products;
 
     console.log(req.query);
@@ -425,8 +489,17 @@ const shop = async (req, res) => {
         sortOptions = { popularity: -1 };
     }
 
+    // If "All Furniture" is selected, skip the category filtering
+    let query = { isDelete: false };
+    if (category && category !== 'ALL_FURNITURE') {
+      const categoryDoc = await Category.findOne({ category_name: category });
+      if (categoryDoc) {
+        query.category_id = categoryDoc._id;
+      }
+    }
+
     if (!products) {
-      products = await Product.find({ isDelete: false })
+      products = await Product.find(query)
         .populate('offer') // Populate the offer field with the associated offer data
         .sort(sortOptions)
         .collation({ locale: 'en', strength: 2 })
@@ -444,12 +517,19 @@ const shop = async (req, res) => {
       return product;
     });
 
-    return res.render('user/shop', { products });
+    // Pass the 'category' along with 'products' to the EJS view
+    return res.render('user/shop', { products, category });
   } catch (error) {
     console.error('Error loading shop page:', error);
     return res.status(500).send("Something went wrong. Please try again later.");
   }
 };
+
+
+
+
+
+
 
 const sortProducts = async (req, res) => {
   const sortBy = req.query.sort_by || 'popularity'; // Default to 'popularity' if no sort option is provided

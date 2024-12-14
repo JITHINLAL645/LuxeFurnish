@@ -47,13 +47,6 @@ nav {
     transition: transform 0.3s ease, text-shadow 0.3s ease;
 }
 
-ul {
-    display: flex;
-    list-style-type: none;
-    gap: 30px;
-    margin: 0;
-    padding: 0;
-}
 
 .navbar-links {
     flex-grow: 2;
@@ -66,17 +59,7 @@ li {
     display: inline-block;
 }
 
-a {
-    text-decoration: none;
-    color: #8eb3bc;
-    font-size: 18px;
-    font-weight: bold;
-    transition: all 0.3s ease;
-}
 
-a:hover {
-    color: #e74c3c;
-}
 
 @media (max-width: 768px) {
     ul {
@@ -448,7 +431,56 @@ a:hover {
 .catagories-menu ul {
   display: block; /* Resets from any potential flexbox layout */
 }
+.widget.category {
+  width: 100%;
+  max-width: 300px; /* Adjust this as needed */
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
 
+.widget-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.categories-menu {
+  padding: 0;
+}
+
+.category-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.category-list li {
+  margin-bottom: 10px;
+}
+
+.category-list a {
+  display: block;
+  padding: 10px;
+  background-color: #fff;
+  color: #333;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.category-list a:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.category-list li.active a {
+  background-color: #007bff;
+  color: #fff;
+}
 
     </style>
 
@@ -612,28 +644,40 @@ a:hover {
 
         </div>
 
-        <div class="widget catagory mb-50">
-          <h6 class="widget-title mb-30">Categories</h6>
-      
-          <div class="catagories-menu">
-              <ul>
-                  <li class="{{ category === 'furnitures' ? 'active' : '' }}"><a href="/shop?category=furnitures">Furnitures</a></li>
-                  <li class="{{ category === 'beds' ? 'active' : '' }}"><a href="/shop?category=beds">Beds</a></li>
-                  <li class="{{ category === 'sofa' ? 'active' : '' }}"><a href="/shop?category=sofa">Sofa</a></li>
-                  <li class="{{ category === 'chairs' ? 'active' : '' }}"><a href="/shop?category=chairs">Chairs</a></li>
-                  <li class="{{ category === 'stools' ? 'active' : '' }}"><a href="/shop?category=stools">Stools</a></li>
-                  <li class="{{ category === 'tables' ? 'active' : '' }}"><a href="/shop?category=tables">Tables</a></li>
-              </ul>
+        <div class="widget category mb-50">
+          <h6 class="widget-title mb-30">Categories</h6><hr>
+          
+          <div class="categories-menu">
+            <ul class="category-list">
+              <li class="<%= category === 'ALL_FURNITURE' ? 'active' : '' %>">
+                <a href="/shop?category=ALL_FURNITURE">All Furniture</a>
+              </li>
+              <li class="<%= category === 'FURNITURE' ? 'active' : '' %>">
+                <a href="/shop?category=FURNITURE">Sofa</a>
+              </li>
+              <li class="<%= category === 'CHAIR' ? 'active' : '' %>">
+                <a href="/shop?category=CHAIR">Chairs</a>
+              </li>
+              <li class="<%= category === 'STOOL' ? 'active' : '' %>">
+                <a href="/shop?category=STOOL">Stools</a>
+              </li>
+              <li class="<%= category === 'TABLE' ? 'active' : '' %>">
+                <a href="/shop?category=TABLE">Tables</a>
+              </li>
+            </ul>
           </div>
-      </div>
+        </div>
+        
+
+      
       
 
         <!-- ##### Single Widget ##### -->
         <div class="widget price mb-50">
           <!-- Widget Title -->
-          <h6 class="widget-title mb-30">Price</h6>
+          <!-- <h6 class="widget-title mb-30">Price</h6> -->
 
-          <div class="widget-desc">
+          <!-- <div class="widget-desc">
             <div class="slider-range">
               <div data-min="10" data-max="1000" data-unit="$"
                 class="slider-range-price ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
@@ -645,9 +689,8 @@ a:hover {
                 <span class="ui-slider-handle ui-state-default ui-corner-all"
                   tabindex="0"></span>
               </div>
-              <!-- <div class="range-price">$10 - $1000</div> -->
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
 
