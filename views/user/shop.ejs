@@ -746,12 +746,12 @@ li {
                       <p></p>
                       <!-- Show both the original price and the offer price -->
                       <% if (product.offerPrice < product.price) { %>
-                        <p class="product-price" style="color: black; font-size: large;" >
+                        <p class="product-price" style="color: rgb(95, 96, 94); font-size:medium; font-weight: 140;" >
                           <del>$<%= product.price %></del> $<%= product.offerPrice %> <!-- Show discounted price -->
                         </p>
                         
                       <% } else { %>
-                        <p class="product-price" style="color: black;">$<%= product.price %></p>
+                        <p class="product-price" style="color: black;font-size:medium; font-weight: 140;">$<%= product.price %></p>
                         <% } %>
                       <!-- <a href="/productdetails/<%= product._id %>">
                         <h6 class="product-name text-truncate"><%= product.productname %></h6>

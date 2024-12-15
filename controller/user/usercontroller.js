@@ -9,6 +9,7 @@ import wishlist from "../../models/wishlistSchema.js"
 import Wallet from '../../models/walletSchema.js'; 
 import Coupon from "../../models/couponSchema.js";
 import Offer from '../../models/offerSchema.js'
+import Category from '../../models/categorySchema.js';  
 
 import multer from 'multer';
 import mongoose from 'mongoose';
@@ -369,20 +370,26 @@ const login = async (req, res) => {
 
 const productDetails = async (req, res) => {
   try {
-    // Retrieve the product by its ID
-    const products = await Product.findById(req.params.id);
-
-    if (!products) {
-      return res.status(404).send("Product not found");
+    const productId = req.params.id;
+    
+    // Find the product by its ID
+    const product = await Product.findById(productId).populate('category_id');  // Populate category details
+    
+    if (!product) {
+      return res.status(404).send('Product not found');
     }
 
-    // Pass the product data to the view
-    console.log(products);
-    return res.render("user/productdetails", { product: products });
+    // Find related products from the same category, excluding the current product
+    const relatedProducts = await Product.find({
+      category_id: product.category_id._id,
+      _id: { $ne: productId }  // Exclude the current product
+    }).limit(4);  // Limit the number of related products displayed
+
+    // Render the product details page with the product and related products
+    res.render('user/productdetails', { product, relatedProducts });
   } catch (error) {
-    console.error("Error fetching product:", error);
-    // Send a more detailed error response
-    return res.status(500).send("Something went wrong. Please try again later.");
+    console.error(error);
+    res.status(500).send('Server error');
   }
 };
 
@@ -390,69 +397,7 @@ const productDetails = async (req, res) => {
 
 
 
-// const shop = async (req, res) => {
-//   try {
-//     const { sort_by } = req.query;
-//     let products;
 
-//     console.log(req.query);
-
-//     let sortOptions = { popularity: -1 };
-
-//     switch (sort_by) {
-//       case 'price_low_to_high':
-//         sortOptions = { price: 1 };
-//         break;
-//       case 'price_high_to_low':
-//         sortOptions = { price: -1 };
-//         break;
-//       case 'average_ratings':
-//         sortOptions = { ratings: -1 };
-//         break;
-//       case 'featured':
-//         products = await Product.find({ isDelete: false, isFeatured: true }).lean();
-//         break;
-//       case 'new_arrivals':
-//         sortOptions = { createdAt: -1 };
-//         break;
-//       case 'a_z':
-//         sortOptions = { productname: 1 };
-//         break;
-//       case 'z_a':
-//         sortOptions = { productname: -1 };
-//         break;
-//       default:
-//         sortOptions = { popularity: -1 };
-//     }
-
-//     if (!products) {
-//       products = await Product.find({ isDelete: false })
-//         .populate('offer') // Populate the offer field with the associated offer data
-//         .sort(sortOptions)
-//         .collation({ locale: 'en', strength: 2 })
-//         .lean();
-//     }
-
-//     // Add offer price calculation to the products
-//     products = products.map(product => {
-//       if (product.offer) {
-//         const discount = product.offer.offerPercentage / 100;
-//         product.offerPrice = (product.price * (1 - discount)).toFixed(2); // Calculating the discounted price
-//       } else {
-//         product.offerPrice = product.price; // No offer, the original price remains
-//       }
-//       return product;
-//     });
-
-//     return res.render('user/shop', { products });
-//   } catch (error) {
-//     console.error('Error loading shop page:', error);
-//     return res.status(500).send("Something went wrong. Please try again later.");
-//   }
-// };
-
-
-import Category from '../../models/categorySchema.js';  // Import the Category model
 
 const shop = async (req, res) => {
   try {
