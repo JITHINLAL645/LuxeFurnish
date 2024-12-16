@@ -55,17 +55,20 @@ const login = async (req, res) => {
 const loadDashboard = async (req, res) => {
     if (req.session.isAdmin) {
         try {
-            // Fetching categories, products, and orders from the database
+            // Fetching categories, products, and all orders from the database
             const categories = await Category.find();
-            const products = await Product.find(); 
-            const orders = await Order.find();
+            const products = await Product.find();
+            const allOrders = await Order.find(); // Fetch all orders (for listing)
 
-            // Calculate sales count for products based on order items
+            // Filter "Delivered" orders for best-selling calculations
+            const deliveredOrders = allOrders.filter(order => order.status === 'Delivered');
+
+            // Calculate sales count for products based on delivered order items
             const productSalesCount = products.map((product) => {
-                const sales = orders.reduce((total, order) => {
+                const sales = deliveredOrders.reduce((total, order) => {
                     const item = order.orderItems.find(item => item.product.toString() === product._id.toString());
                     if (item) {
-                        total += item.quantity; // Add quantity sold in this order
+                        total += item.quantity; // Add the quantity sold in this delivered order
                     }
                     return total;
                 }, 0);
@@ -91,26 +94,73 @@ const loadDashboard = async (req, res) => {
             // Sort categories by sales count in descending order and get the top 3
             const topCategories = categorySalesCount.sort((a, b) => b.saleCount - a.saleCount).slice(0, 3);
 
-            // Pass categories, products, and orders to the template
+            // Pass categories, products, and orders (all orders) to the template
             res.render("admin/dashboard", { 
                 category: topCategories, 
                 products: topProducts, 
-                orders: orders // Pass orders if needed
+                orders: allOrders // Pass all orders for the listing
             });
 
         } catch (error) {
             console.log("Error:", error);
+            // In case of an error, send empty arrays for categories, products, and orders
             res.render("admin/dashboard", { 
                 category: [], 
                 products: [], 
-                orders: [] // Pass empty array for orders in case of error
+                orders: [] 
             });
         }
     } else {
+        // Redirect to login page if not an admin
         res.redirect("/admin/login");
     }
 };
 
+const orderChart = async (req, res) => {
+    const { view } = req.body; // Access the 'view' from the request body
+    console.log('Fetching orders for view:', view);
+
+    try {
+        // Calculate the start date based on the selected view
+        let startDate;
+        const currentDate = new Date();
+
+        if (view === 'weekly') {
+            startDate = new Date(currentDate.setDate(currentDate.getDate() - 7));
+        } else if (view === 'monthly') {
+            startDate = new Date(currentDate.setMonth(currentDate.getMonth() - 1));
+        } else if (view === 'yearly') {
+            startDate = new Date(currentDate.setFullYear(currentDate.getFullYear() - 1));
+        } else {
+            startDate = new Date(currentDate.setDate(currentDate.getDate() - 7)); // Default to weekly
+        }
+
+        // Fetch only 'Delivered' orders within the time range
+        const orders = await Order.find({
+            createdOn: { $gte: startDate },
+            status: 'Delivered'
+        });
+
+        console.log('Fetched Orders:', orders); // Log the fetched orders for debugging
+
+        // Create an array to store the count of delivered orders for each month (or week)
+        const orderCounts = Array(12).fill(0); // Initialize with zeroes for 12 months
+
+        orders.forEach(order => {
+            const orderDate = new Date(order.createdOn);
+            const month = orderDate.getMonth(); // Get month (0-11)
+
+            // Increment the count for the corresponding month
+            orderCounts[month]++;
+        });
+
+        // Send the order counts as response
+        res.json(orderCounts);
+    } catch (error) {
+        console.error('Error fetching orders:', error);
+        res.status(500).json({ error: 'Failed to fetch orders' });
+    }
+};
   
 
 
@@ -146,5 +196,5 @@ export {
     login,
     loadDashboard,
     logout,
-    
+    orderChart
 };

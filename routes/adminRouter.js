@@ -1,5 +1,5 @@
 import express from "express";
-import { loadLogin, login, loadDashboard, logout } from "../controller/admin/admincontroller.js";
+import { loadLogin, login, loadDashboard, logout ,orderChart} from "../controller/admin/admincontroller.js";
 import { customerInfo, customerBlocked, customerunBlocked } from "../controller/admin/customercontroller.js";
 import { restore_Category, delete_Category, edit_Category, add_Category, load_CategoryPage, } from "../controller/admin/categorycontroller.js"
 import { loadProductPage, addProductPage, loadAdminDash, add_Product, loadEditProductPage, editProduct, delete_Product, restore_Product } from "../controller/admin/productcontroller.js";
@@ -17,6 +17,7 @@ const router = express.Router();
 router.get("/login", loadLogin);
 router.post("/do-login", login);
 router.get("/dashboard", adminAuth, loadDashboard);
+router.post('/dashboard/orders', orderChart);
 router.get("/logout", logout);
 
 router.get("/users", adminAuth, customerInfo);
