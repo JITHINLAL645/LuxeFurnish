@@ -449,7 +449,7 @@
                         <li><a href="/">Home</a></li>
                         <li><a href="shop">Shop</a></li>
                         <li class="active"><a href="Cart">Cart</a></li>
-                        <li><a href="checkout">Checkout</a></li>
+                        <!-- <li><a href="checkout">Checkout</a></li> -->
                     </ul>
                 </nav>
             </header>
@@ -921,113 +921,148 @@ fetch('/apply-coupon', {
         }
     </script>
 
-        <script>
-    document.getElementById("chekoutform").addEventListener("submit", async (event) => {
-        event.preventDefault(); // Prevent default form submission
-    
-        const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
-    
-        if (!selectedAddress) {
-            alert("Please select a shipping address.");
-            return;
-        }
-    
-        document.getElementById("deliveryAddress").value = selectedAddress.value;
-    
-        // Gather the other form data
-        const data = {};
-        const subtotalText = document.getElementById("checkout-subtotal").textContent;
-        data.totalAmount = parseFloat(subtotalText.replace('$', '').trim());  // Convert to float after removing $
-    
-        console.log("Total Amount:", data.totalAmount);
-    
-        data.deliveryAddress = selectedAddress.value;
-        data.estimatedDelivery = document.querySelector('input[name="estimatedDelivery"]').value;
-        data.cartItems = document.querySelector('input[name="cartItems"]').value;
-    
-        data.email = selectedAddress.dataset.email || '';  
-        data.phoneNumber = selectedAddress.dataset.phoneNumber || '';
-        data.pincode = selectedAddress.dataset.pincode || '';
-    
-        console.log("Data for order:", data);
-    
-        const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
-    
-        if (selectedPaymentMethod === 'razorpay') {
-            const response = await fetch('/Razorpayorder', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    amount: data.totalAmount, // Send amount in INR, backend will convert to paise
-                    currency: 'INR',
-                    receipt: 'order_rcptid_11'
-                })
-            });
-    
-            const orderData = await response.json();
-            if (orderData.id) {
-                const options = {
-                    "key": "<%= process.env.RAZORPAY_KEY_ID %>", 
-                    "amount": orderData.amount, 
-                    "currency": orderData.currency,
-                    "name": "LuxeFrunish",
-                    "description": "Test Transaction",
-                    "order_id": orderData.id,
-                    "handler": async function (paymentResponse) {
-                        const paymentDetails = {
-                            razorpay_order_id: paymentResponse.razorpay_order_id,
-                            razorpay_payment_id: paymentResponse.razorpay_payment_id,
-                            razorpay_signature: paymentResponse.razorpay_signature
-                        };
-                        const combinedDetails = Object.assign({}, paymentDetails, data);
-    
-                        const verifyResponse = await fetch('/verifyPayment', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(combinedDetails)
-                           
+    <script>
+        document.getElementById("chekoutform").addEventListener("submit", async (event) => {
+    event.preventDefault(); // Prevent default form submission
+
+    const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
+
+    if (!selectedAddress) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Please select a shipping address.',
+        });
+        return;
+    }
+
+    document.getElementById("deliveryAddress").value = selectedAddress.value;
+
+    // Gather the other form data
+    const data = {};
+    const subtotalText = document.getElementById("checkout-subtotal").textContent;
+    data.totalAmount = parseFloat(subtotalText.replace('$', '').trim());  // Convert to float after removing $
+
+    console.log("Total Amount:", data.totalAmount);
+
+    data.deliveryAddress = selectedAddress.value;
+    data.estimatedDelivery = document.querySelector('input[name="estimatedDelivery"]').value;
+    data.cartItems = document.querySelector('input[name="cartItems"]').value;
+
+    data.email = selectedAddress.dataset.email || '';  
+    data.phoneNumber = selectedAddress.dataset.phoneNumber || '';
+    data.pincode = selectedAddress.dataset.pincode || '';
+
+    console.log("Data for order:", data);
+
+    const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+    // Check if payment method is "Cash on Delivery" and totalAmount is above 1000
+    if (selectedPaymentMethod === 'cashOnDelivery' && data.totalAmount > 1000) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Cash on Delivery is only available for orders below $1000.',
+        });
+        return; // Prevent form submission if the condition is met
+    }
+
+    if (selectedPaymentMethod === 'razorpay') {
+        const response = await fetch('/Razorpayorder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                amount: data.totalAmount, // Send amount in INR, backend will convert to paise
+                currency: 'INR',
+                receipt: 'order_rcptid_11'
+            })
+        });
+
+        const orderData = await response.json();
+        if (orderData.id) {
+            const options = {
+                "key": "<%= process.env.RAZORPAY_KEY_ID %>", 
+                "amount": orderData.amount, 
+                "currency": orderData.currency,
+                "name": "LuxeFrunish",
+                "description": "Test Transaction",
+                "order_id": orderData.id,
+                "handler": async function (paymentResponse) {
+                    const paymentDetails = {
+                        razorpay_order_id: paymentResponse.razorpay_order_id,
+                        razorpay_payment_id: paymentResponse.razorpay_payment_id,
+                        razorpay_signature: paymentResponse.razorpay_signature
+                    };
+                    const combinedDetails = Object.assign({}, paymentDetails, data);
+
+                    const verifyResponse = await fetch('/verifyPayment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(combinedDetails)
+                    });
+
+                    const result = await verifyResponse.json();
+                    if (result.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Payment Successful!',
+                            text: 'Your payment has been successfully processed.',
                         });
-    
-                        const result = await verifyResponse.json();
-                        if (result.success) {
-                            alert("Payment Successful!");
-                            window.location = '/successpage';  
-                        } else {
-                            alert("Payment Verification Failed");
-                        }
-                    },
-                    "theme": {
-                        "color": "#3399cc"
+                        window.location = '/successpage';  
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Payment Verification Failed',
+                            text: 'We could not verify your payment. Please try again.',
+                        });
                     }
-                };
-    
-                const rzp = new Razorpay(options);
-                rzp.open();
-            } else {
-                alert("Error creating Razorpay order. Please try again.");
-            }
-        } else {
-            const response = await fetch("/placeorder", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error creating Razorpay order',
+                text: 'Please try again later.',
             });
-    
-            if (response.ok) {
-                console.log("Order placed successfully");
-                window.location = '/successpage';  
-            } else {
-                console.log("Failed to place order");
-            }
         }
-    });
-    </script>
+    } else {
+        const response = await fetch("/placeorder", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            console.log("Order placed successfully");
+            Swal.fire({
+                icon: 'success',
+                title: 'Order Placed!',
+                text: 'Your order has been successfully placed.',
+            });
+            window.location = '/successpage';  
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Failed to Place Order',
+                text: 'We encountered an issue while placing your order. Please try again.',
+            });
+        }
+    }
+});
+
+        </script>
 
     </body>
 

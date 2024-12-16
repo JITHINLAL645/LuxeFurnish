@@ -532,10 +532,10 @@ nav {
       
       <ul class="navbar-links" style="padding-right: 350px;">
         <li><a href="/">Home</a></li>
-        <li><a href="cart">Cart</a></li>
+        <!-- <li><a href="cart">Cart</a></li> -->
         <li><a href="/order">Orders</a></li>
-        <!-- <li><a href="/wishlist">Wishlist</a></li>
-        <li><a href="/loadWalletPage">Wallet</a></li> -->
+        <!-- <li><a href="/wishlist">Wishlist</a></li> -->
+        <li><a href="/loadWalletPage">Wallet</a></li>
       </ul>
 
     <div class="navbar-wishlist" style="margin-right: 20px;">
@@ -801,7 +801,7 @@ nav {
                       </div>
                       <div class="cart-wishlist d-flex">
                         <form id="wishlistForm_<%= product._id %>" action="/addWishlist/<%= product._id %>" method="POST" onsubmit="addToWishlist(event, '<%= product._id %>')">
-                          <button type="submit" class="btn wishlist-btn-red" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
+                          <button type="submit" class="btn wishlist-btn-red" style="padding-right: 20px;" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                               <i class="fa fa-heart" aria-hidden="true"></i>
                           </button>
                       </form>
@@ -817,49 +817,7 @@ nav {
               </div>
             <% }) %>
           </div>
-          <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-          <script>
-            async function addToWishlist(event, productId) {
-                event.preventDefault(); // Prevent form from submitting
         
-                try {
-                    const response = await fetch(`/addWishlist/${productId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        }
-                    });
-        
-                    const data = await response.json();
-        
-                    if (response.ok) {
-                        // Show success message using SweetAlert2
-                        Swal.fire({
-                            icon: 'success',
-                            title: data.message || 'Product added to wishlist!',
-                            confirmButtonText: 'Ok'
-                        });
-                    } else {
-                        // Show error message using SweetAlert2
-                        Swal.fire({
-                            icon: 'error',
-                            title: data.message || 'Something went wrong!',
-                            confirmButtonText: 'Try Again'
-                        });
-                    }
-                } catch (error) {
-                    // Show error message using SweetAlert2
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'An error occurred!',
-                        text: 'Please try again later.',
-                        confirmButtonText: 'Ok'
-                    });
-                }
-            }
-        </script>
 
           <div class="col-12">
             <!-- Pagination -->
@@ -917,6 +875,50 @@ nav {
     <script src="js/plugins.js"></script>
     <!-- Active js -->
     <script src="js/active.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+      async function addToWishlist(event, productId) {
+          event.preventDefault(); // Prevent form from submitting
+  
+          try {
+              const response = await fetch(`/addWishlist/${productId}`, {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'Accept': 'application/json'
+                  }
+              });
+  
+              const data = await response.json();
+  
+              if (response.ok) {
+                  // Show success message using SweetAlert2
+                  Swal.fire({
+                      icon: 'success',
+                      title: data.message || 'Product added to wishlist!',
+                      confirmButtonText: 'Ok'
+                  });
+              } else {
+                  // Show error message using SweetAlert2
+                  Swal.fire({
+                      icon: 'error',
+                      title: data.message || 'Something went wrong!',
+                      confirmButtonText: 'Try Again'
+                  });
+              }
+          } catch (error) {
+              // Show error message using SweetAlert2
+              Swal.fire({
+                  icon: 'error',
+                  title: 'An error occurred!',
+                  text: 'Please try again later.',
+                  confirmButtonText: 'Ok'
+              });
+          }
+      }
+  </script>
 
     <script>
       function filterProducts() {

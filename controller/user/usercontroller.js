@@ -402,7 +402,7 @@ const shop = async (req, res) => {
     const { sort_by, category } = req.query; // Get category from the query
     let products;
 
-    console.log(req.query);
+    // console.log(req.query);
 
     let sortOptions = { popularity: -1 };
 
