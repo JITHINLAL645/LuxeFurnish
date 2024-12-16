@@ -161,12 +161,12 @@
             </div>
             <!-- Social Button -->
              <p></p>
-            <div class="social-info d-flex justify-content-between">
+            <!-- <div class="social-info d-flex justify-content-between">
                 <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
                 <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
                 <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
                 <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-            </div>
+            </div> -->
         </header>
         <!-- Header Area End -->
         <div class="cart-table-area section-padding-100">
@@ -192,9 +192,10 @@
                 <img src="<%= item.product.images[0] %>" alt="Product Image">
               </a>
             </td>
-            <td class="cart_product_desc">
-              <h5><%= item.product.productname %></h5>
-            </td>
+            <td class="cart_product_desc" >
+              <h5 style="margin-left: 50px; margin-top: 6px; font-family: 'Oswald', sans-serif; font-size: 1.1rem; color: #212529; font-weight: 500; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15); border-left: 4px solid #ffc107; padding: 10px 15px; background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */">
+                <%= item.product.productname %>
+              </h5>          </td>
             <td class="price">
               <span class="item-price" id="price<%= item.product._id %>">$<%= (item.product.price * item.quantity).toFixed(2) %></span>
             </td>

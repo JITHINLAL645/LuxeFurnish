@@ -47,37 +47,70 @@ nav {
     transition: transform 0.3s ease, text-shadow 0.3s ease;
 }
 
-
 .navbar-links {
-    flex-grow: 2;
-    display: flex;
-    justify-content: center;
-    margin-right: 300px;
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  
 }
 
-li {
-    display: inline-block;
+.navbar-links li {
+  margin: 0 15px;
 }
 
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
 
+.navbar-links a:hover {
+  color: #ffcc00;
+}
 
+/* Styling for active link */
+.navbar-links a.active {
+  color: #ffcc00;
+  font-weight: bold;
+}
+
+/* Media Queries for Responsiveness */
 @media (max-width: 768px) {
-    ul {
-        flex-direction: column;
-        align-items: center;
-    }
+  /* Stack the navbar items vertically on smaller screens */
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .navbar-brand {
-        text-align: left;
-        flex-grow: 0;
-    }
+  .navbar-brand {
+    text-align: center;
+    margin-bottom: 15px;
+  }
 
-    .navbar-links {
-        justify-content: center;
-    }
+  .navbar-links {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .navbar-links li {
+    margin: 10px 0;
+  }
+
+  .navbar-links a {
+    font-size: 18px;
+  }
 }
 
-
+/* Add some padding and margin for better spacing on large screens */
+@media (min-width: 1200px) {
+  .navbar-links {
+    margin-right: 100px;
+  }
+}
 /* Search Wrapper */
 .search-wrapper {
     background-color: #f9f9f9;
@@ -497,13 +530,13 @@ li {
       </a> </div>
       
       
-    <ul class="navbar-links">
-      <li><a href="/">Home</a></li>
-      <li><a href="cart">Cart</a></li>
-      <li><a href="/order">Orders</a></li>
-      <li><a href="/wishlish"> wishlist</a></li>
-      <li><a href="/loadWalletPage"> Wallet</a></li>
-    </ul>
+      <ul class="navbar-links" style="padding-right: 350px;">
+        <li><a href="/">Home</a></li>
+        <li><a href="cart">Cart</a></li>
+        <li><a href="/order">Orders</a></li>
+        <!-- <li><a href="/wishlist">Wishlist</a></li>
+        <li><a href="/loadWalletPage">Wallet</a></li> -->
+      </ul>
 
     <div class="navbar-wishlist" style="margin-right: 20px;">
       <a href="/wishlish" style="color: #dd3535; font-size: 24px; display: flex; align-items: center; transition: transform 0.3s ease;">
@@ -767,11 +800,11 @@ li {
                         <i class="fa fa-star" aria-hidden="true"></i>
                       </div>
                       <div class="cart-wishlist d-flex">
-                        <form id="wishlistForm_<%= product._id %>" action="/addWishlist/<%= product._id %>" method="POST">
+                        <form id="wishlistForm_<%= product._id %>" action="/addWishlist/<%= product._id %>" method="POST" onsubmit="addToWishlist(event, '<%= product._id %>')">
                           <button type="submit" class="btn wishlist-btn-red" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
-                            <i class="fa fa-heart" aria-hidden="true"></i>
+                              <i class="fa fa-heart" aria-hidden="true"></i>
                           </button>
-                        </form>
+                      </form>
                         <form action="/addtocart/<%= product._id %>" method="POST">
                           <button type="submit" class="btn btn-primary add-to-cart-btn" data-toggle="tooltip" data-placement="left" title="Add to Cart">
                             <img src="img/core-img/cart.png" alt="Add to Cart">
@@ -784,7 +817,49 @@ li {
               </div>
             <% }) %>
           </div>
-          
+          <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+          <script>
+            async function addToWishlist(event, productId) {
+                event.preventDefault(); // Prevent form from submitting
+        
+                try {
+                    const response = await fetch(`/addWishlist/${productId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    });
+        
+                    const data = await response.json();
+        
+                    if (response.ok) {
+                        // Show success message using SweetAlert2
+                        Swal.fire({
+                            icon: 'success',
+                            title: data.message || 'Product added to wishlist!',
+                            confirmButtonText: 'Ok'
+                        });
+                    } else {
+                        // Show error message using SweetAlert2
+                        Swal.fire({
+                            icon: 'error',
+                            title: data.message || 'Something went wrong!',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                } catch (error) {
+                    // Show error message using SweetAlert2
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'An error occurred!',
+                        text: 'Please try again later.',
+                        confirmButtonText: 'Ok'
+                    });
+                }
+            }
+        </script>
 
           <div class="col-12">
             <!-- Pagination -->

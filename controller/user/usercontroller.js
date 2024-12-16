@@ -397,8 +397,6 @@ const productDetails = async (req, res) => {
 
 
 
-
-
 const shop = async (req, res) => {
   try {
     const { sort_by, category } = req.query; // Get category from the query
