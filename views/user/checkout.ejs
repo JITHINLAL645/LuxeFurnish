@@ -695,7 +695,7 @@
                         
 <script>
     let appliedCoupon = false;
-    let originalTotalAmount = <%= totalAmount %>;
+    let originalTotalAmount = parseFloat("<%= totalAmount %>");
 
     // Copy coupon code functionality
     function copyCouponCode(couponCode) {
