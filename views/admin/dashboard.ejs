@@ -135,7 +135,6 @@ label {
                 </style>
     </head>
     <body>
-        <!-- Navbar -->
 
         <div class="container-fluid">
             <div class="row">
@@ -157,7 +156,7 @@ label {
                                         <div class="form-group">
                                             <label for="chartType">Select View</label>
                                             <select id="chartType" class="form-control" onchange="fetchOrderData()">
-                                                <option value="weekly">Weekly</option>
+                                                <!-- <option value="weekly">Weekly</option> -->
                                                 <option value="monthly">Monthly</option>
                                                 <option value="yearly">Yearly</option>
                                             </select>
@@ -294,6 +293,7 @@ label {
                     <script>
                         let orderChart;
                         const allMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                        const allYears = ['2024', '2025', '2026']; // Example years, you can adjust dynamically based on your data
                     
                         function initChart() {
                             var ctx = document.getElementById('salesChart').getContext('2d');
@@ -305,7 +305,7 @@ label {
                             orderChart = new Chart(ctx, {
                                 type: 'line',
                                 data: {
-                                    labels: allMonths,
+                                    labels: allMonths,  // Default to monthly (Months of the year)
                                     datasets: [{
                                         label: 'Delivered Order Count',
                                         data: Array(12).fill(0), // Initialize with empty data
@@ -375,7 +375,7 @@ label {
                                     plugins: {
                                         title: {
                                             display: true,
-                                            text: 'Monthly Sales Overview (Delivered Orders)',
+                                            text: 'Sales Overview',
                                             font: {
                                                 size: 20,
                                                 weight: 'bold'
@@ -403,57 +403,60 @@ label {
                                 }
                             });
                         }
+                    
                         function fetchOrderData() {
-    const view = document.getElementById("chartType").value;
-    console.log(`Fetching orders for view: ${view}`); // Debugging log
-
-    // Fetch order data from backend using POST request
-    fetch('/admin/dashboard/orders', {
-        method: 'POST', // Change to POST method
-        headers: {
-            'Content-Type': 'application/json' // Ensure the body is in JSON format
-        },
-        body: JSON.stringify({ view: view }) // Send the 'view' in the request body as JSON
-    })
-        .then(response => {
-            console.log('Raw response:', response); // Log the response object
-            if (!response.ok) {
-                // If the response is not OK, throw an error
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
-            // Check if the content type is JSON
-            const contentType = response.headers.get('Content-Type');
-            if (!contentType || !contentType.includes('application/json')) {
-                throw new Error(`Expected JSON, but received ${contentType}`);
-            }
-            
-            return response.json(); // Parse the JSON data
-        })
-        .then(orderCounts => {
-            console.log('Order counts:', orderCounts); // Debugging log
-
-            // Check if orderCounts is an array and has data
-            if (Array.isArray(orderCounts)) {
-                // Update chart data
-                orderChart.data.datasets[0].data = orderCounts;
-                orderChart.update();
-            } else {
-                console.error('Invalid data format received:', orderCounts);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching order data:', error); // Log the error
-        });
-}
-
-
+                            const view = document.getElementById("chartType").value;
+                            console.log(`Fetching orders for view: ${view}`); // Debugging log
+                    
+                            let labels = [];
+                            let chartData = [];
+                    
+                            // Set labels and prepare the chart data based on the selected view
+                            if (view === 'monthly') {
+                                labels = allMonths;
+                            } else if (view === 'yearly') {
+                                labels = allYears;
+                            }
+                    
+                            // Fetch order data from the backend based on the selected view
+                            fetch('/admin/dashboard/orders', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ view: view })
+                            })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error(`HTTP error! status: ${response.status}`);
+                                    }
+                                    return response.json();
+                                })
+                                .then(orderCounts => {
+                                    console.log('Order counts:', orderCounts);
+                    
+                                    // Update chart data if orderCounts is valid
+                                    if (Array.isArray(orderCounts)) {
+                                        orderChart.data.labels = labels;
+                                        orderChart.data.datasets[0].data = orderCounts;
+                                        orderChart.update();
+                                    } else {
+                                        console.error('Invalid data format received:', orderCounts);
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error fetching order data:', error);
+                                });
+                        }
                     
                         document.addEventListener("DOMContentLoaded", function() {
                             initChart(); // Initialize the chart
                             fetchOrderData(); // Fetch initial data for default view
                         });
                     </script>
+                    
+                    
+                    
 
 
 

@@ -51,7 +51,6 @@ const login = async (req, res) => {
 //     }
 // };
 
-
 const loadDashboard = async (req, res) => {
     if (req.session.isAdmin) {
         try {
@@ -122,47 +121,62 @@ const orderChart = async (req, res) => {
 
     try {
         // Calculate the start date based on the selected view
-        let startDate;
+        let startDate, endDate;
         const currentDate = new Date();
 
-        if (view === 'weekly') {
-            startDate = new Date(currentDate.setDate(currentDate.getDate() - 7));
-        } else if (view === 'monthly') {
-            startDate = new Date(currentDate.setMonth(currentDate.getMonth() - 1));
+        if (view === 'monthly') {
+            // Start of the current month
+            startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+            // End of the current month (Last date of the current month)
+            endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
         } else if (view === 'yearly') {
-            startDate = new Date(currentDate.setFullYear(currentDate.getFullYear() - 1));
-        } else {
-            startDate = new Date(currentDate.setDate(currentDate.getDate() - 7)); // Default to weekly
+            // Start of the current year
+            startDate = new Date(currentDate.getFullYear(), 0, 1);
+            // End of the current year (December 31st)
+            endDate = new Date(currentDate.getFullYear(), 11, 31);
         }
 
         // Fetch only 'Delivered' orders within the time range
         const orders = await Order.find({
-            createdOn: { $gte: startDate },
+            createdOn: { $gte: startDate, $lte: endDate },
             status: 'Delivered'
         });
 
         console.log('Fetched Orders:', orders); // Log the fetched orders for debugging
 
-        // Create an array to store the count of delivered orders for each month (or week)
-        const orderCounts = Array(12).fill(0); // Initialize with zeroes for 12 months
+        // Create an array to store the count of delivered orders for each month or year
+        let orderCounts = [];
 
-        orders.forEach(order => {
-            const orderDate = new Date(order.createdOn);
-            const month = orderDate.getMonth(); // Get month (0-11)
+        if (view === 'monthly') {
+            // Count orders for each month in the current year
+            orderCounts = Array(12).fill(0);
+            orders.forEach(order => {
+                const orderDate = new Date(order.createdOn);
+                const monthIndex = orderDate.getMonth();
+                if (orderDate.getFullYear() === currentDate.getFullYear()) {
+                    orderCounts[monthIndex]++;
+                }
+            });
+        } else if (view === 'yearly') {
+            // Count orders for each year
+            orderCounts = Array(3).fill(0); // Example: for 2024, 2025, 2026
+            orders.forEach(order => {
+                const orderDate = new Date(order.createdOn);
+                const yearIndex = orderDate.getFullYear() - 2024; // Adjust if your data spans multiple years
+                if (yearIndex >= 0 && yearIndex < 3) {
+                    orderCounts[yearIndex]++;
+                }
+            });
+        }
 
-            // Increment the count for the corresponding month
-            orderCounts[month]++;
-        });
-
-        // Send the order counts as response
+        // Send the order counts to the client
         res.json(orderCounts);
+
     } catch (error) {
-        console.error('Error fetching orders:', error);
-        res.status(500).json({ error: 'Failed to fetch orders' });
+        console.log('Error in fetching order chart data:', error);
+        res.status(500).json({ error: 'Failed to fetch order data' });
     }
 };
-  
-
 
 
 
