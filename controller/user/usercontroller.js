@@ -1856,7 +1856,7 @@ const applyCoupon = async (req, res) => {
       console.log("Received couponCode:", couponCode);  
 
       if (!couponCode) {
-          return res.json({ success: false, message: 'Coupon code is missing' });
+          return res.json({ success: false, message: 'Are you sure you want to remove this coupon?' });
       }
 
       const userId = req.session.passport.user;

@@ -364,6 +364,8 @@
     }
     </style>
         <!-- SweetAlert2 CDN -->
+             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     </head>
 
@@ -512,126 +514,79 @@
                     </div>
 
                     <!-- Payment and Price Details Section (Second Box) -->
-                    <div class="col-md-6">
+                   <div class="col-md-6">
+    <div class="col-md-6 coupon-list-container">
+        <h4 class="mb-4">Available Coupons</h4>
+        <% if (availableCoupons && availableCoupons.length > 0) { %>
+        <% availableCoupons.forEach(coupon => { %>
+        <div class="coupon-item d-flex justify-content-between align-items-center p-3 mb-2 border rounded bg-light">
+            <div>
+                <span class="coupon-code h5 text-primary"><%= coupon.code %></span>
+                <p class="coupon-description text-muted small mb-0"><%= coupon.description %></p>
+            </div>
+            <button class="btn btn-outline-primary btn-sm" onclick="copyCouponCode('<%= coupon.code %>')">
+                Copy Code
+            </button>
+        </div>
+        <% }) %>
+        <% } else { %>
+        <p>No available coupons at the moment.</p>
+        <% } %>
+    </div>
 
-                        <div class="col-md-6 coupon-list-container">
-                            <h4 class="mb-4">Available Coupons</h4>
-                            <% if (availableCoupons && availableCoupons.length >
-                            0) { %>
-                            <% availableCoupons.forEach(coupon => { %>
-                            <div
-                                class="coupon-item d-flex justify-content-between align-items-center p-3 mb-2 border rounded bg-light">
-                                <div>
-                                    <span
-                                        class="coupon-code h5 text-primary"><%=
-                                        coupon.code %></span>
-                                    <p
-                                        class="coupon-description text-muted small mb-0"><%=
-                                        coupon.description %></p>
-                                </div>
-                                <button
-                                    class="btn btn-outline-primary btn-sm"
-                                    onclick="copyCouponCode('<%= coupon.code %>')">
-                                    Copy Code
-                                </button>
-                            </div>
-                            <% }) %>
-                            <% } else { %>
-                            <p>No available coupons at the moment.</p>
-                            <% } %>
-                        </div>
+    <div class="card p-4">
+        <div class="coupon-box p-4 rounded shadow-lg bg-light">
+            <h3 class="text-center mb-4">Coupon</h3>
+            <div class="form-group">
+                <form method="post" id="coupon-form" action="/apply-coupon">
+                    <input type="text" class="form-control" id="couponCode" name="couponCode"
+                        placeholder="Enter coupon code" required>
+                    <button type="submit" id="couponButton" class="btn btn-primary mt-3 w-100"
+                        style="background-color: #fbb710; border-color: rgb(213, 213, 207);">
+                        Apply Coupon
+                    </button>
+                </form>
+            </div>
+        </div>
 
-                    
-                        <div class="card p-4">
-                            <div
-                                class="coupon-box p-4 rounded shadow-lg bg-light">
+        <div class="price-details mt-4">
+            <h5 class="cart-title">Price Details</h5>
+            <ul class="summary-table">
+                <li><span>Subtotal:</span> <span id="checkout-subtotal">$<%= totalAmount.toFixed(2) %></span></li>
+                <li><span>Delivery:</span> <span>$50.00</span></li>
+                <li><span>Discount:</span> <span id="couponDiscount">$0.00</span></li>
+                <hr>
+                <li><span>Total:</span> <span id="checkout-total">$<%= (totalAmount + 50).toFixed(2) %></span></li>
+            </ul>
+        </div>
 
-                                <h3 class="text-center mb-4">Coupon</h3>
-                                <div class="form-group">
-                                    <form method="post" id="coupon-form" action="/apply-coupon">
-    <input type="text" class="form-control"
-        id="couponCode" name="couponCode" 
-        placeholder="Enter coupon code" required>
-    <button type="submit"
-        class="btn btn-primary mt-3 w-100"
-        style="background-color: #fbb710; border-color: rgb(213, 213, 207);"
-    >
-        Apply Coupon
-    </button>
-</form>
+        <h3 class="card-title">Select Payment Method</h3>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="paymentMethod" id="razorpay" value="razorpay" required>
+            <label class="form-check-label" for="razorpay">Razorpay</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="paymentMethod" id="wallet" value="wallet" required>
+            <label class="form-check-label" for="wallet">Wallet</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="paymentMethod" id="cashOnDelivery"
+                value="cashOnDelivery" required>
+            <label class="form-check-label" for="cashOnDelivery">Cash on Delivery</label>
+        </div>
 
+        <form id="chekoutform">
+            <input type="hidden" name="deliveryAddress" id="deliveryAddress" value="">
+            <input type="hidden" name="estimatedDelivery" value="<%= estimatedDelivery %>">
+            <input type="hidden" name="cartItems" value='<%= JSON.stringify(cartItems) %>'>
 
-                                </div>
-
-                            </div>
-
-                            <div class="price-details mt-4">
-                                <h5 class="cart-title">Price Details</h5>
-                                <ul class="summary-table">
-                                    <li><span>Subtotal:</span> <span
-                                            id="checkout-subtotal">$<%=
-                                            totalAmount.toFixed(2)
-                                            %></span></li>
-                                    <li><span>Delivery:</span>
-                                        <span>$50.00</span></li>
-                                    <li><span>Discount:</span> <span
-                                            id="couponDiscount">$0.00</span></li>
-                                    <hr>
-                                    <li><span>Total:</span> <span
-                                            id="checkout-total">$<%=
-                                            (totalAmount + 50).toFixed(2)
-                                            %></span></li>
-                                </ul>
-                            </div>
-
-
-                            <p></p>
-
-                            <h3 class="card-title">Select Payment Method</h3>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio"
-                                    name="paymentMethod" id="razorpay"
-                                    value="razorpay" required>
-                                <label class="form-check-label"
-                                    for="razorpay">Razorpay</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio"
-                                    name="paymentMethod" id="wallet"
-                                    value="wallet" required>
-                                <label class="form-check-label"
-                                    for="wallet">Wallet</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio"
-                                    name="paymentMethod" id="cashOnDelivery"
-                                    value="cashOnDelivery" required>
-                                <label class="form-check-label"
-                                    for="cashOnDelivery">Cash on
-                                    Delivery</label>
-                            </div>
-
-
-                            <form id="chekoutform">
-                                <input type="hidden" name="deliveryAddress"
-                                    id="deliveryAddress" value>
-
-                                <input type="hidden" name="estimatedDelivery"
-                                    value="<%= estimatedDelivery %>">
-                                <input type="hidden" name="cartItems"
-                                    value='<%= JSON.stringify(cartItems) %>'>
-
-                                <div class="summary-box mt-4">
-                                    <button type="submit"
-                                        class="btn btn-primary summary-btn w-100"
-                                        id="placeOrderBtn">Place Order</button>
-                                </div>
-                            </form>
-
-                        </div>
-                    </div>
-                   
+            <div class="summary-box mt-4">
+                <button type="submit" class="btn btn-primary summary-btn w-100" id="placeOrderBtn">Place Order</button>
+            </div>
+        </form>
+    </div>
+</div>
+       
 
                 </div>
             </div>
@@ -735,6 +690,70 @@
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
             <script
                         src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+                        
+<script>
+    let appliedCoupon = false;
+    let originalTotalAmount = <%= totalAmount %>;
+
+    // Copy coupon code functionality
+    function copyCouponCode(couponCode) {
+        document.getElementById('couponCode').value = couponCode;
+    }
+
+    // Apply Coupon Functionality
+    document.getElementById('coupon-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!appliedCoupon) {
+            applyCoupon();
+        } else {
+            removeCoupon();
+        }
+    });
+
+    function applyCoupon() {
+        const couponCode = document.getElementById('couponCode').value;
+
+        if (couponCode) {
+            // Simulate applying a coupon
+            const discount = 100; // Set a discount amount
+            const newTotal = originalTotalAmount + 50 - discount;
+
+            document.getElementById('couponDiscount').innerText = `$${discount.toFixed(2)}`;
+            document.getElementById('checkout-total').innerText = `$${newTotal.toFixed(2)}`;
+
+            // Change Apply button to Remove button
+            const couponButton = document.getElementById('couponButton');
+            couponButton.innerText = 'Remove Coupon';
+            couponButton.style.backgroundColor = '#dc3545';
+            couponButton.style.borderColor = '#dc3545';
+
+            appliedCoupon = true;
+        }
+    }
+
+    // Remove Coupon Functionality
+    function removeCoupon() {
+        const couponButton = document.getElementById('couponButton');
+
+        // Reset discount and total values
+        document.getElementById('couponDiscount').innerText = '$0.00';
+        document.getElementById('checkout-total').innerText = `$${(originalTotalAmount + 50).toFixed(2)}`;
+
+        // Reset the coupon form
+        document.getElementById('couponCode').value = '';
+
+        // Change Remove button back to Apply Coupon button
+        couponButton.innerText = 'Apply Coupon';
+        couponButton.style.backgroundColor = '#fbb710';
+        couponButton.style.borderColor = 'rgb(213, 213, 207)';
+
+        appliedCoupon = false;
+    }
+</script>
+
+            
 
                         <script>
                             function copyCouponCode(code) {
