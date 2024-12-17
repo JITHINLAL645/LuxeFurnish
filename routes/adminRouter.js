@@ -3,7 +3,7 @@ import { loadLogin, login, loadDashboard, logout ,orderChart} from "../controlle
 import { customerInfo, customerBlocked, customerunBlocked } from "../controller/admin/customercontroller.js";
 import { restore_Category, delete_Category, edit_Category, add_Category, load_CategoryPage, } from "../controller/admin/categorycontroller.js"
 import { loadProductPage, addProductPage, loadAdminDash, add_Product, loadEditProductPage, editProduct, delete_Product, restore_Product } from "../controller/admin/productcontroller.js";
-import { loard_OrderMng,getOrderDetails} from "../controller/admin/ordercontroller.js"
+import { loard_OrderMng,getOrderDetails,updateOrderStatus} from "../controller/admin/ordercontroller.js"
 import { load_CouponPage, add_Coupon,edit_Coupon, cancel_Coupon} from "../controller/admin/couponcontroller.js"
 import {loadoffer,addOffer_Product,edit_Offer,delete_Offer,restore_Offer,update_ProductOffer,update_CategoryOffer} from "../controller/admin/offerController.js"
 import {load_SalesReport,generateSalesReport,generateSalesReportController} from "../controller/admin/salescontroller.js"
@@ -50,6 +50,8 @@ router.get("/loadAdminDash", adminAuth, (req, res) => {
 
 router.get('/loardOrderMng',adminAuth,loard_OrderMng)
 router.get('/getOrderDetails/:id', adminAuth, getOrderDetails);
+router.post('/update-status',adminAuth,updateOrderStatus);
+
 
 
 router.get('/loadCouponPage',adminAuth,load_CouponPage)

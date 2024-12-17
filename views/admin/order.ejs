@@ -147,14 +147,14 @@
                                     </td>
                                     <td>
                                         <select class="form-control status-select" data-order-id="<%= order._id %>" 
-                                                <%= (order.orderStatus === 'Cancelled' || order.orderStatus === 'Returned') ? 'disabled' : '' %>>
-                                            <option value="Pending" <%= order.orderStatus === 'Pending' ? 'selected' : '' %>>Pending</option>
-                                            <option value="Processing" <%= order.orderStatus === 'Processing' ? 'selected' : '' %>>Processing</option>
-                                            <option value="Shipped" <%= order.orderStatus === 'Shipped' ? 'selected' : '' %>>Shipped</option>
-                                            <option value="Delivered" <%= order.orderStatus === 'Delivered' ? 'selected' : '' %>>Delivered</option>
-                                            <option value="Cancelled" <%= order.orderStatus === 'Cancelled' ? 'selected' : '' %> 
-                                                <%= order.orderStatus === 'Cancelled' ? 'disabled' : '' %>>Cancelled</option>
-                                            <option value="Returned" <%= order.orderStatus === 'Returned' ? 'selected' : '' %> disabled>Returned</option>
+                                                <%= (order.status === 'Cancelled' || order.status === 'Returned') ? 'disabled' : '' %>>
+                                            <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                                            <option value="Processing" <%= order.status === 'Processing' ? 'selected' : '' %>>Processing</option>
+                                            <option value="Shipped" <%= order.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                                            <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                                            <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %> 
+                                                <%= order.status === 'Cancelled' ? 'disabled' : '' %>>Cancelled</option>
+                                            <option value="Returned" <%= order.status === 'Returned' ? 'selected' : '' %> disabled>Returned</option>
                                         </select>
                                     </td>
                                     <td>

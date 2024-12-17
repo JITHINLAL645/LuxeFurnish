@@ -940,7 +940,7 @@ fetch('/apply-coupon', {
 
     // Gather the other form data
     const data = {};
-    const subtotalText = document.getElementById("checkout-subtotal").textContent;
+    const subtotalText = document.getElementById("checkout-total").textContent;
     data.totalAmount = parseFloat(subtotalText.replace('$', '').trim());  // Convert to float after removing $
 
     console.log("Total Amount:", data.totalAmount);
