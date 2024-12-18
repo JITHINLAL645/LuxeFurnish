@@ -976,14 +976,13 @@ fetch('/apply-coupon', {
 
     const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
 
-    // Check if payment method is "Cash on Delivery" and totalAmount is above 1000
     if (selectedPaymentMethod === 'cashOnDelivery' && data.totalAmount > 1000) {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
             text: 'Cash on Delivery is only available for orders below $1000.',
         });
-        return; // Prevent form submission if the condition is met
+        return; 
     }
 
     if (selectedPaymentMethod === 'razorpay') {
@@ -993,7 +992,7 @@ fetch('/apply-coupon', {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                amount: data.totalAmount, // Send amount in INR, backend will convert to paise
+                amount: data.totalAmount, 
                 currency: 'INR',
                 receipt: 'order_rcptid_11'
             })
@@ -1046,6 +1045,11 @@ fetch('/apply-coupon', {
             };
 
             const rzp = new Razorpay(options);
+            rzp.on('payment.failed', function (response) {
+            console.log("Payment failed:", response.error);
+            const retryUrl = `/order`;
+            window.location.href = retryUrl;
+          });
             rzp.open();
         } else {
             Swal.fire({
