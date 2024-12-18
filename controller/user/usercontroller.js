@@ -897,6 +897,11 @@ const addtocart = async (req, res) => {
       });
     }
 
+    await Wishlist.updateOne(
+      { user: userId },
+      { $pull: { items: { product: productId } } }
+    );
+
     res.redirect('/cart');
 
   } catch (error) {

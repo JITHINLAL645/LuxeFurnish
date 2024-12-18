@@ -520,8 +520,9 @@
                       <% if (order.paymentStatus === 'Failed') { %>
                         <button type="button" onclick="Repayment('<%= order._id %>')" class="btn btn-outline-success ms-2" data-toggle="tooltip" data-placement="bottom" title="Retry Payment">
                           <img src="path/to/your/image.jpg" alt="retry" class="img-fluid rounded-circle" style="width: 20px; height: 20px; margin-right: 5px;">
-                          <i class="bi bi-arrow-repeat"></i>
+                          <i class="bi bi-arrow-repeat"></i>Retry
                         </button>
+
                       <% } %>
                     </td>
                   </tr>
